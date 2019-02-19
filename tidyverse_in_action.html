@@ -1,0 +1,5238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Tidyverse in Action</title>
+    <meta charset="utf-8">
+    <meta name="author" content="  Gina Reynolds, February 2019" />
+    <link href="libs/remark-css-0.0.1/kunoichi.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# The Tidyverse in Action
+## a flipbook for data wrangling and plotting and modeling | made with Xaringan
+### <br><br>Gina Reynolds, February 2019
+### <br>
+
+---
+
+
+
+
+
+# Introduction
+
+Data transformation, visualization, and modeling are key steps of data analysis.  The incredibly popular collection of packages known as the *Tidyverse* have made these activities more fluid and intuitive in R.
+
+Still, the syntax and behavior of the functions must be learned and remembered; having references and examples at the ready may be helpful to newcomers taking on this task.  The "Tidyverse in Action" is aimed at providing such a reference alongside other invaluable resources.  [R for Data Science](https://r4ds.had.co.nz/index.html) and the [RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) are particularly useful. 
+
+Topics to be included are wrangling, plotting, and modeling.  The wrangling section is the most developed at this point, thought there is more to add.  In the first formulation of this book, I divided wrangling and plotting.  But no plots didn't feel very satisfying.  It's a bit more of a slog to follow the data transformation steps.  So there will be plotting throughout -- respite from looking at transforming tables of text -- even when plotting is not the emphasis of the section. I've included some ideas on plotting but there isn't much organization or explanation at this point.  There's nothing on modeling yet.  Someday.  
+
+
+---
+
+# Getting started with R and RStudio
+
+The tools demonstrated in this book are implemented in the statistical software, R which is opensource and freely available.  RStudio, an integrated development environment (IDE), is a nice environment for working in R.  The following links may help you get R and RStudio up and running. 
+
+
+- [Install Windows](https://www.youtube.com/watch?v=aCRMhAWmtpw)
+- [Install Mac](https://www.youtube.com/watch?v=GLLZhc_5enQ)
+
+
+---
+
+# Acknowledgements
+
+I'm grateful to the tidyverse team for their tireless work on developing and maintaining this wonderful toolkit and to RStudio for supporting the development.  Emi Tanaka (@statsgen) and Garrick Aden-Buie (@grrrck) helped by writing code to made the flipbook style possible. I'm *very* grateful to them for their work on this as well as to Yihui Xie and others for their work on the Xaringan package --- the extraordinary platform for creating the slides for this book.  I'm thankful too to my students who refresh my perspective on teaching and learning new tools.  Finally, thanks to my family and friends who support data wrangling, plotting, modeling, and me. 
+
+
+
+---
+
+# Load the tidyverse and data
+
+To get started, you'll need to install the packages "tidyverse" and load data.  Execute this code in your console:
+
+
+```r
+install.packages("tidyverse")
+install.packages("gapminder")
+```
+
+Then, in an R script or .Rmd you can use and execute the following code: 
+
+
+```r
+options(scipen = 10) # adjust when scientific notation turns on
+library(tidyverse)
+library(gapminder)
+```
+
+
+---
+
+# Data
+
+Hans Rosling was the founder of "Gapminder.com".  His animated visualizations tracking expected life expectancy and gdp per capita by country are a must-see in statistics and data visualization circles.  You may find it helpful to look at his presentation, [Hans Rosling's 200 Countries, 200 Years, 4 Minutes - The Joy of Stats - BBC Four](https://www.youtube.com/watch?v=jbkSRLYSojo&amp;index=2&amp;list=PL6F8D7054D12E7C5A).
+
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/jbkSRLYSojo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+
+---
+
+# The Data Frame
+
+Now we can have a look at the *data frame* that is loaded after executing `library(gapminder)`. Each observation (row) in the data is a country-year observation, defined by the variables country and year.  Note that this data is actually a subset of the full data, containing values only for every five years and only 142 countries. 
+
+
+```r
+gapminder
+```
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+
+
+
+
+
+
+---
+# Wrangling
+
+
+Our first topic is data "wrangling" which is concerned with the transform data into other useful forms.  In this section, there will be plotting, but those steps won't be a focus of discussion.  Later in the book, we'll come back to plotting.    
+
+---
+## Overview of functions and operators
+
+Before we get started with the "tidyverse in action" segment, which contain the examples of the tidyverse at work, I provide a summary of the functions and operators that you will come across.  If from the examples it isn't clear what the function or operator is "doing", then you can refer back to this section, where I've attempted to describe the functions and operators in plain language. 
+
+
+---
+## Some key manipulation functions are as follows
+
+|function |action |
+| :--- | ---: |
+| mutate()    | *create a new variable*|
+| select()    | *keep variables (or drop them -var)*|
+| filter()    | *keep rows*|
+| group_by()  | *declare subsets in data*|
+| summarize() | *summarize the data, by groups if they have been declared*|
+| distinct()  | *returns only rows that are unique*| 
+| tally()     | *counting (by groups if group_by() applied)*|
+| case_when() | *is used for "recoding" variable, often used with mutate()*|
+| rename()    | *renaming variables*|
+
+
+---
+## "Connectors"
+
+The pipe `%&gt;%` is used to feed in the output that precedes it.  The plus sign `+` works similarly in the ggplot environment.  
+
+
+---
+## Arithmetic operators
+
+| Operator | Description |
+| : ----- | ---: |
+| + | *plus* |
+| - | *minus* |
+| \* | *multiplication*  |
+| / | *division* |
+| ^ | *exponential* |
+
+
+---
+## Boolean operators
+
+Boolean operators are a special type of operator that return TRUE or FALSE.  
+
+| Operator | Description |
+| : ----- | ---: |
+| == | *equal, tests equality* |
+| != | *not equal, tests inequality* |
+| \&gt; | *greater than, tests greater than* (also &gt;=) |
+| &lt; | *less than, tests less than* (also &lt;=) |
+| %in% | *contains, tests inclusion* |
+
+
+Boolean operators can be combined with *and* or *or*.  
+
+| Operator | Description |
+| : ----- | ---: |
+| &amp; | *and, returns true if preceeding and following are both true, else false* |
+| | | *or, returns true if either preceeding and following are true, else false* |
+
+
+
+
+
+
+
+
+---
+## Target output:  *Country per capita GDP versus life expectency in 2007*
+
+&lt;img src="tidyverse_in_action_files/figure-html/roslings_plot-1.png" width="100%" /&gt;
+
+---
+## How do we get there?
+
+We are going to 
+
+- use filter() to subset the data to a single year (so the rows where the variable year is 2007). 
+- then we'll plot.  
+
+Let's see this in action. 
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+* aes(x = gdpPercap)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+* aes(y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+* geom_point(alpha = .6)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+* aes(color = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+* aes(size = pop / 1000000)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+* labs(title = "Per capita GDP versus life expectency in 2007")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+* labs(subtitle = "Data Source: Gapminder package in R")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+* labs(size = "Population (millions)")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+* labs(col = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+  labs(col = "") +
+* labs(x = "Per capita GDP")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+  labs(col = "") +
+  labs(x = "Per capita GDP") +
+* labs(y = "Life expectancy")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_14-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+  labs(col = "") +
+  labs(x = "Per capita GDP") +
+  labs(y = "Life expectancy") +
+* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_15-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+  labs(col = "") +
+  labs(x = "Per capita GDP") +
+  labs(y = "Life expectancy") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+* theme_minimal()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_roslings_plot_16-1.png" width="100%" /&gt;
+]]
+
+---
+
+
+
+
+
+---
+## Target output: Number of Countries by Continent in Dataset
+
+&lt;img src="tidyverse_in_action_files/figure-html/wrangle_01-1.png" width="100%" /&gt;
+
+---
+## How do we get there?
+
+We are going to 
+
+- use select() to keep the variables country and continent only 
+- pull out unique rows with distinct(), (i.e. there will be no duplicate rows). 
+- then we'll plot.  
+
+Let's see this in action. 
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* select(country, continent)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 2
+     country     continent
+     &lt;fct&gt;       &lt;fct&gt;    
+   1 Afghanistan Asia     
+   2 Afghanistan Asia     
+   3 Afghanistan Asia     
+   4 Afghanistan Asia     
+   5 Afghanistan Asia     
+   6 Afghanistan Asia     
+   7 Afghanistan Asia     
+   8 Afghanistan Asia     
+   9 Afghanistan Asia     
+  10 Afghanistan Asia     
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+* distinct()
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 2
+     country     continent
+     &lt;fct&gt;       &lt;fct&gt;    
+   1 Afghanistan Asia     
+   2 Albania     Europe   
+   3 Algeria     Africa   
+   4 Angola      Africa   
+   5 Argentina   Americas 
+   6 Australia   Oceania  
+   7 Austria     Europe   
+   8 Bahrain     Asia     
+   9 Bangladesh  Asia     
+  10 Belgium     Europe   
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+* aes(x = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+* geom_bar(fill = "blue", alpha = .4)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+* labs(title = "Number of Countries by Continent in the Gapminder Dataset")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+* labs(subtitle = "Data source: gapminder package in R")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+  labs(subtitle = "Data source: gapminder package in R") +
+* labs(x = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "") +
+* labs(y = "Number of countries")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Number of countries") +
+* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent) %&gt;%
+  distinct() %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Number of countries") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+* theme_minimal()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_wrangle_01_12-1.png" width="100%" /&gt;
+]]
+
+---
+
+
+
+
+
+---
+## Target output: *GDP versus Population in 2007*
+
+
+
+&lt;img src="tidyverse_in_action_files/figure-html/gdp_versus_population-1.png" width="100%" /&gt;
+
+---
+## How do we get there?
+
+We are going to 
+
+- subset the data to the 2007 cases, so filter(year == 2007).  
+- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- then we'll plot
+
+Let's see this in action. 
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+* mutate(gdp_approx = gdpPercap * pop)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 7
+     country     continent  year lifeExp       pop gdpPercap    gdp_approx
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.  31079291949.
+   2 Albania     Europe     2007    76.4   3600523     5937.  21376411360.
+   3 Algeria     Africa     2007    72.3  33333216     6223. 207444851958.
+   4 Angola      Africa     2007    42.7  12420476     4797.  59583895818.
+   5 Argentina   Americas   2007    75.3  40301927    12779. 515033625357.
+   6 Australia   Oceania    2007    81.2  20434176    34435. 703658358894.
+   7 Austria     Europe     2007    79.8   8199783    36126. 296229400691.
+   8 Bahrain     Asia       2007    75.6    708573    29796.  21112675360.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391. 209311822134.
+  10 Belgium     Europe     2007    79.4  10392226    33693. 350141166520.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+* aes(x = pop / 1000000)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+* aes(y = gdp_approx / 1000000000)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+* geom_point(alpha = .6)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+* scale_x_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+* scale_y_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+* aes(color = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+* labs(title = "GDP versus Population in 2007")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+* labs(subtitle = "Data source: gapminder package in R")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+* labs(x = "Population (millions)")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "Population (millions)") +
+* labs(y = "GDP (billions)")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_14-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "Population (millions)") +
+  labs(y = "GDP (billions)") +
+* labs(color = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_15-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "Population (millions)") +
+  labs(y = "GDP (billions)") +
+  labs(color = "") +
+* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_16-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  mutate(gdp_approx = gdpPercap * pop) %&gt;% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "Population (millions)") +
+  labs(y = "GDP (billions)") +
+  labs(color = "") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+* theme_minimal()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_gdp_versus_population_17-1.png" width="100%" /&gt;
+]]
+
+---
+
+
+
+
+---
+## Target output: Median life expectency by continent in 2007
+
+&lt;img src="tidyverse_in_action_files/figure-html/continent_summary_2007-1.png" width="100%" /&gt;
+
+---
+## How do we get there?
+
+We are going to 
+
+- drop variables that we won't use, gdp and population.  This isn't necessary but helps us focus on the next steps. 
+- subset the data to the rows where the year is 2007
+- then declare there to be subsets within the data which are the groups in the continent variable (the function is group_by()).  
+- for each group, we'll ask for mean of life expectancy (summarize). 
+- then we'll plot  
+
+Let's see this in action. 
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* select(-pop, -gdpPercap)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 4
+     country     continent  year lifeExp
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8
+   2 Afghanistan Asia       1957    30.3
+   3 Afghanistan Asia       1962    32.0
+   4 Afghanistan Asia       1967    34.0
+   5 Afghanistan Asia       1972    36.1
+   6 Afghanistan Asia       1977    38.4
+   7 Afghanistan Asia       1982    39.9
+   8 Afghanistan Asia       1987    40.8
+   9 Afghanistan Asia       1992    41.7
+  10 Afghanistan Asia       1997    41.8
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 4
+     country     continent  year lifeExp
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8
+   2 Albania     Europe     2007    76.4
+   3 Algeria     Africa     2007    72.3
+   4 Angola      Africa     2007    42.7
+   5 Argentina   Americas   2007    75.3
+   6 Australia   Oceania    2007    81.2
+   7 Austria     Europe     2007    79.8
+   8 Bahrain     Asia       2007    75.6
+   9 Bangladesh  Asia       2007    64.1
+  10 Belgium     Europe     2007    79.4
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+* group_by(continent)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 4
+  # Groups:   continent [5]
+     country     continent  year lifeExp
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8
+   2 Albania     Europe     2007    76.4
+   3 Algeria     Africa     2007    72.3
+   4 Angola      Africa     2007    42.7
+   5 Argentina   Americas   2007    75.3
+   6 Australia   Oceania    2007    81.2
+   7 Austria     Europe     2007    79.8
+   8 Bahrain     Asia       2007    75.6
+   9 Bangladesh  Asia       2007    64.1
+  10 Belgium     Europe     2007    79.4
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+* summarise(median_life_exp = median(lifeExp))
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 5 x 2
+    continent median_life_exp
+    &lt;fct&gt;               &lt;dbl&gt;
+  1 Africa               52.9
+  2 Americas             72.9
+  3 Asia                 72.4
+  4 Europe               78.6
+  5 Oceania              80.7
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+* aes(x = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+* aes(y = median_life_exp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+* geom_point(color = "blue", size = 3, alpha = .4)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+* scale_y_continuous(limits = c(0,85))
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+* labs(title = "Median life expectency by continent in 2007")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+* labs(subtitle = "Data Source: Gapminder package in R")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+* labs(x = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+* labs(y = "Median life expectancy")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_14-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Median life expectancy") +
+* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_15-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Median life expectancy") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+* theme_minimal()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_16-1.png" width="100%" /&gt;
+]]
+
+---
+
+
+
+
+
+---
+## Notes on "Assignment"
+
+R is an "object-oriented" programming language, which means that you can save (come back to language here).  In this tutorial, you've seen a lot of pipelines where no "object" is saved to memory.  This is not very typical of R programming, but does lend itself to demonstrating the logic with this flipbook.  Sometimes you might find it useful to save your transformed data as an object and use that object later on. Here is an example where instead of piping the manipulated data into the plot, I create a new object.  I then declare the "global" data for the ggplot to be gapminder_2007_oceania.  The assignment operator is `&lt;-`.
+
+
+```r
+gapminder_2007_oceania &lt;- gapminder %&gt;% 
+  filter(continent == "Oceania") %&gt;% 
+  filter(year == 2007)
+
+gapminder_2007_oceania
+```
+
+```
+  # A tibble: 2 x 6
+    country     continent  year lifeExp      pop gdpPercap
+    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+  1 Australia   Oceania    2007    81.2 20434176    34435.
+  2 New Zealand Oceania    2007    80.2  4115771    25185.
+```
+
+---
+## Reverse assignment?
+
+The "reverse assignment operator," `-&gt;`, is also possible to use.  Beginners might find it more natural to go throught manipulation steps and then assign the result of the pipeline to an object, which this operator allows.  If you execute all the code, nothing will print in the interactive session, rather, you will have an object in your global environment that you can use in the future.  
+
+
+
+
+The reverse assignment operator also happens to be more ameanable to the flipbook style, though some programmers question its use's appropriateness.  Still, let's see this in action. 
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(continent == "Oceania")
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 24 x 6
+     country   continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Australia Oceania    1952    69.1  8691212    10040.
+   2 Australia Oceania    1957    70.3  9712569    10950.
+   3 Australia Oceania    1962    70.9 10794968    12217.
+   4 Australia Oceania    1967    71.1 11872264    14526.
+   5 Australia Oceania    1972    71.9 13177000    16789.
+   6 Australia Oceania    1977    73.5 14074100    18334.
+   7 Australia Oceania    1982    74.7 15184200    19477.
+   8 Australia Oceania    1987    76.3 16257249    21889.
+   9 Australia Oceania    1992    77.6 17481977    23425.
+  10 Australia Oceania    1997    78.8 18565243    26998.
+  # ... with 14 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Oceania") %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 2 x 6
+    country     continent  year lifeExp      pop gdpPercap
+    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+  1 Australia   Oceania    2007    81.2 20434176    34435.
+  2 New Zealand Oceania    2007    80.2  4115771    25185.
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Oceania") %&gt;%
+  filter(year == 2007) -&gt;
+* gapminder_2007_oceania
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+
+
+---
+
+# Caution: Construction Zone
+
+This flipbook is not complete.  The guidance that follows isn't as carefully edited as what precedes. But feel free to have a look around. This "construction zone" slide should move later and later on as time goes by.  Also I hope to add new work as time goes on.  
+
+---
+# Plotting
+
+
+
+
+# Now for some plotting.
+
+We may use some of the wrangline steps, and feed the wrangled data into a ggplot() with a pipe:  %&gt;%.
+
+
+
+
+
+---
+# Country grouped trend plot faceted by continent
+
+
+
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* mutate(gdp_billions = gdpPercap * pop/1000000000)   # create new variable
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 7
+     country     continent  year lifeExp      pop gdpPercap gdp_billions
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.         6.57
+   2 Afghanistan Asia       1957    30.3  9240934      821.         7.59
+   3 Afghanistan Asia       1962    32.0 10267083      853.         8.76
+   4 Afghanistan Asia       1967    34.0 11537966      836.         9.65
+   5 Afghanistan Asia       1972    36.1 13079460      740.         9.68
+   6 Afghanistan Asia       1977    38.4 14880372      786.        11.7 
+   7 Afghanistan Asia       1982    39.9 12881816      978.        12.6 
+   8 Afghanistan Asia       1987    40.8 13867957      852.        11.8 
+   9 Afghanistan Asia       1992    41.7 16317921      649.        10.6 
+  10 Afghanistan Asia       1997    41.8 22227415      635.        14.1 
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+* aes(x = year, y = gdp_billions)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+* geom_line()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+* aes(group = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+* scale_y_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+  aes(col = continent) +
+* facet_wrap( ~ continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+  aes(col = continent) +
+  facet_wrap( ~ continent) +
+* scale_color_discrete(guide = F)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %&gt;%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+  aes(col = continent) +
+  facet_wrap( ~ continent) +
+  scale_color_discrete(guide = F) +
+* theme_minimal()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_11-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# Scatterplot with smoothing
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 1997)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1997    41.8  22227415      635.
+   2 Albania     Europe     1997    73.0   3428038     3193.
+   3 Algeria     Africa     1997    69.2  29072015     4797.
+   4 Angola      Africa     1997    41.0   9875024     2277.
+   5 Argentina   Americas   1997    73.3  36203463    10967.
+   6 Australia   Oceania    1997    78.8  18565243    26998.
+   7 Austria     Europe     1997    77.5   8069876    29096.
+   8 Bahrain     Asia       1997    73.9    598561    20292.
+   9 Bangladesh  Asia       1997    59.4 123315288      973.
+  10 Belgium     Europe     1997    77.5  10199787    27561.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+* aes(x = gdpPercap)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+* aes(y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+* scale_x_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+* geom_smooth()
+```
+]]
+.column[.content.center[
+
+```
+  `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_8-1.png" width="100%" /&gt;
+]]
+
+
+---
+
+# Faceted scatterplot
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 1997)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1997    41.8  22227415      635.
+   2 Albania     Europe     1997    73.0   3428038     3193.
+   3 Algeria     Africa     1997    69.2  29072015     4797.
+   4 Angola      Africa     1997    41.0   9875024     2277.
+   5 Argentina   Americas   1997    73.3  36203463    10967.
+   6 Australia   Oceania    1997    78.8  18565243    26998.
+   7 Austria     Europe     1997    77.5   8069876    29096.
+   8 Bahrain     Asia       1997    73.9    598561    20292.
+   9 Bangladesh  Asia       1997    59.4 123315288      973.
+  10 Belgium     Europe     1997    77.5  10199787    27561.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+* aes(x = gdpPercap)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+* aes(y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+* scale_x_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+  geom_point() +
+* facet_wrap(~ continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+  geom_point() +
+  facet_wrap(~ continent) +
+* aes(size = pop)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+  geom_point() +
+  facet_wrap(~ continent) +
+  aes(size = pop) +
+* labs(size = "population")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_02_1_11-1.png" width="100%" /&gt;
+]]
+
+
+
+
+
+---
+
+# bar plot (count for each category)
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_04_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_04_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+* geom_bar()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_04_5-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# column plot (specifying height of bars)
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* group_by(continent)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+  # Groups:   continent [5]
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;%
+* tally()
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 5 x 2
+    continent     n
+    &lt;fct&gt;     &lt;int&gt;
+  1 Africa       52
+  2 Americas     25
+  3 Asia         33
+  4 Europe       30
+  5 Oceania       2
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;%
+  tally() %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_05_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;%
+  tally() %&gt;%
+  ggplot() +
+* aes(x = continent, y = n)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_05_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;%
+  tally() %&gt;%
+  ggplot() +
+  aes(x = continent, y = n) +
+* geom_col()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_05_7-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# box plot
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = continent, y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+* geom_boxplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+  geom_boxplot() +
+* geom_jitter(height = 0, width = .2)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+  geom_boxplot() +
+  geom_jitter(height = 0, width = .2) +
+* stat_summary(fun.y = mean, geom = "point", col = "goldenrod3", size = 5, showGuides = F)
+```
+]]
+.column[.content.center[
+
+```
+  Warning: Ignoring unknown parameters: showGuides
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_7-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# violin + jitter plot
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_1_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = continent, y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_1_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+* geom_violin()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_1_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+  geom_violin() +
+* geom_jitter(height = 0, width = .2)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_1_6-1.png" width="100%" /&gt;
+]]
+
+
+---
+
+# Wrangle plot
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+* geom_histogram()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+* aes(fill = continent)
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+  aes(fill = continent) +
+* scale_fill_viridis_d()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+* facet_wrap(~continent)
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  facet_wrap(~continent) +
+* geom_rug()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  facet_wrap(~continent) +
+  geom_rug()
+ #&lt;&lt;
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_07_10-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# Overlapping histograms
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007, continent == "Africa" | continent == "Americas")
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 77 x 6
+     country      continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;        &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Algeria      Africa     2007    72.3  33333216     6223.
+   2 Angola       Africa     2007    42.7  12420476     4797.
+   3 Argentina    Americas   2007    75.3  40301927    12779.
+   4 Benin        Africa     2007    56.7   8078314     1441.
+   5 Bolivia      Americas   2007    65.6   9119152     3822.
+   6 Botswana     Africa     2007    50.7   1639131    12570.
+   7 Brazil       Americas   2007    72.4 190010647     9066.
+   8 Burkina Faso Africa     2007    52.3  14326203     1217.
+   9 Burundi      Africa     2007    49.6   8390505      430.
+  10 Cameroon     Africa     2007    50.4  17696293     2042.
+  # ... with 67 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+* aes(x = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+* aes(fill = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+* geom_histogram(alpha = .2, position = "identity")
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, position = "identity") +
+* theme_light()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, position = "identity") +
+  theme_light() +
+* geom_rug()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, position = "identity") +
+  theme_light() +
+  geom_rug() +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, position = "identity") +
+  theme_light() +
+  geom_rug() +
+  aes(col = continent)
+ #&lt;&lt;
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_10-1.png" width="100%" /&gt;
+]]
+
+
+
+---
+
+# Line graph
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(country == "Argentina")
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 12 x 6
+     country   continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Argentina Americas   1952    62.5 17876956     5911.
+   2 Argentina Americas   1957    64.4 19610538     6857.
+   3 Argentina Americas   1962    65.1 21283783     7133.
+   4 Argentina Americas   1967    65.6 22934225     8053.
+   5 Argentina Americas   1972    67.1 24779799     9443.
+   6 Argentina Americas   1977    68.5 26983828    10079.
+   7 Argentina Americas   1982    69.9 29341374     8998.
+   8 Argentina Americas   1987    70.8 31620918     9140.
+   9 Argentina Americas   1992    71.9 33958947     9308.
+  10 Argentina Americas   1997    73.3 36203463    10967.
+  11 Argentina Americas   2002    74.3 38331121     8798.
+  12 Argentina Americas   2007    75.3 40301927    12779.
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+* aes(x = year, y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+* geom_line()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+* aes(alpha = year)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(alpha = year) +
+* aes(col = year)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(alpha = year) +
+  aes(col = year) +
+* scale_color_viridis_c()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(alpha = year) +
+  aes(col = year) +
+  scale_color_viridis_c() +
+* theme_classic()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(alpha = year) +
+  aes(col = year) +
+  scale_color_viridis_c() +
+  theme_classic()
+ #&lt;&lt;
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_1_11-1.png" width="100%" /&gt;
+]]
+
+
+---
+
+# Line graph variant
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(country == "Argentina" | country == "Chile")
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 24 x 6
+     country   continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Argentina Americas   1952    62.5 17876956     5911.
+   2 Argentina Americas   1957    64.4 19610538     6857.
+   3 Argentina Americas   1962    65.1 21283783     7133.
+   4 Argentina Americas   1967    65.6 22934225     8053.
+   5 Argentina Americas   1972    67.1 24779799     9443.
+   6 Argentina Americas   1977    68.5 26983828    10079.
+   7 Argentina Americas   1982    69.9 29341374     8998.
+   8 Argentina Americas   1987    70.8 31620918     9140.
+   9 Argentina Americas   1992    71.9 33958947     9308.
+  10 Argentina Americas   1997    73.3 36203463    10967.
+  # ... with 14 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+* aes(x = year, y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+* geom_line()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+* aes(group = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(group = country) +
+* aes(col = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(group = country) +
+  aes(col = country) +
+* aes(size = pop)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(group = country) +
+  aes(col = country) +
+  aes(size = pop)
+ #&lt;&lt;
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_10-1.png" width="100%" /&gt;
+]]
+
+
+
+
+---
+
+# Jitter plot, two-way categorical data
+
+---
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* mutate(life_exp_70_plus = lifeExp &gt; 70)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 7
+     country     continent  year lifeExp      pop gdpPercap life_exp_70_plus
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;lgl&gt;           
+   1 Afghanistan Asia       1952    28.8  8425333      779. FALSE           
+   2 Afghanistan Asia       1957    30.3  9240934      821. FALSE           
+   3 Afghanistan Asia       1962    32.0 10267083      853. FALSE           
+   4 Afghanistan Asia       1967    34.0 11537966      836. FALSE           
+   5 Afghanistan Asia       1972    36.1 13079460      740. FALSE           
+   6 Afghanistan Asia       1977    38.4 14880372      786. FALSE           
+   7 Afghanistan Asia       1982    39.9 12881816      978. FALSE           
+   8 Afghanistan Asia       1987    40.8 13867957      852. FALSE           
+   9 Afghanistan Asia       1992    41.7 16317921      649. FALSE           
+  10 Afghanistan Asia       1997    41.8 22227415      635. FALSE           
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+* filter(year == 1997)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 7
+     country     continent  year lifeExp       pop gdpPercap life_exp_70_plus
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;lgl&gt;           
+   1 Afghanistan Asia       1997    41.8  22227415      635. FALSE           
+   2 Albania     Europe     1997    73.0   3428038     3193. TRUE            
+   3 Algeria     Africa     1997    69.2  29072015     4797. FALSE           
+   4 Angola      Africa     1997    41.0   9875024     2277. FALSE           
+   5 Argentina   Americas   1997    73.3  36203463    10967. TRUE            
+   6 Australia   Oceania    1997    78.8  18565243    26998. TRUE            
+   7 Austria     Europe     1997    77.5   8069876    29096. TRUE            
+   8 Bahrain     Asia       1997    73.9    598561    20292. TRUE            
+   9 Bangladesh  Asia       1997    59.4 123315288      973. FALSE           
+  10 Belgium     Europe     1997    77.5  10199787    27561. TRUE            
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+* aes(x = continent, y = life_exp_70_plus)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_exp_70_plus) +
+* geom_jitter(width = .25, height = .25)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_exp_70_plus) +
+  geom_jitter(width = .25, height = .25) +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_exp_70_plus) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+* scale_color_discrete(guide = FALSE)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_exp_70_plus) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+* theme_dark()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_9-1.png" width="100%" /&gt;
+]]
+
+
+
+
+
+
+
+---
+
+# Some ggplot food for thought with questions.
+
+---
+
+# Plot 1
+
+---
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+* geom_bar()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+* aes(fill = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+* scale_fill_viridis_d()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+* coord_flip()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  coord_flip() +
+* geom_bar(width = .5, fill = "magenta")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  geom_bar(width = .5, fill = "magenta") +
+* aes(fill = NULL)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  geom_bar(width = .5, fill = "magenta") +
+  aes(fill = NULL) +
+* labs(x = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  geom_bar(width = .5, fill = "magenta") +
+  aes(fill = NULL) +
+  labs(x = "") +
+* labs(title = "My plot title!")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot1_13-1.png" width="100%" /&gt;
+]]
+
+---
+
+# Questions, Plot 1
+
+How many geometric layers ("geoms") are in the final plot?
+
+To which geometric layer do the aesthetics mapping "fill" apply, ie represents a variable in the data?
+
+What does coord_flip() do?
+
+How is NULL used?
+
+When adding a geom layer, where does it appear, behind or in front of other layers?
+
+
+
+---
+# Plot 2
+
+---
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 2007)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       2007    43.8  31889923      975.
+   2 Albania     Europe     2007    76.4   3600523     5937.
+   3 Algeria     Africa     2007    72.3  33333216     6223.
+   4 Angola      Africa     2007    42.7  12420476     4797.
+   5 Argentina   Americas   2007    75.3  40301927    12779.
+   6 Australia   Oceania    2007    81.2  20434176    34435.
+   7 Austria     Europe     2007    79.8   8199783    36126.
+   8 Bahrain     Asia       2007    75.6    708573    29796.
+   9 Bangladesh  Asia       2007    64.1 150448339     1391.
+  10 Belgium     Europe     2007    79.4  10392226    33693.
+  # ... with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+* aes(x = gdpPercap)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+* aes(y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+* geom_point(alpha = .5)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+* geom_rug(size = 1)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+* aes(col = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+* scale_x_log10()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+  scale_x_log10() +
+* aes(size = gdpPercap)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+  scale_x_log10() +
+  aes(size = gdpPercap) +
+* aes(size = pop)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+  scale_x_log10() +
+  aes(size = gdpPercap) +
+  aes(size = pop) +
+* geom_point(col = "darkgreen", size = 1)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+  scale_x_log10() +
+  aes(size = gdpPercap) +
+  aes(size = pop) +
+  geom_point(col = "darkgreen", size = 1) +
+* facet_wrap(~ continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot2_14-1.png" width="100%" /&gt;
+]]
+
+
+---
+# Questions Plot 2
+
+How many geometric layers are in the final plot?
+
+What does geom_rug do?
+
+There are two times when the aesthetic mapping col is set and two times when the aesthetic mapping size is set. Which is the final setting?
+
+
+
+---
+# Plot 3
+
+---
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # ... with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(continent == "Europe")
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 360 x 6
+     country continent  year lifeExp     pop gdpPercap
+     &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+   1 Albania Europe     1952    55.2 1282697     1601.
+   2 Albania Europe     1957    59.3 1476505     1942.
+   3 Albania Europe     1962    64.8 1728137     2313.
+   4 Albania Europe     1967    66.2 1984060     2760.
+   5 Albania Europe     1972    67.7 2263554     3313.
+   6 Albania Europe     1977    68.9 2509048     3533.
+   7 Albania Europe     1982    70.4 2780097     3631.
+   8 Albania Europe     1987    72   3075321     3739.
+   9 Albania Europe     1992    71.6 3326498     2497.
+  10 Albania Europe     1997    73.0 3428038     3193.
+  # ... with 350 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_3-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+* aes(x = year)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_4-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+* aes(y = lifeExp)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+* aes(alpha = year)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+* geom_point()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+  geom_point() +
+* geom_line()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+  geom_point() +
+  geom_line() +
+* aes(col = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+  geom_point() +
+  geom_line() +
+  aes(col = country) +
+* aes(col = NULL)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(continent == "Europe") %&gt;%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+  geom_point() +
+  geom_line() +
+  aes(col = country) +
+  aes(col = NULL) +
+* aes(group = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_plot3_11-1.png" width="100%" /&gt;
+]]
+
+
+---
+# Questions Plot 3
+
+How many geometric layers are in the final plot?
+
+What does the alpha setting do?
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 90%}
+&lt;/style&gt;
+    </textarea>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

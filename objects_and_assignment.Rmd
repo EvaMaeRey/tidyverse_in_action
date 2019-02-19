@@ -1,0 +1,43 @@
+---
+title: "assignment and objects"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Notes on "Assignment"
+
+R is an "object-oriented" programming language, which means that you can save (come back to language here).  In this tutorial, you've seen a lot of pipelines where no "object" is saved to memory.  This is not very typical of R programming, but does lend itself to demonstrating the logic with this flipbook.  Sometimes you might find it useful to save your transformed data as an object and use that object later on. Here is an example where instead of piping the manipulated data into the plot, I create a new object.  I then declare the "global" data for the ggplot to be gapminder_2007_oceania.  The assignment operator is `<-`.
+
+```{r, fig.height=3}
+gapminder_2007_oceania <- gapminder %>% 
+  filter(continent == "Oceania") %>% 
+  filter(year == 2007)
+
+gapminder_2007_oceania
+
+
+```
+
+---
+## Reverse assignment?
+
+The "reverse assignment operator," `->`, is also possible to use.  Beginners might find it more natural to go throught manipulation steps and then assign the result of the pipeline to an object, which this operator allows.  If you execute all the code, nothing will print in the interactive session, rather, you will have an object in your global environment that you can use in the future.  
+
+
+```{r reverse_assignment, fig.height=3 , comment = " ", eval=T, echo=F}
+gapminder %>%
+  filter(continent == "Oceania") %>%
+  filter(year == 2007) ->
+  gapminder_2007_oceania
+```
+
+The reverse assignment operator also happens to be more ameanable to the flipbook style, though some programmers question its use's appropriateness.  Still, let's see this in action. 
+
+---
+
+`r paste(knitr::knit(text = partial_knit_chunks("reverse_assignment")), collapse = "\n")`
+
+---

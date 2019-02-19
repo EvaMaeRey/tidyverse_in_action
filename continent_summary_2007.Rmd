@@ -1,0 +1,49 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output: Median life expectency by continent in 2007
+
+```{r continent_summary_2007, eval=T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>% 
+  select(-pop, -gdpPercap) %>% 
+  filter(year == 2007) %>% 
+  group_by(continent) %>% 
+  summarise(median_life_exp = median(lifeExp)) %>% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Median life expectancy") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+  theme_minimal()
+```
+
+---
+## How do we get there?
+
+We are going to 
+
+- drop variables that we won't use, gdp and population.  This isn't necessary but helps us focus on the next steps. 
+- subset the data to the rows where the year is 2007
+- then declare there to be subsets within the data which are the groups in the continent variable (the function is group_by()).  
+- for each group, we'll ask for mean of life expectancy (summarize). 
+- then we'll plot  
+
+Let's see this in action. 
+
+---
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("continent_summary_2007")), collapse = "\n")`
+
+---

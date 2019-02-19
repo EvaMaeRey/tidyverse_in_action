@@ -1,0 +1,397 @@
+---
+title: "Plot"
+author: "Evangeline Reynolds"
+date: "2/13/2019"
+output: html_document
+---
+
+# Now for some plotting.
+
+We may use some of the wrangline steps, and feed the wrangled data into a ggplot() with a pipe:  %>%.
+
+
+
+
+
+---
+# Country grouped trend plot faceted by continent
+
+
+
+
+---
+
+```{r complete_01, eval=F, echo=F, comment = " "}
+gapminder %>%
+  mutate(gdp_billions = gdpPercap * pop/1000000000) %>%  # create new variable
+  ggplot() +
+  aes(x = year, y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+  aes(col = continent) +
+  facet_wrap( ~ continent) +
+  scale_color_discrete(guide = F) +
+  theme_minimal()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_01")), collapse = "\n")`
+
+
+
+---
+
+# Scatterplot with smoothing
+
+---
+
+```{r complete_02, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 1997) %>%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+  geom_smooth()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_02")), collapse = "\n")`
+
+
+---
+
+# Faceted scatterplot
+
+---
+
+```{r complete_02_1, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 1997) %>%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  scale_x_log10() +
+  geom_point() +
+  facet_wrap(~ continent) +
+  aes(size = pop) +
+  labs(size = "population")
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_02_1")), collapse = "\n")`
+
+
+
+
+
+---
+
+# bar plot (count for each category)
+
+---
+
+```{r complete_04, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_04")), collapse = "\n")`
+
+
+
+---
+
+# column plot (specifying height of bars)
+
+---
+
+```{r complete_05, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  tally() %>%
+  ggplot() +
+  aes(x = continent, y = n) +
+  geom_col()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_05")), collapse = "\n")`
+
+
+
+---
+
+# box plot
+
+---
+
+```{r complete_06, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+  geom_boxplot() +
+  geom_jitter(height = 0, width = .2) +
+  stat_summary(fun.y = mean, geom = "point", col = "goldenrod3", size = 5, showGuides = F)
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_06")), collapse = "\n")`
+
+
+
+---
+
+# violin + jitter plot
+
+---
+
+```{r complete_06_1, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = continent, y = lifeExp) +
+  geom_violin() +
+  geom_jitter(height = 0, width = .2)
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_06_1")), collapse = "\n")`
+
+
+---
+
+# Wrangle plot
+
+---
+
+```{r complete_07, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = lifeExp) +
+  geom_histogram() +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  facet_wrap(~continent) +
+  geom_rug()
+
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_07")), collapse = "\n")`
+
+
+
+---
+
+# Overlapping histograms
+
+---
+
+```{r complete_08, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007, continent == "Africa" | continent == "Americas") %>%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, position = "identity") +
+  theme_light() +
+  geom_rug() +
+  aes(col = continent)
+
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_08")), collapse = "\n")`
+
+
+
+---
+
+# Line graph
+
+---
+
+```{r complete_08_1, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(country == "Argentina") %>%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(alpha = year) +
+  aes(col = year) +
+  scale_color_viridis_c() +
+  theme_classic()
+
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_08_1")), collapse = "\n")`
+
+
+---
+
+# Line graph variant
+
+---
+
+```{r complete_09, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(country == "Argentina" | country == "Chile") %>%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(group = country) +
+  aes(col = country) +
+  aes(size = pop)
+
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_09")), collapse = "\n")`
+
+
+
+
+---
+
+# Jitter plot, two-way categorical data
+
+---
+
+```{r complete_10, eval=F, echo=F, comment = " "}
+gapminder %>%
+  mutate(life_exp_70_plus = lifeExp > 70) %>%
+  filter(year == 1997) %>%
+  ggplot() +
+  aes(x = continent, y = life_exp_70_plus) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+  theme_dark()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("complete_10")), collapse = "\n")`
+
+
+
+
+
+
+
+---
+
+# Some ggplot food for thought with questions.
+
+---
+
+# Plot 1
+
+---
+
+```{r plot1, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = continent) +
+  geom_bar() +
+  aes(col = continent) +
+  aes(fill = continent) +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  geom_bar(width = .5, fill = "magenta") +
+  aes(fill = NULL) +
+  labs(x = "") +
+  labs(title = "My plot title!")
+```
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("plot1")), collapse = "\n")`
+
+---
+
+# Questions, Plot 1
+
+How many geometric layers ("geoms") are in the final plot?
+
+To which geometric layer do the aesthetics mapping "fill" apply, ie represents a variable in the data?
+
+What does coord_flip() do?
+
+How is NULL used?
+
+When adding a geom layer, where does it appear, behind or in front of other layers?
+
+
+
+---
+# Plot 2
+
+---
+
+```{r plot2, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .5) +
+  geom_rug(size = 1) +
+  aes(col = continent) +
+  aes(col = lifeExp) +
+  scale_x_log10() +
+  aes(size = gdpPercap) +
+  aes(size = pop) +
+  geom_point(col = "darkgreen", size = 1) +
+  facet_wrap(~ continent)
+```
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("plot2")), collapse = "\n")`
+
+
+---
+# Questions Plot 2
+
+How many geometric layers are in the final plot?
+
+What does geom_rug do?
+
+There are two times when the aesthetic mapping col is set and two times when the aesthetic mapping size is set. Which is the final setting?
+
+
+
+---
+# Plot 3
+
+---
+
+```{r plot3, eval=F, echo=F, comment = " ", message = FALSE, warning=F}
+gapminder %>%
+  filter(continent == "Europe") %>%
+  ggplot() +
+  aes(x = year) +
+  aes(y = lifeExp) +
+  aes(alpha = year) +
+  geom_point() +
+  geom_line() +
+  aes(col = country) +
+  aes(col = NULL) +
+  aes(group = country)
+```
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("plot3")), collapse = "\n")`
+
+
+---
+# Questions Plot 3
+
+How many geometric layers are in the final plot?
+
+What does the alpha setting do?
+
+
+
+

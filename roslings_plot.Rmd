@@ -1,0 +1,46 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output:  *Country per capita GDP versus life expectency in 2007*
+
+```{r roslings_plot, eval=T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>% 
+  filter(year == 2007) %>% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point(alpha = .6) +
+  aes(color = continent) +
+  aes(size = pop / 1000000) +
+  labs(title = "Per capita GDP versus life expectency in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(size = "Population (millions)") +
+  labs(col = "") +
+  labs(x = "Per capita GDP") +
+  labs(y = "Life expectancy") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+  theme_minimal()
+```
+
+---
+## How do we get there?
+
+We are going to 
+
+- use filter() to subset the data to a single year (so the rows where the variable year is 2007). 
+- then we'll plot.  
+
+Let's see this in action. 
+
+---
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("roslings_plot")), collapse = "\n")`
+
+---

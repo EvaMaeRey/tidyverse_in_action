@@ -1,0 +1,43 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output: Number of Countries by Continent in Dataset
+
+```{r wrangle_01, eval=T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>% 
+  select(country, continent) %>%
+  distinct() %>% 
+  ggplot() +
+  aes(x = continent) +
+  geom_bar(fill = "blue", alpha = .4) +
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Number of countries") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+  theme_minimal()
+```
+
+---
+## How do we get there?
+
+We are going to 
+
+- use select() to keep the variables country and continent only 
+- pull out unique rows with distinct(), (i.e. there will be no duplicate rows). 
+- then we'll plot.  
+
+Let's see this in action. 
+
+---
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_01")), collapse = "\n")`
+
+---

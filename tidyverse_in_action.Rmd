@@ -1,0 +1,229 @@
+---
+title: "The Tidyverse in Action"
+subtitle: "a flipbook for data wrangling and plotting and modeling | made with Xaringan"
+author: "<br><br>Gina Reynolds, February 2019"
+date: "<br>"
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: ["kunoichi", "ninjutsu"]
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ")
+
+source("xaringan_reveal.R")
+```
+
+
+# Introduction
+
+Data transformation, visualization, and modeling are key steps of data analysis.  The incredibly popular collection of packages known as the *Tidyverse* have made these activities more fluid and intuitive in R.
+
+Still, the syntax and behavior of the functions must be learned and remembered; having references and examples at the ready may be helpful to newcomers taking on this task.  The "Tidyverse in Action" is aimed at providing such a reference alongside other invaluable resources.  [R for Data Science](https://r4ds.had.co.nz/index.html) and the [RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) are particularly useful. 
+
+Topics to be included are wrangling, plotting, and modeling.  The wrangling section is the most developed at this point, thought there is more to add.  In the first formulation of this book, I divided wrangling and plotting.  But no plots didn't feel very satisfying.  It's a bit more of a slog to follow the data transformation steps.  So there will be plotting throughout -- respite from looking at transforming tables of text -- even when plotting is not the emphasis of the section. I've included some ideas on plotting but there isn't much organization or explanation at this point.  There's nothing on modeling yet.  Someday.  
+
+
+---
+
+# Getting started with R and RStudio
+
+The tools demonstrated in this book are implemented in the statistical software, R which is opensource and freely available.  RStudio, an integrated development environment (IDE), is a nice environment for working in R.  The following links may help you get R and RStudio up and running. 
+
+
+- [Install Windows](https://www.youtube.com/watch?v=aCRMhAWmtpw)
+- [Install Mac](https://www.youtube.com/watch?v=GLLZhc_5enQ)
+
+
+---
+
+# Acknowledgements
+
+I'm grateful to the tidyverse team for their tireless work on developing and maintaining this wonderful toolkit and to RStudio for supporting the development.  Emi Tanaka (@statsgen) and Garrick Aden-Buie (@grrrck) helped by writing code to made the flipbook style possible. I'm *very* grateful to them for their work on this as well as to Yihui Xie and others for their work on the Xaringan package --- the extraordinary platform for creating the slides for this book.  I'm thankful too to my students who refresh my perspective on teaching and learning new tools.  Finally, thanks to my family and friends who support data wrangling, plotting, modeling, and me. 
+
+
+
+---
+
+# Load the tidyverse and data
+
+To get started, you'll need to install the packages "tidyverse" and load data.  Execute this code in your console:
+
+```{r, eval = FALSE}
+install.packages("tidyverse")
+install.packages("gapminder")
+```
+
+Then, in an R script or .Rmd you can use and execute the following code: 
+
+```{r, message = F, warning=F}
+options(scipen = 10) # adjust when scientific notation turns on
+library(tidyverse)
+library(gapminder)
+```
+
+
+---
+
+# Data
+
+Hans Rosling was the founder of "Gapminder.com".  His animated visualizations tracking expected life expectancy and gdp per capita by country are a must-see in statistics and data visualization circles.  You may find it helpful to look at his presentation, [Hans Rosling's 200 Countries, 200 Years, 4 Minutes - The Joy of Stats - BBC Four](https://www.youtube.com/watch?v=jbkSRLYSojo&index=2&list=PL6F8D7054D12E7C5A).
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jbkSRLYSojo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+---
+
+# The Data Frame
+
+Now we can have a look at the *data frame* that is loaded after executing `library(gapminder)`. Each observation (row) in the data is a country-year observation, defined by the variables country and year.  Note that this data is actually a subset of the full data, containing values only for every five years and only 142 countries. 
+
+```{r}
+gapminder
+```
+
+
+
+
+```{r setup0, include=FALSE, eval = F}
+library(tidyverse)
+library(printr)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.height = 5, out.width = "80%", comment = " ")
+source("xaringan_reveal.R")
+``` 
+
+---
+# Wrangling
+
+
+Our first topic is data "wrangling" which is concerned with the transform data into other useful forms.  In this section, there will be plotting, but those steps won't be a focus of discussion.  Later in the book, we'll come back to plotting.    
+
+---
+## Overview of functions and operators
+
+Before we get started with the "tidyverse in action" segment, which contain the examples of the tidyverse at work, I provide a summary of the functions and operators that you will come across.  If from the examples it isn't clear what the function or operator is "doing", then you can refer back to this section, where I've attempted to describe the functions and operators in plain language. 
+
+
+---
+## Some key manipulation functions are as follows
+
+|function |action |
+| :--- | ---: |
+| mutate()    | *create a new variable*|
+| select()    | *keep variables (or drop them -var)*|
+| filter()    | *keep rows*|
+| group_by()  | *declare subsets in data*|
+| summarize() | *summarize the data, by groups if they have been declared*|
+| distinct()  | *returns only rows that are unique*| 
+| tally()     | *counting (by groups if group_by() applied)*|
+| case_when() | *is used for "recoding" variable, often used with mutate()*|
+| rename()    | *renaming variables*|
+
+
+---
+## "Connectors"
+
+The pipe `%>%` is used to feed in the output that precedes it.  The plus sign `+` works similarly in the ggplot environment.  
+
+
+---
+## Arithmetic operators
+
+| Operator | Description |
+| : ----- | ---: |
+| + | *plus* |
+| - | *minus* |
+| \* | *multiplication*  |
+| / | *division* |
+| ^ | *exponential* |
+
+
+---
+## Boolean operators
+
+Boolean operators are a special type of operator that return TRUE or FALSE.  
+
+| Operator | Description |
+| : ----- | ---: |
+| == | *equal, tests equality* |
+| != | *not equal, tests inequality* |
+| \> | *greater than, tests greater than* (also >=) |
+| < | *less than, tests less than* (also <=) |
+| %in% | *contains, tests inclusion* |
+
+
+Boolean operators can be combined with *and* or *or*.  
+
+| Operator | Description |
+| : ----- | ---: |
+| & | *and, returns true if preceeding and following are both true, else false* |
+| | | *or, returns true if either preceeding and following are true, else false* |
+
+
+```{r, echo = F}
+preview_height <- 3
+preview_width <- 4
+```
+
+
+```{r, child="roslings_plot.Rmd"}
+
+```
+
+
+```{r, child="countries_in_continents.Rmd"}
+
+```
+
+
+```{r, child="gdp_versus_population.Rmd"}
+
+```
+
+```{r, child="continent_summary_2007.Rmd"}
+
+```
+
+
+```{r, child="objects_and_assignment.Rmd"}
+
+```
+
+
+---
+
+# Caution: Construction Zone
+
+This flipbook is not complete.  The guidance that follows isn't as carefully edited as what precedes. But feel free to have a look around. This "construction zone" slide should move later and later on as time goes by.  Also I hope to add new work as time goes on.  
+
+---
+# Plotting
+
+
+```{r, child = "02_plot.Rmd"}
+
+```
+
+
+
+
+
+
+```{css, eval = TRUE, echo = F}
+.remark-code{line-height: 1.5; font-size: 90%}
+```
+
+
+
+
+
+
+

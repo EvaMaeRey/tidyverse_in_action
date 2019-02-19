@@ -1,0 +1,50 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output: *GDP versus Population in 2007*
+
+
+
+```{r gdp_versus_population, eval=T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>% 
+  filter(year == 2007) %>% 
+  mutate(gdp_approx = gdpPercap * pop) %>% 
+  ggplot() +
+  aes(x = pop / 1000000) +
+  aes(y = gdp_approx / 1000000000) +
+  geom_point(alpha = .6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  aes(color = continent) +
+  labs(title = "GDP versus Population in 2007") +
+  labs(subtitle = "Data source: gapminder package in R") +
+  labs(x = "Population (millions)") +
+  labs(y = "GDP (billions)") +
+  labs(color = "") +
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+  theme_minimal() 
+```
+
+---
+## How do we get there?
+
+We are going to 
+
+- subset the data to the 2007 cases, so filter(year == 2007).  
+- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- then we'll plot
+
+Let's see this in action. 
+
+---
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("gdp_versus_population")), collapse = "\n")`
+
+---
