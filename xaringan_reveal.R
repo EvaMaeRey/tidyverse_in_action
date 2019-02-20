@@ -1,9 +1,9 @@
 # reveal lines up to `upto` and highlight lines `highlight`
 reveal <- function(name, upto, highlight = upto) {
   content <- knitr:::knit_code$get(name)
-  content[upto] <- gsub("%>%", "", content[upto], fixed = T)
-  content[upto] <- gsub("->", "", content[upto], fixed = T)
-  content[upto] <- gsub("+", "", content[upto], fixed = T)
+  content[upto] <- gsub("%>%\\s*(#.+)?$", "\\1", content[upto])
+  content[upto] <- gsub("\\+\\s*(#.+)?$", "\\1", content[upto])
+  content[upto] <- gsub("\\->\\s*(#.+)?", "", content[upto], fixed = T)
   content[highlight] <- paste(content[highlight], "#<<")
   content[1:upto]
 }
