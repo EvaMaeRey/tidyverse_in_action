@@ -62,7 +62,7 @@ install.packages("gapminder")
 
 Then, in an R script or .Rmd you can use and execute the following code: 
 
-```{r, message = F, warning=F}
+```{r, message = F, warning=F, eval = T}
 options(scipen = 10) # adjust when scientific notation turns on
 library(tidyverse)
 library(gapminder)
@@ -203,9 +203,20 @@ preview_width <- 4
 ```
 
 
+```{r, child="long_to_wide_and_back.Rmd"}
+
+```
+
+```{r, child="joining_data.Rmd"}
+
+```
+
+
 ```{r, child="objects_and_assignment.Rmd"}
 
 ```
+
+
 
 
 ---

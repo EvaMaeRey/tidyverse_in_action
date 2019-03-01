@@ -1754,9 +1754,8 @@ gapminder %&gt;%
 
 We are going to 
 
-- create a new variable called 
-- subset the data to the 2007 cases, so filter(year == 2007).  
-- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- subset the data to the 1997 cases, so filter(year == 1997).  
+- create a new variable called life_cats (life categories)
 - then we'll plot
 
 Let's see this in action. 
@@ -2033,6 +2032,512 @@ gapminder %&gt;%
 
 
 ---
+## Exercise: *spread data, gather data*
+
+Sometimes, we need to reshape our data.  Here long to wide is shown, and then we transform the wide form back to long. 
+
+
+---
+## Exercise: *long to wide*
+
+---
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* select(country, continent, lifeExp, year)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 4
+     country     continent lifeExp  year
+     &lt;fct&gt;       &lt;fct&gt;       &lt;dbl&gt; &lt;int&gt;
+   1 Afghanistan Asia         28.8  1952
+   2 Afghanistan Asia         30.3  1957
+   3 Afghanistan Asia         32.0  1962
+   4 Afghanistan Asia         34.0  1967
+   5 Afghanistan Asia         36.1  1972
+   6 Afghanistan Asia         38.4  1977
+   7 Afghanistan Asia         39.9  1982
+   8 Afghanistan Asia         40.8  1987
+   9 Afghanistan Asia         41.7  1992
+  10 Afghanistan Asia         41.8  1997
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent, lifeExp, year) %&gt;% 
+* spread(key = year, value = lifeExp)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 14
+     country continent `1952` `1957` `1962` `1967` `1972` `1977` `1982`
+     &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+   1 Afghan… Asia        28.8   30.3   32.0   34.0   36.1   38.4   39.9
+   2 Albania Europe      55.2   59.3   64.8   66.2   67.7   68.9   70.4
+   3 Algeria Africa      43.1   45.7   48.3   51.4   54.5   58.0   61.4
+   4 Angola  Africa      30.0   32.0   34     36.0   37.9   39.5   39.9
+   5 Argent… Americas    62.5   64.4   65.1   65.6   67.1   68.5   69.9
+   6 Austra… Oceania     69.1   70.3   70.9   71.1   71.9   73.5   74.7
+   7 Austria Europe      66.8   67.5   69.5   70.1   70.6   72.2   73.2
+   8 Bahrain Asia        50.9   53.8   56.9   59.9   63.3   65.6   69.1
+   9 Bangla… Asia        37.5   39.3   41.2   43.5   45.3   46.9   50.0
+  10 Belgium Europe      68     69.2   70.2   70.9   71.4   72.8   73.9
+  # … with 132 more rows, and 5 more variables: `1987` &lt;dbl&gt;, `1992` &lt;dbl&gt;,
+  #   `1997` &lt;dbl&gt;, `2002` &lt;dbl&gt;, `2007` &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, continent, lifeExp, year) %&gt;% 
+  spread(key = year, value = lifeExp) -&gt;
+* gapminder_life_exp_wide
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+## Exercise: *wide to long*
+
+---
+
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder_life_exp_wide
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 14
+     country continent `1952` `1957` `1962` `1967` `1972` `1977` `1982`
+     &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+   1 Afghan… Asia        28.8   30.3   32.0   34.0   36.1   38.4   39.9
+   2 Albania Europe      55.2   59.3   64.8   66.2   67.7   68.9   70.4
+   3 Algeria Africa      43.1   45.7   48.3   51.4   54.5   58.0   61.4
+   4 Angola  Africa      30.0   32.0   34     36.0   37.9   39.5   39.9
+   5 Argent… Americas    62.5   64.4   65.1   65.6   67.1   68.5   69.9
+   6 Austra… Oceania     69.1   70.3   70.9   71.1   71.9   73.5   74.7
+   7 Austria Europe      66.8   67.5   69.5   70.1   70.6   72.2   73.2
+   8 Bahrain Asia        50.9   53.8   56.9   59.9   63.3   65.6   69.1
+   9 Bangla… Asia        37.5   39.3   41.2   43.5   45.3   46.9   50.0
+  10 Belgium Europe      68     69.2   70.2   70.9   71.4   72.8   73.9
+  # … with 132 more rows, and 5 more variables: `1987` &lt;dbl&gt;, `1992` &lt;dbl&gt;,
+  #   `1997` &lt;dbl&gt;, `2002` &lt;dbl&gt;, `2007` &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder_life_exp_wide %&gt;% 
+* gather(key = "year", value = "lifeExp", -country, -continent)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 4
+     country     continent year  lifeExp
+     &lt;fct&gt;       &lt;fct&gt;     &lt;chr&gt;   &lt;dbl&gt;
+   1 Afghanistan Asia      1952     28.8
+   2 Albania     Europe    1952     55.2
+   3 Algeria     Africa    1952     43.1
+   4 Angola      Africa    1952     30.0
+   5 Argentina   Americas  1952     62.5
+   6 Australia   Oceania   1952     69.1
+   7 Austria     Europe    1952     66.8
+   8 Bahrain     Asia      1952     50.9
+   9 Bangladesh  Asia      1952     37.5
+  10 Belgium     Europe    1952     68  
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder_life_exp_wide %&gt;% 
+  gather(key = "year", value = "lifeExp", -country, -continent) %&gt;% 
+* mutate(year = as.numeric(year))
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 4
+     country     continent  year lifeExp
+     &lt;fct&gt;       &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8
+   2 Albania     Europe     1952    55.2
+   3 Algeria     Africa     1952    43.1
+   4 Angola      Africa     1952    30.0
+   5 Argentina   Americas   1952    62.5
+   6 Australia   Oceania    1952    69.1
+   7 Austria     Europe     1952    66.8
+   8 Bahrain     Asia       1952    50.9
+   9 Bangladesh  Asia       1952    37.5
+  10 Belgium     Europe     1952    68  
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder_life_exp_wide %&gt;% 
+  gather(key = "year", value = "lifeExp", -country, -continent) %&gt;% 
+  mutate(year = as.numeric(year)) -&gt;
+* gapminder_life_exp_long
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+
+
+
+
+---
+## Exercise: *spread data, gather data*
+
+Sometimes we'll need to join diverse data together from different sources.  Here let's create a contrived example.  We'll pretend that the data comes from various sources
+
+
+---
+## Exercise: *Create dataset 1 for contrived example*
+
+---
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* select(country, lifeExp, year)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 3
+     country     lifeExp  year
+     &lt;fct&gt;         &lt;dbl&gt; &lt;int&gt;
+   1 Afghanistan    28.8  1952
+   2 Afghanistan    30.3  1957
+   3 Afghanistan    32.0  1962
+   4 Afghanistan    34.0  1967
+   5 Afghanistan    36.1  1972
+   6 Afghanistan    38.4  1977
+   7 Afghanistan    39.9  1982
+   8 Afghanistan    40.8  1987
+   9 Afghanistan    41.7  1992
+  10 Afghanistan    41.8  1997
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, lifeExp, year) -&gt;
+* country_life_exp
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+## Exercise: *Create dataset 2 for contrived example*
+
+---
+
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+* select(country, pop, year)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 3
+     country          pop  year
+     &lt;fct&gt;          &lt;int&gt; &lt;int&gt;
+   1 Afghanistan  8425333  1952
+   2 Afghanistan  9240934  1957
+   3 Afghanistan 10267083  1962
+   4 Afghanistan 11537966  1967
+   5 Afghanistan 13079460  1972
+   6 Afghanistan 14880372  1977
+   7 Afghanistan 12881816  1982
+   8 Afghanistan 13867957  1987
+   9 Afghanistan 16317921  1992
+  10 Afghanistan 22227415  1997
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(country, pop, year) -&gt;
+* country_pop
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+
+
+## Exercise: *Join contrived datasets 1 and 2*
+
+A natural join merges on any variable names found in common between the data sets and occurs when the by argument is not specified. Here we'll just be explicit about how to join the two dataframes. 
+
+---
+
+
+
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*country_pop
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 3
+     country          pop  year
+     &lt;fct&gt;          &lt;int&gt; &lt;int&gt;
+   1 Afghanistan  8425333  1952
+   2 Afghanistan  9240934  1957
+   3 Afghanistan 10267083  1962
+   4 Afghanistan 11537966  1967
+   5 Afghanistan 13079460  1972
+   6 Afghanistan 14880372  1977
+   7 Afghanistan 12881816  1982
+   8 Afghanistan 13867957  1987
+   9 Afghanistan 16317921  1992
+  10 Afghanistan 22227415  1997
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+country_pop %&gt;% 
+* full_join(country_life_exp, by = c("country", "year"))
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 4
+     country          pop  year lifeExp
+     &lt;fct&gt;          &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
+   1 Afghanistan  8425333  1952    28.8
+   2 Afghanistan  9240934  1957    30.3
+   3 Afghanistan 10267083  1962    32.0
+   4 Afghanistan 11537966  1967    34.0
+   5 Afghanistan 13079460  1972    36.1
+   6 Afghanistan 14880372  1977    38.4
+   7 Afghanistan 12881816  1982    39.9
+   8 Afghanistan 13867957  1987    40.8
+   9 Afghanistan 16317921  1992    41.7
+  10 Afghanistan 22227415  1997    41.8
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+country_pop %&gt;% 
+  full_join(country_life_exp, by = c("country", "year")) -&gt;
+* merged_data
+```
+]]
+.column[.content.center[
+
+]]
+
+---
+
+
+
+
+
+---
 ## Notes on "Assignment"
 
 R is an "object-oriented" programming language, which means that you can save (come back to language here).  In this tutorial, you've seen a lot of pipelines where no "object" is saved to memory.  This is not very typical of R programming, but does lend itself to demonstrating the logic with this flipbook.  Sometimes you might find it useful to save your transformed data as an object and use that object later on. Here is an example where instead of piping the manipulated data into the plot, I create a new object.  I then declare the "global" data for the ggplot to be gapminder_2007_oceania.  The assignment operator is `&lt;-`.
@@ -2164,6 +2669,8 @@ gapminder %&gt;%
 ]]
 
 ---
+
+
 
 
 ---

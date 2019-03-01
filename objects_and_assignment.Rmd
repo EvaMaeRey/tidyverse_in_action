@@ -36,6 +36,6 @@ The reverse assignment operator also happens to be more ameanable to the flipboo
 
 ---
 
-`r paste(knitr::knit(text = partial_knit_chunks("reverse_assignment")), collapse = "\n")`
+`r apply_reveal("reverse_assignment")`
 
 ---

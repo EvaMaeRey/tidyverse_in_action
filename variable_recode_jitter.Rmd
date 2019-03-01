@@ -30,9 +30,8 @@ gapminder %>%
 
 We are going to 
 
-- create a new variable called 
-- subset the data to the 2007 cases, so filter(year == 2007).  
-- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- subset the data to the 1997 cases, so filter(year == 1997).  
+- create a new variable called life_cats (life categories)
 - then we'll plot
 
 Let's see this in action. 

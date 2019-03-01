@@ -28,3 +28,6 @@ partial_knit_chunks <- function(chunk_name) {
   glue::glue_collapse(partial_knit_steps, "\n---\n")
 }
 
+apply_reveal <- function(chunk_name){
+  paste(knitr::knit(text = partial_knit_chunks(chunk_name)), collapse = "\n")
+}

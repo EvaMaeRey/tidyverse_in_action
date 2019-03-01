@@ -1,0 +1,63 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Exercise: *spread data, gather data*
+
+Sometimes we'll need to join diverse data together from different sources.  Here let's create a contrived example.  We'll pretend that the data comes from various sources
+
+
+---
+## Exercise: *Create dataset 1 for contrived example*
+
+---
+
+```{r dataset_1, fig.height=3 , comment = " ", eval=T, echo=F}
+gapminder %>% 
+  select(country, lifeExp, year) ->
+  country_life_exp
+```
+
+
+`r apply_reveal("dataset_1")`
+
+---
+## Exercise: *Create dataset 2 for contrived example*
+
+---
+
+
+```{r dataset_2, eval = T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>% 
+  select(country, pop, year) ->
+  country_pop
+```
+
+
+`r apply_reveal("dataset_2")`
+
+---
+
+
+## Exercise: *Join contrived datasets 1 and 2*
+
+A natural join merges on any variable names found in common between the data sets and occurs when the by argument is not specified. Here we'll just be explicit about how to join the two dataframes. 
+
+---
+
+
+```{r merging_data, eval = T, echo=F, comment = " ", fig.height = preview_height}
+country_pop %>% 
+  full_join(country_life_exp, by = c("country", "year")) ->
+  merged_data
+```
+
+
+`r apply_reveal("merging_data")`
+
+---
