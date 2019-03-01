@@ -1,0 +1,45 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output: *Over or under 70 life expectency by continent*
+
+
+
+```{r life_expectancy_70, eval = T, echo=F, comment = " ", fig.height = preview_height}
+gapminder %>%
+  filter(year == 1997) %>%
+  select(country, continent, lifeExp) %>% 
+  mutate(life_cats = case_when(lifeExp >= 70 ~ "70+", lifeExp < 70 ~ "<70")) %>%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+  theme_dark() +
+  labs(x = "", y = "")
+```
+
+---
+## How do we get there?
+
+We are going to 
+
+- create a new variable called 
+- subset the data to the 2007 cases, so filter(year == 2007).  
+- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- then we'll plot
+
+Let's see this in action. 
+
+---
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("life_expectancy_70")), collapse = "\n")`
+
+---
