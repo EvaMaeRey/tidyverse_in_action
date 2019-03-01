@@ -3,7 +3,7 @@ reveal <- function(name, upto, highlight = upto) {
   content <- knitr:::knit_code$get(name)
   content[upto] <- gsub("%>%\\s*(#.+)?$", "\\1", content[upto])
   content[upto] <- gsub("\\+\\s*(#.+)?$", "\\1", content[upto])
-  content[upto] <- gsub("\\->\\s*(#.+)?", "", content[upto], fixed = T)
+  content[upto] <- gsub("->\\s*(#.+)?$", "\\1", content[upto])	
   content[highlight] <- paste(content[highlight], "#<<")
   content[1:upto]
 }
@@ -27,3 +27,4 @@ partial_knit_chunks <- function(chunk_name) {
   )
   glue::glue_collapse(partial_knit_steps, "\n---\n")
 }
+

@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ")
+knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ", cache = T)
 
 source("xaringan_reveal.R")
 ```
@@ -165,13 +165,19 @@ Boolean operators can be combined with *and* or *or*.
 | Operator | Description |
 | : ----- | ---: |
 | & | *and, returns true if preceeding and following are both true, else false* |
-| | | *or, returns true if either preceeding and following are true, else false* |
+| &#124;  | *or, returns true if either preceeding and following are true, else false* |
 
 
 ```{r, echo = F}
 preview_height <- 3
 preview_width <- 4
 ```
+
+
+```{r, child="roslings_plot_animation.Rmd"}
+
+```
+
 
 
 ```{r, child="roslings_plot.Rmd"}
@@ -189,6 +195,10 @@ preview_width <- 4
 ```
 
 ```{r, child="continent_summary_2007.Rmd"}
+
+```
+
+```{r, child="variable_recode_jitter.Rmd"}
 
 ```
 

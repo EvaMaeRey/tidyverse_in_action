@@ -17,8 +17,6 @@ gapminder_2007_oceania <- gapminder %>%
   filter(year == 2007)
 
 gapminder_2007_oceania
-
-
 ```
 
 ---
@@ -30,7 +28,7 @@ The "reverse assignment operator," `->`, is also possible to use.  Beginners mig
 ```{r reverse_assignment, fig.height=3 , comment = " ", eval=T, echo=F}
 gapminder %>%
   filter(continent == "Oceania") %>%
-  filter(year == 2007) ->
+  filter(year == 2007) -> 
   gapminder_2007_oceania
 ```
 

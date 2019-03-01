@@ -107,7 +107,7 @@ gapminder
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 
 
@@ -180,9 +180,23 @@ Boolean operators can be combined with *and* or *or*.
 | Operator | Description |
 | : ----- | ---: |
 | &amp; | *and, returns true if preceeding and following are both true, else false* |
-| | | *or, returns true if either preceeding and following are true, else false* |
+| &amp;#124;  | *or, returns true if either preceeding and following are true, else false* |
 
 
+
+
+
+
+
+
+---
+## Target output:  *Country per capita GDP versus life expectency in 2007*
+
+
+
+
+
+---
 
 
 
@@ -232,7 +246,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -262,7 +276,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -617,7 +631,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -647,7 +661,7 @@ gapminder %&gt;%
    8 Afghanistan Asia     
    9 Afghanistan Asia     
   10 Afghanistan Asia     
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -678,7 +692,7 @@ gapminder %&gt;%
    8 Bahrain     Asia     
    9 Bangladesh  Asia     
   10 Belgium     Europe   
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -914,7 +928,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -944,7 +958,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -975,7 +989,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.  21112675360.
    9 Bangladesh  Asia       2007    64.1 150448339     1391. 209311822134.
   10 Belgium     Europe     2007    79.4  10392226    33693. 350141166520.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -1345,7 +1359,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -1375,7 +1389,7 @@ gapminder %&gt;%
    8 Afghanistan Asia       1987    40.8
    9 Afghanistan Asia       1992    41.7
   10 Afghanistan Asia       1997    41.8
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -1406,7 +1420,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6
    9 Bangladesh  Asia       2007    64.1
   10 Belgium     Europe     2007    79.4
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -1439,7 +1453,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6
    9 Bangladesh  Asia       2007    64.1
   10 Belgium     Europe     2007    79.4
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -1728,6 +1742,295 @@ gapminder %&gt;%
 
 
 
+---
+## Target output: *Over or under 70 life expectency by continent*
+
+
+
+&lt;img src="tidyverse_in_action_files/figure-html/life_expectancy_70-1.png" width="100%" /&gt;
+
+---
+## How do we get there?
+
+We are going to 
+
+- create a new variable called 
+- subset the data to the 2007 cases, so filter(year == 2007).  
+- use mutate() to create a new variable called gdp_approx, which is created by multiplying the variables gdpPercap and population
+- then we'll plot
+
+Let's see this in action. 
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 1,704 x 6
+     country     continent  year lifeExp      pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.
+   2 Afghanistan Asia       1957    30.3  9240934      821.
+   3 Afghanistan Asia       1962    32.0 10267083      853.
+   4 Afghanistan Asia       1967    34.0 11537966      836.
+   5 Afghanistan Asia       1972    36.1 13079460      740.
+   6 Afghanistan Asia       1977    38.4 14880372      786.
+   7 Afghanistan Asia       1982    39.9 12881816      978.
+   8 Afghanistan Asia       1987    40.8 13867957      852.
+   9 Afghanistan Asia       1992    41.7 16317921      649.
+  10 Afghanistan Asia       1997    41.8 22227415      635.
+  # … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+* filter(year == 1997)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 6
+     country     continent  year lifeExp       pop gdpPercap
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+   1 Afghanistan Asia       1997    41.8  22227415      635.
+   2 Albania     Europe     1997    73.0   3428038     3193.
+   3 Algeria     Africa     1997    69.2  29072015     4797.
+   4 Angola      Africa     1997    41.0   9875024     2277.
+   5 Argentina   Americas   1997    73.3  36203463    10967.
+   6 Australia   Oceania    1997    78.8  18565243    26998.
+   7 Austria     Europe     1997    77.5   8069876    29096.
+   8 Bahrain     Asia       1997    73.9    598561    20292.
+   9 Bangladesh  Asia       1997    59.4 123315288      973.
+  10 Belgium     Europe     1997    77.5  10199787    27561.
+  # … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+* select(country, continent, lifeExp)
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 3
+     country     continent lifeExp
+     &lt;fct&gt;       &lt;fct&gt;       &lt;dbl&gt;
+   1 Afghanistan Asia         41.8
+   2 Albania     Europe       73.0
+   3 Algeria     Africa       69.2
+   4 Angola      Africa       41.0
+   5 Argentina   Americas     73.3
+   6 Australia   Oceania      78.8
+   7 Austria     Europe       77.5
+   8 Bahrain     Asia         73.9
+   9 Bangladesh  Asia         59.4
+  10 Belgium     Europe       77.5
+  # … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+* mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70"))
+```
+]]
+.column[.content.center[
+
+```
+  # A tibble: 142 x 4
+     country     continent lifeExp life_cats
+     &lt;fct&gt;       &lt;fct&gt;       &lt;dbl&gt; &lt;chr&gt;    
+   1 Afghanistan Asia         41.8 &lt;70      
+   2 Albania     Europe       73.0 70+      
+   3 Algeria     Africa       69.2 &lt;70      
+   4 Angola      Africa       41.0 &lt;70      
+   5 Argentina   Americas     73.3 70+      
+   6 Australia   Oceania      78.8 70+      
+   7 Austria     Europe       77.5 70+      
+   8 Bahrain     Asia         73.9 70+      
+   9 Bangladesh  Asia         59.4 &lt;70      
+  10 Belgium     Europe       77.5 70+      
+  # … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+* ggplot()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_5-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+* aes(x = continent, y = life_cats)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_6-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+* geom_jitter(width = .25, height = .25)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_7-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_8-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+* scale_color_discrete(guide = FALSE)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+* theme_dark()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+  theme_dark() +
+* labs(x = "", y = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_11-1.png" width="100%" /&gt;
+]]
+
+---
+
+
+
+
 
 ---
 ## Notes on "Assignment"
@@ -1788,7 +2091,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -1818,7 +2121,7 @@ gapminder %&gt;%
    8 Australia Oceania    1987    76.3 16257249    21889.
    9 Australia Oceania    1992    77.6 17481977    23425.
   10 Australia Oceania    1997    78.8 18565243    26998.
-  # ... with 14 more rows
+  # … with 14 more rows
 ```
 ]]
 ---
@@ -1852,7 +2155,7 @@ count: false
 ```r
 gapminder %&gt;%
   filter(continent == "Oceania") %&gt;%
-  filter(year == 2007) -&gt;
+  filter(year == 2007) -&gt; 
 * gapminder_2007_oceania
 ```
 ]]
@@ -1918,7 +2221,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -1929,7 +2232,7 @@ count: false
 
 ```r
 gapminder %&gt;%
-* mutate(gdp_billions = gdpPercap * pop/1000000000)   # create new variable
+* mutate(gdp_billions = gdpPercap * pop/1000000000) # create new variable
 ```
 ]]
 .column[.content.center[
@@ -1948,7 +2251,7 @@ gapminder %&gt;%
    8 Afghanistan Asia       1987    40.8 13867957      852.        11.8 
    9 Afghanistan Asia       1992    41.7 16317921      649.        10.6 
   10 Afghanistan Asia       1997    41.8 22227415      635.        14.1 
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2158,7 +2461,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2188,7 +2491,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       1997    73.9    598561    20292.
    9 Bangladesh  Asia       1997    59.4 123315288      973.
   10 Belgium     Europe     1997    77.5  10199787    27561.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -2336,7 +2639,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2366,7 +2669,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       1997    73.9    598561    20292.
    9 Bangladesh  Asia       1997    59.4 123315288      973.
   10 Belgium     Europe     1997    77.5  10199787    27561.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -2578,7 +2881,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2608,7 +2911,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -2695,7 +2998,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2725,7 +3028,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -2757,7 +3060,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -2876,7 +3179,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -2906,7 +3209,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -3035,7 +3338,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -3065,7 +3368,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -3169,7 +3472,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -3199,7 +3502,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -3416,7 +3719,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -3446,7 +3749,7 @@ gapminder %&gt;%
    8 Burkina Faso Africa     2007    52.3  14326203     1217.
    9 Burundi      Africa     2007    49.6   8390505      430.
   10 Cameroon     Africa     2007    50.4  17696293     2042.
-  # ... with 67 more rows
+  # … with 67 more rows
 ```
 ]]
 ---
@@ -3658,7 +3961,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -3898,7 +4201,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -3928,7 +4231,7 @@ gapminder %&gt;%
    8 Argentina Americas   1987    70.8 31620918     9140.
    9 Argentina Americas   1992    71.9 33958947     9308.
   10 Argentina Americas   1997    73.3 36203463    10967.
-  # ... with 14 more rows
+  # … with 14 more rows
 ```
 ]]
 ---
@@ -4116,7 +4419,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -4146,7 +4449,7 @@ gapminder %&gt;%
    8 Afghanistan Asia       1987    40.8 13867957      852. FALSE           
    9 Afghanistan Asia       1992    41.7 16317921      649. FALSE           
   10 Afghanistan Asia       1997    41.8 22227415      635. FALSE           
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -4177,7 +4480,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       1997    73.9    598561    20292. TRUE            
    9 Bangladesh  Asia       1997    59.4 123315288      973. FALSE           
   10 Belgium     Europe     1997    77.5  10199787    27561. TRUE            
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -4336,7 +4639,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -4366,7 +4669,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -4639,7 +4942,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -4669,7 +4972,7 @@ gapminder %&gt;%
    8 Bahrain     Asia       2007    75.6    708573    29796.
    9 Bangladesh  Asia       2007    64.1 150448339     1391.
   10 Belgium     Europe     2007    79.4  10392226    33693.
-  # ... with 132 more rows
+  # … with 132 more rows
 ```
 ]]
 ---
@@ -4964,7 +5267,7 @@ count: false
    8 Afghanistan Asia       1987    40.8 13867957      852.
    9 Afghanistan Asia       1992    41.7 16317921      649.
   10 Afghanistan Asia       1997    41.8 22227415      635.
-  # ... with 1,694 more rows
+  # … with 1,694 more rows
 ```
 ]]
 ---
@@ -4994,7 +5297,7 @@ gapminder %&gt;%
    8 Albania Europe     1987    72   3075321     3739.
    9 Albania Europe     1992    71.6 3326498     2497.
   10 Albania Europe     1997    73.0 3428038     3193.
-  # ... with 350 more rows
+  # … with 350 more rows
 ```
 ]]
 ---
