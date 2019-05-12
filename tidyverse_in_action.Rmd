@@ -17,8 +17,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ", cache = T)
 
-source("xaringan_reveal.R")
+source("xaringan_reveal_parenthetical.R")
 ```
+
+[the agenda](#agenda)
+
 
 
 # Introduction
@@ -31,6 +34,8 @@ Topics to be included are wrangling, plotting, and modeling.  The wrangling sect
 
 
 ---
+
+name: agenda
 
 # Getting started with R and RStudio
 
@@ -46,6 +51,18 @@ The tools demonstrated in this book are implemented in the statistical software,
 # Acknowledgements
 
 I'm grateful to the tidyverse team for their tireless work on developing and maintaining this wonderful toolkit and to RStudio for supporting the development.  Emi Tanaka (@statsgen) and Garrick Aden-Buie (@grrrck) helped by writing code to made the flipbook style possible. I'm *very* grateful to them for their work on this as well as to Yihui Xie and others for their work on the Xaringan package --- the extraordinary platform for creating the slides for this book.  I'm thankful too to my students who refresh my perspective on teaching and learning new tools.  Finally, thanks to my family and friends who support data wrangling, plotting, modeling, and me. 
+
+
+---
+
+# Visual table of contents
+
+[Rosling's scatterplot](#roslings)
+
+```{r, out.width="25%", fig.cap="", echo=F}
+knitr::include_graphics("figures/roslings_plot.png")
+```
+
 
 
 
@@ -97,7 +114,7 @@ library(tidyverse)
 library(printr)
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.height = 5, out.width = "80%", comment = " ")
-source("xaringan_reveal.R")
+source("../xaringan_reveal_parenthetical.R")
 ``` 
 
 ---

@@ -23,9 +23,11 @@ We may use some of the wrangline steps, and feed the wrangled data into a ggplot
 
 ```{r complete_01, eval=F, echo=F, comment = " "}
 gapminder %>%
-  mutate(gdp_billions = gdpPercap * pop/1000000000) %>%  # create new variable
+  mutate(gdp_billions = 
+           gdpPercap * pop/1000000000) %>%  # create new variable
   ggplot() +
-  aes(x = year, y = gdp_billions) +
+  aes(x = year) + 
+  aes(y = gdp_billions) +
   geom_line() +
   aes(group = country) +
   scale_y_log10() +
@@ -136,7 +138,9 @@ gapminder %>%
   aes(x = continent, y = lifeExp) +
   geom_boxplot() +
   geom_jitter(height = 0, width = .2) +
-  stat_summary(fun.y = mean, geom = "point", col = "goldenrod3", size = 5, showGuides = F)
+  stat_summary(fun.y = mean, geom = "point", 
+               col = "goldenrod3", size = 5, 
+               showGuides = F)
 ```
 
 `r paste(knitr::knit(text = partial_knit_chunks("complete_06")), collapse = "\n")`

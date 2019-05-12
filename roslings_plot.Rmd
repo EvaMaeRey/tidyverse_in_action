@@ -7,13 +7,18 @@ output: html_document
 
 
 ---
+
+name: roslings
+
 ## Target output:  *Country per capita GDP versus life expectency in 2007*
+
+
 
 ```{r roslings_plot, eval=T, echo=F, comment = " ", fig.height = preview_height}
 gapminder %>% 
   filter(year == 2007) %>% 
   ggplot() +
-  aes(x = gdpPercap) +
+  aes(x = gdpPercap) + 
   aes(y = lifeExp) +
   geom_point(alpha = .6) +
   aes(color = continent) +
@@ -27,6 +32,11 @@ gapminder %>%
   labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
   theme_minimal()
 ```
+
+```{r, echo = F, message=F}
+ggsave("figures/roslings_plot.png")
+```
+
 
 ---
 ## How do we get there?
