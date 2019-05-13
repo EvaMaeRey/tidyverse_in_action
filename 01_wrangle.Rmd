@@ -1,0 +1,95 @@
+---
+title: "Wrangle"
+author: "Evangeline Reynolds"
+date: "2/13/2019"
+output: html_document
+---
+
+
+
+
+
+---
+### Let's see these at work
+
+
+---
+
+```{r wrangle_01, eval=F, echo=F, comment = " "}
+gapminder %>%
+  rename(per_capita_gdp = gdpPercap) %>%
+  mutate(gdp = per_capita_gdp * pop) %>%
+  select(continent, year, gdp, country) %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarize(mean_gdp = mean(gdp)) 
+  
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_01")), collapse = "\n")`
+
+
+
+### Let's see these in action
+
+---
+
+```{r wrangle_02, eval=F, echo=F, comment = " "}
+gapminder %>%
+  mutate(americas = continent == "Americas") %>%
+  filter(year %in% c(1997, 2007)) %>%
+  filter(lifeExp > 80 | lifeExp < 40) %>%
+  mutate(large_pop = pop >= 10000000) %>%
+  filter(gdpPercap > 20000 & pop > 1000000) 
+```
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_02")), collapse = "\n")`
+
+
+
+---
+## A few more manipulation functions
+
+
+- distinct() *returning unique cases*
+- case_when() *recoding variables, used with mutate*
+
+
+---
+
+
+```{r wrangle_03, eval=F, echo=F, comment = " "}
+gapminder %>%
+  select(year) %>%
+  distinct()
+```
+
+
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_03")), collapse = "\n")`
+
+
+---
+
+
+```{r wrangle_04, eval=F, echo=F, comment = " "}
+gapminder %>%
+  filter(year == 2007) %>%
+  select(country, lifeExp) %>% 
+  mutate(life_exp_cat = case_when(lifeExp >= 70 ~ "long", lifeExp < 70 ~ "short")) %>% 
+  arrange(lifeExp)
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_04")), collapse = "\n")`
+
+---
+
+
+```{r wrangle_05, eval=F, echo=F, comment = " "}
+gapminder %>%
+  group_by(year) %>%
+  tally()
+```
+
+`r paste(knitr::knit(text = partial_knit_chunks("wrangle_05")), collapse = "\n")`
+
+
+---

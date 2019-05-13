@@ -24,7 +24,8 @@ We may use some of the wrangline steps, and feed the wrangled data into a ggplot
 ```{r complete_01, eval=F, echo=F, comment = " "}
 gapminder %>%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %>%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %>% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
@@ -138,9 +139,10 @@ gapminder %>%
   aes(x = continent, y = lifeExp) +
   geom_boxplot() +
   geom_jitter(height = 0, width = .2) +
-  stat_summary(fun.y = mean, geom = "point", 
-               col = "goldenrod3", size = 5, 
-               showGuides = F)
+  stat_summary(fun.y = mean, 
+               geom = "point", 
+               col = "goldenrod3", 
+               size = 5)
 ```
 
 `r paste(knitr::knit(text = partial_knit_chunks("complete_06")), collapse = "\n")`
@@ -196,11 +198,14 @@ gapminder %>%
 
 ```{r complete_08, eval=F, echo=F, comment = " "}
 gapminder %>%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %>%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %>%
   ggplot() +
   aes(x = lifeExp) +
   aes(fill = continent) +
-  geom_histogram(alpha = .2, position = "identity") +
+  geom_histogram(alpha = .2, 
+                 position = "identity") +
   theme_light() +
   geom_rug() +
   aes(col = continent)
@@ -242,7 +247,8 @@ gapminder %>%
 
 ```{r complete_09, eval=F, echo=F, comment = " "}
 gapminder %>%
-  filter(country == "Argentina" | country == "Chile") %>%
+  filter(country == "Argentina" | 
+           country == "Chile") %>%
   ggplot() +
   aes(x = year, y = lifeExp) +
   geom_point() +
@@ -266,13 +272,16 @@ gapminder %>%
 
 ```{r complete_10, eval=F, echo=F, comment = " "}
 gapminder %>%
-  mutate(life_exp_70_plus = lifeExp > 70) %>%
+  mutate(life_exp_70_plus = 
+           lifeExp > 70) %>%
   filter(year == 1997) %>%
   ggplot() +
-  aes(x = continent, y = life_exp_70_plus) +
-  geom_jitter(width = .25, height = .25) +
+  aes(x = continent, 
+      y = life_exp_70_plus) +
+  geom_jitter(width = .25, 
+              height = .25) +
   aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
+  scale_color_discrete(guide = F) +
   theme_dark()
 ```
 

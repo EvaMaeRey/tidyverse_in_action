@@ -19,7 +19,8 @@ Sometimes, we need to reshape our data.  Here long to wide is shown, and then we
 
 ```{r long_to_wide, fig.height=3 , comment = " ", eval=T, echo=F}
 gapminder %>% 
-  select(country, continent, lifeExp, year) %>% 
+  select(country, continent, 
+         lifeExp, year) %>% 
   spread(key = year, value = lifeExp) ->
   gapminder_life_exp_wide 
 ```
@@ -35,7 +36,8 @@ gapminder %>%
 
 ```{r wide_to_long, eval = T, echo=F, comment = " ", fig.height = preview_height}
 gapminder_life_exp_wide %>% 
-  gather(key = "year", value = "lifeExp", -country, -continent) %>% 
+  gather(key = "year", value = "lifeExp",
+         -country, -continent) %>% 
   mutate(year = as.numeric(year)) ->
   gapminder_life_exp_long 
 ```

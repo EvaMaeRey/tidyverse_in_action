@@ -53,7 +53,8 @@ A natural join merges on any variable names found in common between the data set
 
 ```{r merging_data, eval = T, echo=F, comment = " ", fig.height = preview_height}
 country_pop %>% 
-  full_join(country_life_exp, by = c("country", "year")) ->
+  full_join(country_life_exp, 
+            by = c("country", "year")) ->
   merged_data
 ```
 

@@ -1490,7 +1490,8 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-* summarise(median_life_exp = median(lifeExp))
+* summarise(median_life_exp =
+*             median(lifeExp))
 ```
 ]]
 .column[.content.center[
@@ -1517,27 +1518,9 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
 * ggplot()
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_6-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;% 
-  select(-pop, -gdpPercap) %&gt;% 
-  filter(year == 2007) %&gt;% 
-  group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
-  ggplot() +
-* aes(x = continent)
 ```
 ]]
 .column[.content.center[
@@ -1554,10 +1537,10 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
-  aes(x = continent) +
-* aes(y = median_life_exp)
+* aes(x = continent)
 ```
 ]]
 .column[.content.center[
@@ -1574,11 +1557,11 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
-  aes(y = median_life_exp) +
-* geom_point(color = "blue", size = 3, alpha = .4)
+* aes(y = median_life_exp)
 ```
 ]]
 .column[.content.center[
@@ -1595,35 +1578,13 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
-* scale_y_continuous(limits = c(0,85))
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_10-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;% 
-  select(-pop, -gdpPercap) %&gt;% 
-  filter(year == 2007) %&gt;% 
-  group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-* labs(title = "Median life expectency by continent in 2007")
+* geom_point(color = "blue", size = 3,
+*            alpha = .4)
 ```
 ]]
 .column[.content.center[
@@ -1640,14 +1601,14 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-* labs(subtitle = "Data Source: Gapminder package in R")
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
+* scale_y_continuous(limits = c(0,85))
 ```
 ]]
 .column[.content.center[
@@ -1664,15 +1625,15 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
   scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-* labs(x = "")
+* labs(title = "Median life expectency by continent in 2007")
 ```
 ]]
 .column[.content.center[
@@ -1689,16 +1650,16 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
   scale_y_continuous(limits = c(0,85)) +
   labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(x = "") +
-* labs(y = "Median life expectancy")
+* labs(subtitle = "Data Source: Gapminder package in R")
 ```
 ]]
 .column[.content.center[
@@ -1715,17 +1676,17 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
   scale_y_continuous(limits = c(0,85)) +
   labs(title = "Median life expectency by continent in 2007") +
   labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(x = "") +
-  labs(y = "Median life expectancy") +
-* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+* labs(x = "")
 ```
 ]]
 .column[.content.center[
@@ -1742,11 +1703,70 @@ gapminder %&gt;%
   select(-pop, -gdpPercap) %&gt;% 
   filter(year == 2007) %&gt;% 
   group_by(continent) %&gt;% 
-  summarise(median_life_exp = median(lifeExp)) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+* labs(y = "Median life expectancy")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_16-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
+  scale_y_continuous(limits = c(0,85)) +
+  labs(title = "Median life expectency by continent in 2007") +
+  labs(subtitle = "Data Source: Gapminder package in R") +
+  labs(x = "") +
+  labs(y = "Median life expectancy") +
+* labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_17-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;% 
+  select(-pop, -gdpPercap) %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %&gt;% 
+  ggplot() +
+  aes(x = continent) +
+  aes(y = median_life_exp) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
   scale_y_continuous(limits = c(0,85)) +
   labs(title = "Median life expectency by continent in 2007") +
   labs(subtitle = "Data Source: Gapminder package in R") +
@@ -1757,7 +1777,7 @@ gapminder %&gt;%
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_16-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_continent_summary_2007_18-1.png" width="100%" /&gt;
 ]]
 
 ---
@@ -1885,7 +1905,9 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-* mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70"))
+* mutate(life_cats =
+*          case_when(lifeExp &gt;= 70 ~ "70+",
+*                    lifeExp &lt; 70 ~ "&lt;70"))
 ```
 ]]
 .column[.content.center[
@@ -1917,45 +1939,10 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
 * ggplot()
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_5-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-* aes(x = continent, y = life_cats)
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_6-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-* geom_jitter(width = .25, height = .25)
 ```
 ]]
 .column[.content.center[
@@ -1971,11 +1958,11 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
   ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-* aes(col = continent)
+* aes(x = continent, y = life_cats)
 ```
 ]]
 .column[.content.center[
@@ -1991,12 +1978,12 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
   ggplot() +
   aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-* scale_color_discrete(guide = FALSE)
+* geom_jitter(width = .25, height = .25)
 ```
 ]]
 .column[.content.center[
@@ -2012,13 +1999,13 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
   ggplot() +
   aes(x = continent, y = life_cats) +
   geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
-* theme_dark()
+* aes(col = continent)
 ```
 ]]
 .column[.content.center[
@@ -2034,7 +2021,56 @@ count: false
 gapminder %&gt;%
   filter(year == 1997) %&gt;%
   select(country, continent, lifeExp) %&gt;% 
-  mutate(life_cats = case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+* scale_color_discrete(guide = FALSE)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+* theme_dark()
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_12-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
   ggplot() +
   aes(x = continent, y = life_cats) +
   geom_jitter(width = .25, height = .25) +
@@ -2045,7 +2081,33 @@ gapminder %&gt;%
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_11-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 1997) %&gt;%
+  select(country, continent, lifeExp) %&gt;% 
+  mutate(life_cats = 
+           case_when(lifeExp &gt;= 70 ~ "70+", 
+                     lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+  ggplot() +
+  aes(x = continent, y = life_cats) +
+  geom_jitter(width = .25, height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = FALSE) +
+  theme_dark() +
+  labs(x = "", y = "") +
+* labs(title = "")
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_14-1.png" width="100%" /&gt;
 ]]
 
 ---
@@ -2104,7 +2166,8 @@ count: false
 
 ```r
 gapminder %&gt;% 
-* select(country, continent, lifeExp, year)
+* select(country, continent,
+*        lifeExp, year)
 ```
 ]]
 .column[.content.center[
@@ -2134,7 +2197,8 @@ count: false
 
 ```r
 gapminder %&gt;% 
-  select(country, continent, lifeExp, year) %&gt;% 
+  select(country, continent, 
+         lifeExp, year) %&gt;% 
 * spread(key = year, value = lifeExp)
 ```
 ]]
@@ -2205,7 +2269,8 @@ count: false
 
 ```r
 gapminder_life_exp_wide %&gt;% 
-* gather(key = "year", value = "lifeExp", -country, -continent)
+* gather(key = "year", value = "lifeExp",
+*        -country, -continent)
 ```
 ]]
 .column[.content.center[
@@ -2235,7 +2300,8 @@ count: false
 
 ```r
 gapminder_life_exp_wide %&gt;% 
-  gather(key = "year", value = "lifeExp", -country, -continent) %&gt;% 
+  gather(key = "year", value = "lifeExp",
+         -country, -continent) %&gt;% 
 * mutate(year = as.numeric(year))
 ```
 ]]
@@ -2454,7 +2520,8 @@ count: false
 
 ```r
 country_pop %&gt;% 
-* full_join(country_life_exp, by = c("country", "year"))
+* full_join(country_life_exp,
+*           by = c("country", "year"))
 ```
 ]]
 .column[.content.center[
@@ -2670,12 +2737,28 @@ count: false
 ```r
 gapminder %&gt;%
 * mutate(gdp_billions =
-*          gdpPercap * pop/1000000000) %&gt;%  # create new variable
-* ggplot()
+*          gdpPercap *
+*          pop/1000000000)
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_4-1.png" width="100%" /&gt;
+
+```
+  # A tibble: 1,704 x 7
+     country     continent  year lifeExp      pop gdpPercap gdp_billions
+     &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+   1 Afghanistan Asia       1952    28.8  8425333      779.         6.57
+   2 Afghanistan Asia       1957    30.3  9240934      821.         7.59
+   3 Afghanistan Asia       1962    32.0 10267083      853.         8.76
+   4 Afghanistan Asia       1967    34.0 11537966      836.         9.65
+   5 Afghanistan Asia       1972    36.1 13079460      740.         9.68
+   6 Afghanistan Asia       1977    38.4 14880372      786.        11.7 
+   7 Afghanistan Asia       1982    39.9 12881816      978.        12.6 
+   8 Afghanistan Asia       1987    40.8 13867957      852.        11.8 
+   9 Afghanistan Asia       1992    41.7 16317921      649.        10.6 
+  10 Afghanistan Asia       1997    41.8 22227415      635.        14.1 
+  # … with 1,694 more rows
+```
 ]]
 ---
 class: split-40
@@ -2686,9 +2769,9 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
-  ggplot() +
-* aes(x = year)
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
+* ggplot()
 ```
 ]]
 .column[.content.center[
@@ -2703,10 +2786,10 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
-  aes(x = year) + 
-* aes(y = gdp_billions)
+* aes(x = year)
 ```
 ]]
 .column[.content.center[
@@ -2721,11 +2804,11 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
-  aes(y = gdp_billions) +
-* geom_line()
+* aes(y = gdp_billions)
 ```
 ]]
 .column[.content.center[
@@ -2740,12 +2823,12 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
-  geom_line() +
-* aes(group = country)
+* geom_line()
 ```
 ]]
 .column[.content.center[
@@ -2760,13 +2843,13 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
   geom_line() +
-  aes(group = country) +
-* scale_y_log10()
+* aes(group = country)
 ```
 ]]
 .column[.content.center[
@@ -2781,14 +2864,14 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
   geom_line() +
   aes(group = country) +
-  scale_y_log10() +
-* aes(col = continent)
+* scale_y_log10()
 ```
 ]]
 .column[.content.center[
@@ -2803,15 +2886,15 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
   geom_line() +
   aes(group = country) +
   scale_y_log10() +
-  aes(col = continent) +
-* facet_wrap( ~ continent)
+* aes(col = continent)
 ```
 ]]
 .column[.content.center[
@@ -2826,7 +2909,8 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
@@ -2834,8 +2918,7 @@ gapminder %&gt;%
   aes(group = country) +
   scale_y_log10() +
   aes(col = continent) +
-  facet_wrap( ~ continent) +
-* scale_color_discrete(guide = F)
+* facet_wrap( ~ continent)
 ```
 ]]
 .column[.content.center[
@@ -2850,7 +2933,33 @@ count: false
 ```r
 gapminder %&gt;%
   mutate(gdp_billions = 
-           gdpPercap * pop/1000000000) %&gt;%  # create new variable
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
+  ggplot() +
+  aes(x = year) + 
+  aes(y = gdp_billions) +
+  geom_line() +
+  aes(group = country) +
+  scale_y_log10() +
+  aes(col = continent) +
+  facet_wrap( ~ continent) +
+* scale_color_discrete(guide = F)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(gdp_billions = 
+           gdpPercap * 
+           pop/1000000000) %&gt;% 
   ggplot() +
   aes(x = year) + 
   aes(y = gdp_billions) +
@@ -2864,7 +2973,7 @@ gapminder %&gt;%
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_13-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_01_14-1.png" width="100%" /&gt;
 ]]
 
 
@@ -3732,18 +3841,14 @@ gapminder %&gt;%
   aes(x = continent, y = lifeExp) +
   geom_boxplot() +
   geom_jitter(height = 0, width = .2) +
-* stat_summary(fun.y = mean, geom = "point",
-*              col = "goldenrod3", size = 5,
-*              showGuides = F)
+* stat_summary(fun.y = mean,
+*              geom = "point",
+*              col = "goldenrod3",
+*              size = 5)
 ```
 ]]
 .column[.content.center[
-
-```
-  Warning: Ignoring unknown parameters: showGuides
-```
-
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_9-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_06_10-1.png" width="100%" /&gt;
 ]]
 
 
@@ -4146,7 +4251,9 @@ count: false
 
 ```r
 gapminder %&gt;%
-* filter(year == 2007, continent == "Africa" | continent == "Americas")
+* filter(year == 2007,
+*        continent == "Africa" |
+*          continent == "Americas")
 ```
 ]]
 .column[.content.center[
@@ -4176,41 +4283,10 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
 * ggplot()
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_3-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
-  ggplot() +
-* aes(x = lifeExp)
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_4-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-* aes(fill = continent)
 ```
 ]]
 .column[.content.center[
@@ -4224,19 +4300,14 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
   ggplot() +
-  aes(x = lifeExp) +
-  aes(fill = continent) +
-* geom_histogram(alpha = .2, position = "identity")
+* aes(x = lifeExp)
 ```
 ]]
 .column[.content.center[
-
-```
-  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
 &lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_6-1.png" width="100%" /&gt;
 ]]
 ---
@@ -4247,20 +4318,15 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
   ggplot() +
   aes(x = lifeExp) +
-  aes(fill = continent) +
-  geom_histogram(alpha = .2, position = "identity") +
-* theme_light()
+* aes(fill = continent)
 ```
 ]]
 .column[.content.center[
-
-```
-  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
 &lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_7-1.png" width="100%" /&gt;
 ]]
 ---
@@ -4271,11 +4337,67 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
   ggplot() +
   aes(x = lifeExp) +
   aes(fill = continent) +
-  geom_histogram(alpha = .2, position = "identity") +
+* geom_histogram(alpha = .2,
+*                position = "identity")
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, 
+                 position = "identity") +
+* theme_light()
+```
+]]
+.column[.content.center[
+
+```
+  `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
+  ggplot() +
+  aes(x = lifeExp) +
+  aes(fill = continent) +
+  geom_histogram(alpha = .2, 
+                 position = "identity") +
   theme_light() +
 * geom_rug()
 ```
@@ -4286,7 +4408,7 @@ gapminder %&gt;%
   `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_8-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_11-1.png" width="100%" /&gt;
 ]]
 ---
 class: split-40
@@ -4296,11 +4418,14 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(year == 2007, continent == "Africa" | continent == "Americas") %&gt;%
+  filter(year == 2007, 
+         continent == "Africa" | 
+           continent == "Americas") %&gt;%
   ggplot() +
   aes(x = lifeExp) +
   aes(fill = continent) +
-  geom_histogram(alpha = .2, position = "identity") +
+  geom_histogram(alpha = .2, 
+                 position = "identity") +
   theme_light() +
   geom_rug() +
 * aes(col = continent)
@@ -4312,7 +4437,7 @@ gapminder %&gt;%
   `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_9-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_08_12-1.png" width="100%" /&gt;
 ]]
 
 
@@ -4578,7 +4703,8 @@ count: false
 
 ```r
 gapminder %&gt;%
-* filter(country == "Argentina" | country == "Chile")
+* filter(country == "Argentina" |
+*          country == "Chile")
 ```
 ]]
 .column[.content.center[
@@ -4608,24 +4734,9 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
 * ggplot()
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_3-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
-  ggplot() +
-* aes(x = year, y = lifeExp)
 ```
 ]]
 .column[.content.center[
@@ -4639,10 +4750,10 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
   ggplot() +
-  aes(x = year, y = lifeExp) +
-* geom_point()
+* aes(x = year, y = lifeExp)
 ```
 ]]
 .column[.content.center[
@@ -4656,11 +4767,11 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
   ggplot() +
   aes(x = year, y = lifeExp) +
-  geom_point() +
-* geom_line()
+* geom_point()
 ```
 ]]
 .column[.content.center[
@@ -4674,12 +4785,12 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
   ggplot() +
   aes(x = year, y = lifeExp) +
   geom_point() +
-  geom_line() +
-* aes(group = country)
+* geom_line()
 ```
 ]]
 .column[.content.center[
@@ -4693,13 +4804,13 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
   ggplot() +
   aes(x = year, y = lifeExp) +
   geom_point() +
   geom_line() +
-  aes(group = country) +
-* aes(col = country)
+* aes(group = country)
 ```
 ]]
 .column[.content.center[
@@ -4713,7 +4824,29 @@ count: false
 
 ```r
 gapminder %&gt;%
-  filter(country == "Argentina" | country == "Chile") %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
+  ggplot() +
+  aes(x = year, y = lifeExp) +
+  geom_point() +
+  geom_line() +
+  aes(group = country) +
+* aes(col = country)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_9-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  filter(country == "Argentina" | 
+           country == "Chile") %&gt;%
   ggplot() +
   aes(x = year, y = lifeExp) +
   geom_point() +
@@ -4724,7 +4857,7 @@ gapminder %&gt;%
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_9-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_09_10-1.png" width="100%" /&gt;
 ]]
 
 
@@ -4774,7 +4907,8 @@ count: false
 
 ```r
 gapminder %&gt;%
-* mutate(life_exp_70_plus = lifeExp &gt; 70)
+* mutate(life_exp_70_plus =
+*          lifeExp &gt; 70)
 ```
 ]]
 .column[.content.center[
@@ -4804,7 +4938,8 @@ count: false
 
 ```r
 gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
 * filter(year == 1997)
 ```
 ]]
@@ -4835,26 +4970,10 @@ count: false
 
 ```r
 gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
   filter(year == 1997) %&gt;%
 * ggplot()
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_4-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-* aes(x = continent, y = life_exp_70_plus)
 ```
 ]]
 .column[.content.center[
@@ -4868,30 +4987,12 @@ count: false
 
 ```r
 gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
   filter(year == 1997) %&gt;%
   ggplot() +
-  aes(x = continent, y = life_exp_70_plus) +
-* geom_jitter(width = .25, height = .25)
-```
-]]
-.column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_6-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-
-.column[.content[
-
-```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_exp_70_plus) +
-  geom_jitter(width = .25, height = .25) +
-* aes(col = continent)
+* aes(x = continent,
+*     y = life_exp_70_plus)
 ```
 ]]
 .column[.content.center[
@@ -4905,17 +5006,18 @@ count: false
 
 ```r
 gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
   filter(year == 1997) %&gt;%
   ggplot() +
-  aes(x = continent, y = life_exp_70_plus) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-* scale_color_discrete(guide = FALSE)
+  aes(x = continent, 
+      y = life_exp_70_plus) +
+* geom_jitter(width = .25,
+*             height = .25)
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_8-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_9-1.png" width="100%" /&gt;
 ]]
 ---
 class: split-40
@@ -4925,18 +5027,66 @@ count: false
 
 ```r
 gapminder %&gt;%
-  mutate(life_exp_70_plus = lifeExp &gt; 70) %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
   filter(year == 1997) %&gt;%
   ggplot() +
-  aes(x = continent, y = life_exp_70_plus) +
-  geom_jitter(width = .25, height = .25) +
+  aes(x = continent, 
+      y = life_exp_70_plus) +
+  geom_jitter(width = .25, 
+              height = .25) +
+* aes(col = continent)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_10-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, 
+      y = life_exp_70_plus) +
+  geom_jitter(width = .25, 
+              height = .25) +
   aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
+* scale_color_discrete(guide = F)
+```
+]]
+.column[.content.center[
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_11-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+gapminder %&gt;%
+  mutate(life_exp_70_plus = 
+           lifeExp &gt; 70) %&gt;%
+  filter(year == 1997) %&gt;%
+  ggplot() +
+  aes(x = continent, 
+      y = life_exp_70_plus) +
+  geom_jitter(width = .25, 
+              height = .25) +
+  aes(col = continent) +
+  scale_color_discrete(guide = F) +
 * theme_dark()
 ```
 ]]
 .column[.content.center[
-&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_9-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_complete_10_12-1.png" width="100%" /&gt;
 ]]
 
 
