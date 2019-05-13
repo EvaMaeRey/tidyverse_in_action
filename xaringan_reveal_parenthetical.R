@@ -14,9 +14,10 @@ partial_knit_chunks <- function(chunk_name) {
   
   code_split <- knitr:::knit_code$get(chunk_name)
   
-  idx_lines <- 
+  idx_lines <- sort(
     c(grep("\\)\\s?\\+|->|%>%\\s?$", code_split),
-      grep("\\)\\s?$", code_split))
+      grep("\\)\\s?$", code_split)) 
+    )
   
   
   highlight <- list()
@@ -25,7 +26,7 @@ partial_knit_chunks <- function(chunk_name) {
     if (i == 1) {  
       highlight[[i]] <- 1
     } else {
-      highlight[[i]] <- (idx_lines[i-1]+1):idx_lines[i]
+      highlight[[i]] <- (idx_lines[i - 1] + 1):idx_lines[i]
     }
   }
   
