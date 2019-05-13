@@ -14,13 +14,12 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
 knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ", cache = T)
 
 source("xaringan_reveal_parenthetical.R")
 ```
 
-[the agenda](#agenda)
 
 
 
@@ -35,7 +34,6 @@ Topics to be included are wrangling, plotting, and modeling.  The wrangling sect
 
 ---
 
-name: agenda
 
 # Getting started with R and RStudio
 
@@ -188,11 +186,6 @@ Boolean operators can be combined with *and* or *or*.
 ```{r, echo = F}
 preview_height <- 3
 preview_width <- 4
-```
-
-
-```{r, child="roslings_plot_animation.Rmd"}
-
 ```
 
 
