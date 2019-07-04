@@ -16,8 +16,7 @@ gapminder %>%
   filter(year == 1997) %>%
   select(country, continent, lifeExp) %>% 
   mutate(life_cats = 
-           case_when(lifeExp >= 70 ~ "70+", 
-                     lifeExp < 70 ~ "<70")) %>%
+           case_when(lifeExp >= 70 ~ "70+", lifeExp < 70 ~ "<70")) %>%
   ggplot() +
   aes(x = continent, y = life_cats) +
   geom_jitter(width = .25, height = .25) +

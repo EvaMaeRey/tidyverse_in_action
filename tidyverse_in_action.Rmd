@@ -13,11 +13,13 @@ output:
       highlightLines: true
 ---
 
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
-knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ", cache = T)
+knitr::opts_chunk$set(fig.height = 6, out.width = "100%", comment = " ", cache = F, dpi = 300)
 
-source("xaringan_reveal_parenthetical.R")
+source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
 ```
 
 
@@ -55,14 +57,21 @@ I'm grateful to the tidyverse team for their tireless work on developing and mai
 
 # Visual table of contents
 
-[Rosling's scatterplot](#roslings)
+<!-- [Rosling's scatterplot](#roslings) -->
 
-```{r, out.width="25%", fig.cap="", echo=F}
+
+(ref:hi) [Rosling's scatterplot](#roslings)
+
+```{r hi, out.width="25%", fig.cap='(ref:hi)', echo=F}
 knitr::include_graphics("figures/roslings_plot.png")
 ```
 
+[Number of Countries by Continent](#countriesbycontinent)
 
 
+```{r, out.width="25%", fig.cap="hello", echo=F}
+knitr::include_graphics("figures/countries_by_continent.png")
+```
 
 ---
 
@@ -112,7 +121,7 @@ library(tidyverse)
 library(printr)
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.height = 5, out.width = "80%", comment = " ")
-source("../xaringan_reveal_parenthetical.R")
+source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
 ``` 
 
 ---

@@ -14,11 +14,13 @@ gapminder %>%
   select(-pop, -gdpPercap) %>% 
   filter(year == 2007) %>% 
   group_by(continent) %>% 
-  summarise(median_life_exp = median(lifeExp)) %>% 
+  summarise(median_life_exp = 
+              median(lifeExp)) %>% 
   ggplot() +
   aes(x = continent) +
   aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3, alpha = .4) +
+  geom_point(color = "blue", size = 3, 
+             alpha = .4) +
   scale_y_continuous(limits = c(0,85)) +
   labs(title = "Median life expectency by continent in 2007") +
   labs(subtitle = "Data Source: Gapminder package in R") +

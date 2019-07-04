@@ -7,6 +7,8 @@ output: html_document
 
 
 ---
+name: countriesbycontinent
+
 ## Target output: Number of Countries by Continent in Dataset
 
 ```{r wrangle_01, eval=T, echo=F, comment = " ", fig.height = preview_height}
@@ -22,6 +24,10 @@ gapminder %>%
   labs(y = "Number of countries") +
   labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
   theme_minimal()
+```
+
+```{r, echo = F, message=F}
+ggsave("figures/countries_by_continent.png")
 ```
 
 ---

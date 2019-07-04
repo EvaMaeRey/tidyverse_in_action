@@ -1,0 +1,26 @@
+---
+title: "distinct plot"
+author: "Evangeline Reynolds"
+date: "2/16/2019"
+output: html_document
+---
+
+
+---
+## Target output:  *Country per capita GDP versus life expectency in 2007*
+
+```{r roslings_plot_animation, eval=T, echo=F, comment = " ", fig.height = preview_height}
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = continent)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  labs(x = 'GDP per capita', y = 'life expectancy') +
+  labs(title = 'Year: {frame_time}') +
+  gganimate::transition_time(year) +
+  gganimate::ease_aes('linear')
+```
+
+
+
+---
