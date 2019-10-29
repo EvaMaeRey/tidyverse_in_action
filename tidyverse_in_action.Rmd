@@ -51,27 +51,43 @@ The tools demonstrated in this book are implemented in the statistical software,
 # Acknowledgements
 
 I'm grateful to the tidyverse team for their tireless work on developing and maintaining this wonderful toolkit and to RStudio for supporting the development.  Emi Tanaka (@statsgen) and Garrick Aden-Buie (@grrrck) helped by writing code to made the flipbook style possible. I'm *very* grateful to them for their work on this as well as to Yihui Xie and others for their work on the Xaringan package --- the extraordinary platform for creating the slides for this book.  I'm thankful too to my students who refresh my perspective on teaching and learning new tools.  Finally, thanks to my family and friends who support data wrangling, plotting, modeling, and me. 
-
-
 ---
 
-# Visual table of contents
+# Table of Contents
 
-<!-- [Rosling's scatterplot](#roslings) -->
+-Plots
+  - [Roslings Plot](#roslings)
+  - [Countries by Continent](#countriesbycontinent)
+  - [GDP Versus Population](#gdpversuspopulation)
+  - [Continent Summary for 2007](#continentsummary2007)
+  - [Variable Code Jitter](#variablerecodejitter)
+  
+-Data Manipulation 
+  - [Long Form Data to Wide Form and Back](#longtowideandback)
+  - [Joining Data](#joiningdata)
+  - [Objects and Assigment](#objectsandassigment)
 
 
-(ref:hi) [Rosling's scatterplot](#roslings)
+-Under Construction
+  - [Plot 2](#02plot)
+  
+---
 
-```{r hi, out.width="25%", fig.cap='(ref:hi)', echo=F}
-knitr::include_graphics("figures/roslings_plot.png")
+# Visual Table of Contents
+
+```{r, results='asis', echo=FALSE}
+make_html_picture_link("figures/roslings_plot.png", "#roslings")
+make_html_picture_link("figures/countries_in_continents.png", "#countriesbycontinent")
+make_html_picture_link("figures/gdp_versus_population.png", "#gdpversuspopulation")
 ```
 
-[Number of Countries by Continent](#countriesbycontinent)
+```{r, results='asis', echo=FALSE}
 
-
-```{r, out.width="25%", fig.cap="hello", echo=F}
-knitr::include_graphics("figures/countries_by_continent.png")
+make_html_picture_link("figures/continent_summary_2007.png", "#continentsummary2007")
+make_html_picture_link("figures/variable_recode_jitter.png", "#variablerecodejitter")
+make_html_picture_link("figures/02_plot.png", "#02_plot")
 ```
+
 
 ---
 
@@ -203,24 +219,51 @@ preview_width <- 4
 
 ```
 
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "roslings_plot"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
+```
 
 ```{r, child="countries_in_continents.Rmd"}
 
 ```
 
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "countries_in_continents"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
+```
 
 ```{r, child="gdp_versus_population.Rmd"}
 
+```
+
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "gdp_versus_population"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
 ```
 
 ```{r, child="continent_summary_2007.Rmd"}
 
 ```
 
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "continent_summary_2007"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
+```
+
 ```{r, child="variable_recode_jitter.Rmd"}
 
 ```
 
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "variable_recode_jitter"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
+```
 
 ```{r, child="long_to_wide_and_back.Rmd"}
 
@@ -230,16 +273,14 @@ preview_width <- 4
 
 ```
 
-
 ```{r, child="objects_and_assignment.Rmd"}
 
 ```
 
 
 
-
 ---
-
+name: 02plot
 # Caution: Construction Zone
 
 This flipbook is not complete.  The guidance that follows isn't as carefully edited as what precedes. But feel free to have a look around. This "construction zone" slide should move later and later on as time goes by.  Also I hope to add new work as time goes on.  
@@ -252,7 +293,11 @@ This flipbook is not complete.  The guidance that follows isn't as carefully edi
 
 ```
 
-
+```{r, echo = F, warning=F, message=F, eval = T, fig.show='hide'}
+get_what_save_what <- "02_plot"
+eval(parse(text = paste(knitr:::knit_code$get(get_what_save_what), collapse = "")))
+ggsave(paste0("figures/", get_what_save_what, ".png"), dpi = 300)
+```
 
 
 

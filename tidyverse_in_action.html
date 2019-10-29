@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
     <title>The Tidyverse in Action</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="author" content="  Gina Reynolds, February 2019" />
     <link href="libs/remark-css-0.0.1/kunoichi.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
@@ -52,29 +52,34 @@ The tools demonstrated in this book are implemented in the statistical software,
 # Acknowledgements
 
 I'm grateful to the tidyverse team for their tireless work on developing and maintaining this wonderful toolkit and to RStudio for supporting the development.  Emi Tanaka (@statsgen) and Garrick Aden-Buie (@grrrck) helped by writing code to made the flipbook style possible. I'm *very* grateful to them for their work on this as well as to Yihui Xie and others for their work on the Xaringan package --- the extraordinary platform for creating the slides for this book.  I'm thankful too to my students who refresh my perspective on teaching and learning new tools.  Finally, thanks to my family and friends who support data wrangling, plotting, modeling, and me. 
-
-
 ---
 
-# Visual table of contents
+# Table of Contents
 
-&lt;!-- [Rosling's scatterplot](#roslings) --&gt;
+-Plots
+  - [Roslings Plot](#roslings)
+  - [Countries by Continent](#countriesbycontinent)
+  - [GDP Versus Population](#gdpversuspopulation)
+  - [Continent Summary for 2007](#continentsummary2007)
+  - [Variable Code Jitter](#variablerecodejitter)
+  
+-Data Manipulation 
+  - [Long Form Data to Wide Form and Back](#longtowideandback)
+  - [Joining Data](#joiningdata)
+  - [Objects and Assigment](#objectsandassigment)
 
 
-(ref:hi) [Rosling's scatterplot](#roslings)
+-Under Construction
+  - [Plot 2](#02plot)
+  
+---
 
-&lt;div class="figure"&gt;
-&lt;img src="figures/roslings_plot.png" alt="(ref:hi)" width="25%" /&gt;
-&lt;p class="caption"&gt;(ref:hi)&lt;/p&gt;
-&lt;/div&gt;
+# Visual Table of Contents
 
-[Number of Countries by Continent](#countriesbycontinent)
+&lt;a href="#roslings"&gt;&lt;img src="figures/roslings_plot.png"width="150" height="150" title=figures/roslings_plot.png alt=figures/roslings_plot.png&gt;&lt;/a&gt;&lt;a href="#countriesbycontinent"&gt;&lt;img src="figures/countries_in_continents.png"width="150" height="150" title=figures/countries_in_continents.png alt=figures/countries_in_continents.png&gt;&lt;/a&gt;&lt;a href="#gdpversuspopulation"&gt;&lt;img src="figures/gdp_versus_population.png"width="150" height="150" title=figures/gdp_versus_population.png alt=figures/gdp_versus_population.png&gt;&lt;/a&gt;
 
+&lt;a href="#continentsummary2007"&gt;&lt;img src="figures/continent_summary_2007.png"width="150" height="150" title=figures/continent_summary_2007.png alt=figures/continent_summary_2007.png&gt;&lt;/a&gt;&lt;a href="#variablerecodejitter"&gt;&lt;img src="figures/variable_recode_jitter.png"width="150" height="150" title=figures/variable_recode_jitter.png alt=figures/variable_recode_jitter.png&gt;&lt;/a&gt;&lt;a href="#02_plot"&gt;&lt;img src="figures/02_plot.png"width="150" height="150" title=figures/02_plot.png alt=figures/02_plot.png&gt;&lt;/a&gt;
 
-&lt;div class="figure"&gt;
-&lt;img src="figures/countries_by_continent.png" alt="hello" width="25%" /&gt;
-&lt;p class="caption"&gt;hello&lt;/p&gt;
-&lt;/div&gt;
 
 ---
 
@@ -275,7 +280,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -304,8 +309,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -318,9 +323,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = gdpPercap)
 ```
 ]]
@@ -333,10 +338,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
 * aes(y = lifeExp)
 ```
 ]]
@@ -349,11 +354,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
 * geom_point(alpha = .6)
 ```
 ]]
@@ -366,12 +371,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
 * aes(color = continent)
 ```
 ]]
@@ -384,13 +389,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
 * aes(size = pop / 1000000)
 ```
 ]]
@@ -403,14 +408,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
 * labs(title = "Per capita GDP versus life expectency in 2007")
 ```
 ]]
@@ -423,15 +428,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
 * labs(subtitle = "Data Source: Gapminder package in R")
 ```
 ]]
@@ -444,16 +449,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
 * labs(size = "Population (millions)")
 ```
 ]]
@@ -466,17 +471,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(size = "Population (millions)") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(size = "Population (millions)") +  
 * labs(col = "")
 ```
 ]]
@@ -489,18 +494,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(size = "Population (millions)") +
-  labs(col = "") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(size = "Population (millions)") +  
+  labs(col = "") +  
 * labs(x = "Per capita GDP")
 ```
 ]]
@@ -513,19 +518,19 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(size = "Population (millions)") +
-  labs(col = "") +
-  labs(x = "Per capita GDP") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(size = "Population (millions)") +  
+  labs(col = "") +  
+  labs(x = "Per capita GDP") +  
 * labs(y = "Life expectancy")
 ```
 ]]
@@ -538,20 +543,20 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(size = "Population (millions)") +
-  labs(col = "") +
-  labs(x = "Per capita GDP") +
-  labs(y = "Life expectancy") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(size = "Population (millions)") +  
+  labs(col = "") +  
+  labs(x = "Per capita GDP") +  
+  labs(y = "Life expectancy") +  
 * labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
 ```
 ]]
@@ -564,21 +569,21 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .6) +
-  aes(color = continent) +
-  aes(size = pop / 1000000) +
-  labs(title = "Per capita GDP versus life expectency in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(size = "Population (millions)") +
-  labs(col = "") +
-  labs(x = "Per capita GDP") +
-  labs(y = "Life expectancy") +
-  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .6) +  
+  aes(color = continent) +  
+  aes(size = pop / 1000000) +  
+  labs(title = "Per capita GDP versus life expectency in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(size = "Population (millions)") +  
+  labs(col = "") +  
+  labs(x = "Per capita GDP") +  
+  labs(y = "Life expectancy") +  
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +  
 * theme_minimal()
 ```
 ]]
@@ -587,6 +592,7 @@ gapminder %&gt;%
 ]]
 
 ---
+
 
 
 
@@ -648,7 +654,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * select(country, continent)
 ```
 ]]
@@ -677,8 +683,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
 * distinct()
 ```
 ]]
@@ -707,9 +713,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
 * ggplot()
 ```
 ]]
@@ -722,10 +728,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
 * aes(x = continent)
 ```
 ]]
@@ -738,11 +744,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
 * geom_bar(fill = "blue", alpha = .4)
 ```
 ]]
@@ -755,12 +761,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
 * labs(title = "Number of Countries by Continent in the Gapminder Dataset")
 ```
 ]]
@@ -773,13 +779,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
-  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +  
 * labs(subtitle = "Data source: gapminder package in R")
 ```
 ]]
@@ -792,14 +798,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
-  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
-  labs(subtitle = "Data source: gapminder package in R") +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
 * labs(x = "")
 ```
 ]]
@@ -812,15 +818,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
-  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "") +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "") +  
 * labs(y = "Number of countries")
 ```
 ]]
@@ -833,16 +839,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
-  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "") +
-  labs(y = "Number of countries") +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "") +  
+  labs(y = "Number of countries") +  
 * labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
 ```
 ]]
@@ -855,17 +861,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent) %&gt;%
-  distinct() %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar(fill = "blue", alpha = .4) +
-  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "") +
-  labs(y = "Number of countries") +
-  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+gapminder %&gt;%  
+  select(country, continent) %&gt;%  
+  distinct() %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar(fill = "blue", alpha = .4) +  
+  labs(title = "Number of Countries by Continent in the Gapminder Dataset") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "") +  
+  labs(y = "Number of countries") +  
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +  
 * theme_minimal()
 ```
 ]]
@@ -876,10 +882,16 @@ gapminder %&gt;%
 ---
 
 
+```
+  NULL
+```
+
 
 
 
 ---
+name: gdpversuspopulation
+
 ## Target output: *GDP versus Population in 2007*
 
 
@@ -933,7 +945,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -962,8 +974,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * mutate(gdp_approx = gdpPercap * pop)
 ```
 ]]
@@ -992,9 +1004,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -1007,10 +1019,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
 * aes(x = pop / 1000000)
 ```
 ]]
@@ -1023,11 +1035,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
 * aes(y = gdp_approx / 1000000000)
 ```
 ]]
@@ -1040,12 +1052,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
 * geom_point(alpha = .6)
 ```
 ]]
@@ -1058,13 +1070,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
 * scale_x_log10()
 ```
 ]]
@@ -1077,14 +1089,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
 * scale_y_log10()
 ```
 ]]
@@ -1097,15 +1109,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
 * aes(color = continent)
 ```
 ]]
@@ -1118,16 +1130,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
 * labs(title = "GDP versus Population in 2007")
 ```
 ]]
@@ -1140,17 +1152,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
 * labs(subtitle = "Data source: gapminder package in R")
 ```
 ]]
@@ -1163,18 +1175,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
-  labs(subtitle = "Data source: gapminder package in R") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
 * labs(x = "Population (millions)")
 ```
 ]]
@@ -1187,19 +1199,19 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "Population (millions)") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "Population (millions)") +  
 * labs(y = "GDP (billions)")
 ```
 ]]
@@ -1212,20 +1224,20 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "Population (millions)") +
-  labs(y = "GDP (billions)") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "Population (millions)") +  
+  labs(y = "GDP (billions)") +  
 * labs(color = "")
 ```
 ]]
@@ -1238,21 +1250,21 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "Population (millions)") +
-  labs(y = "GDP (billions)") +
-  labs(color = "") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "Population (millions)") +  
+  labs(y = "GDP (billions)") +  
+  labs(color = "") +  
 * labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
 ```
 ]]
@@ -1265,22 +1277,22 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  mutate(gdp_approx = gdpPercap * pop) %&gt;%
-  ggplot() +
-  aes(x = pop / 1000000) +
-  aes(y = gdp_approx / 1000000000) +
-  geom_point(alpha = .6) +
-  scale_x_log10() +
-  scale_y_log10() +
-  aes(color = continent) +
-  labs(title = "GDP versus Population in 2007") +
-  labs(subtitle = "Data source: gapminder package in R") +
-  labs(x = "Population (millions)") +
-  labs(y = "GDP (billions)") +
-  labs(color = "") +
-  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  mutate(gdp_approx = gdpPercap * pop) %&gt;%  
+  ggplot() +  
+  aes(x = pop / 1000000) +  
+  aes(y = gdp_approx / 1000000000) +  
+  geom_point(alpha = .6) +  
+  scale_x_log10() +  
+  scale_y_log10() +  
+  aes(color = continent) +  
+  labs(title = "GDP versus Population in 2007") +  
+  labs(subtitle = "Data source: gapminder package in R") +  
+  labs(x = "Population (millions)") +  
+  labs(y = "GDP (billions)") +  
+  labs(color = "") +  
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +  
 * theme_minimal()
 ```
 ]]
@@ -1293,7 +1305,10 @@ gapminder %&gt;%
 
 
 
+
+
 ---
+name: continentsummary2007
 ## Target output: Median life expectency by continent in 2007
 
 &lt;img src="tidyverse_in_action_files/figure-html/continent_summary_2007-1.png" width="100%" /&gt;
@@ -1347,7 +1362,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * select(-pop, -gdpPercap)
 ```
 ]]
@@ -1376,8 +1391,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -1406,9 +1421,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
 * group_by(continent)
 ```
 ]]
@@ -1438,10 +1453,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
 * summarise(median_life_exp =
 *             median(lifeExp))
 ```
@@ -1465,12 +1480,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -1483,13 +1498,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
 * aes(x = continent)
 ```
 ]]
@@ -1502,14 +1517,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
 * aes(y = median_life_exp)
 ```
 ]]
@@ -1522,15 +1537,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
 * geom_point(color = "blue", size = 3,
 *            alpha = .4)
 ```
@@ -1544,17 +1559,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
 * scale_y_continuous(limits = c(0,85))
 ```
 ]]
@@ -1567,18 +1582,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
 * labs(title = "Median life expectency by continent in 2007")
 ```
 ]]
@@ -1591,19 +1606,19 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
+  labs(title = "Median life expectency by continent in 2007") +  
 * labs(subtitle = "Data Source: Gapminder package in R")
 ```
 ]]
@@ -1616,20 +1631,20 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
+  labs(title = "Median life expectency by continent in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
 * labs(x = "")
 ```
 ]]
@@ -1642,21 +1657,21 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(x = "") +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
+  labs(title = "Median life expectency by continent in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(x = "") +  
 * labs(y = "Median life expectancy")
 ```
 ]]
@@ -1669,22 +1684,22 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(x = "") +
-  labs(y = "Median life expectancy") +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
+  labs(title = "Median life expectency by continent in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(x = "") +  
+  labs(y = "Median life expectancy") +  
 * labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'")
 ```
 ]]
@@ -1697,23 +1712,23 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(-pop, -gdpPercap) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  summarise(median_life_exp =
-              median(lifeExp)) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  aes(y = median_life_exp) +
-  geom_point(color = "blue", size = 3,
-             alpha = .4) +
-  scale_y_continuous(limits = c(0,85)) +
-  labs(title = "Median life expectency by continent in 2007") +
-  labs(subtitle = "Data Source: Gapminder package in R") +
-  labs(x = "") +
-  labs(y = "Median life expectancy") +
-  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +
+gapminder %&gt;%  
+  select(-pop, -gdpPercap) %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  summarise(median_life_exp =  
+              median(lifeExp)) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  aes(y = median_life_exp) +  
+  geom_point(color = "blue", size = 3,  
+             alpha = .4) +  
+  scale_y_continuous(limits = c(0,85)) +  
+  labs(title = "Median life expectency by continent in 2007") +  
+  labs(subtitle = "Data Source: Gapminder package in R") +  
+  labs(x = "") +  
+  labs(y = "Median life expectancy") +  
+  labs(caption = "Vis: Gina Reynolds for 'Tidyverse in Action'") +  
 * theme_minimal()
 ```
 ]]
@@ -1726,7 +1741,10 @@ gapminder %&gt;%
 
 
 
+
+
 ---
+name: variablerecodejitter
 ## Target output: *Over or under 70 life expectency by continent*
 
 
@@ -1780,7 +1798,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 1997)
 ```
 ]]
@@ -1809,8 +1827,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
 * select(country, continent, lifeExp)
 ```
 ]]
@@ -1839,9 +1857,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
 * mutate(life_cats =
 *          case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70"))
 ```
@@ -1871,11 +1889,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -1888,12 +1906,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
 * aes(x = continent, y = life_cats)
 ```
 ]]
@@ -1906,13 +1924,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
 * geom_jitter(width = .25, height = .25)
 ```
 ]]
@@ -1925,14 +1943,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
 * aes(col = continent)
 ```
 ]]
@@ -1945,15 +1963,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
 * scale_color_discrete(guide = FALSE)
 ```
 ]]
@@ -1966,16 +1984,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = FALSE) +  
 * theme_dark()
 ```
 ]]
@@ -1988,17 +2006,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
-  theme_dark() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = FALSE) +  
+  theme_dark() +  
 * labs(x = "", y = "")
 ```
 ]]
@@ -2011,18 +2029,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  select(country, continent, lifeExp) %&gt;%
-  mutate(life_cats =
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%
-  ggplot() +
-  aes(x = continent, y = life_cats) +
-  geom_jitter(width = .25, height = .25) +
-  aes(col = continent) +
-  scale_color_discrete(guide = FALSE) +
-  theme_dark() +
-  labs(x = "", y = "") +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(life_cats =  
+           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = FALSE) +  
+  theme_dark() +  
+  labs(x = "", y = "") +  
 * labs(title = "")
 ```
 ]]
@@ -2033,10 +2051,15 @@ gapminder %&gt;%
 ---
 
 
+```
+  NULL
+```
+
 
 
 
 ---
+name: longtowideandback
 ## Exercise: *spread data, gather data*
 
 Sometimes, we need to reshape our data.  Here long to wide is shown, and then we transform the wide form back to long. 
@@ -2083,7 +2106,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * select(country, continent,
 *        lifeExp, year)
 ```
@@ -2113,9 +2136,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent,
-         lifeExp, year) %&gt;%
+gapminder %&gt;%  
+  select(country, continent,  
+         lifeExp, year) %&gt;%  
 * spread(key = year, value = lifeExp)
 ```
 ]]
@@ -2145,10 +2168,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, continent,
-         lifeExp, year) %&gt;%
-  spread(key = year, value = lifeExp) -&gt;
+gapminder %&gt;%  
+  select(country, continent,  
+         lifeExp, year) %&gt;%  
+  spread(key = year, value = lifeExp) -&gt;  
 * gapminder_life_exp_wide
 ```
 ]]
@@ -2199,7 +2222,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder_life_exp_wide %&gt;%
+gapminder_life_exp_wide %&gt;%  
 * gather(key = "year", value = "lifeExp",
 *        -country, -continent)
 ```
@@ -2229,9 +2252,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder_life_exp_wide %&gt;%
-  gather(key = "year", value = "lifeExp",
-         -country, -continent) %&gt;%
+gapminder_life_exp_wide %&gt;%  
+  gather(key = "year", value = "lifeExp",  
+         -country, -continent) %&gt;%  
 * mutate(year = as.numeric(year))
 ```
 ]]
@@ -2260,10 +2283,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder_life_exp_wide %&gt;%
-  gather(key = "year", value = "lifeExp",
-         -country, -continent) %&gt;%
-  mutate(year = as.numeric(year)) -&gt;
+gapminder_life_exp_wide %&gt;%  
+  gather(key = "year", value = "lifeExp",  
+         -country, -continent) %&gt;%  
+  mutate(year = as.numeric(year)) -&gt;  
 * gapminder_life_exp_long
 ```
 ]]
@@ -2277,6 +2300,7 @@ gapminder_life_exp_wide %&gt;%
 
 
 ---
+name: joiningdata
 ## Exercise: *spread data, gather data*
 
 Sometimes we'll need to join diverse data together from different sources.  Here let's create a contrived example.  We'll pretend that the data comes from various sources
@@ -2323,7 +2347,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * select(country, lifeExp, year)
 ```
 ]]
@@ -2352,8 +2376,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, lifeExp, year) -&gt;
+gapminder %&gt;%  
+  select(country, lifeExp, year) -&gt;  
 * country_life_exp
 ```
 ]]
@@ -2403,7 +2427,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * select(country, pop, year)
 ```
 ]]
@@ -2432,8 +2456,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  select(country, pop, year) -&gt;
+gapminder %&gt;%  
+  select(country, pop, year) -&gt;  
 * country_pop
 ```
 ]]
@@ -2487,7 +2511,7 @@ count: false
 .column[.content[
 
 ```r
-country_pop %&gt;%
+country_pop %&gt;%  
 * full_join(country_life_exp,
 *           by = c("country", "year"))
 ```
@@ -2517,9 +2541,9 @@ count: false
 .column[.content[
 
 ```r
-country_pop %&gt;%
-  full_join(country_life_exp,
-            by = c("country", "year")) -&gt;
+country_pop %&gt;%  
+  full_join(country_life_exp,  
+            by = c("country", "year")) -&gt;  
 * merged_data
 ```
 ]]
@@ -2532,8 +2556,8 @@ country_pop %&gt;%
 
 
 
-
 ---
+name: objectsandassigment
 ## Notes on "Assignment"
 
 R is an "object-oriented" programming language, which means that you can save (come back to language here).  In this tutorial, you've seen a lot of pipelines where no "object" is saved to memory.  This is not very typical of R programming, but does lend itself to demonstrating the logic with this flipbook.  Sometimes you might find it useful to save your transformed data as an object and use that object later on. Here is an example where instead of piping the manipulated data into the plot, I create a new object.  I then declare the "global" data for the ggplot to be gapminder_2007_oceania.  The assignment operator is `&lt;-`.
@@ -2600,7 +2624,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(continent == "Oceania")
 ```
 ]]
@@ -2629,8 +2653,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Oceania") %&gt;%
+gapminder %&gt;%  
+  filter(continent == "Oceania") %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -2650,10 +2674,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Oceania") %&gt;%
-  filter(year == 2007) -&gt;
-* gapminder_2007_oceania
+gapminder %&gt;%  
+  filter(continent == "Oceania") %&gt;%  
+  filter(year == 2007) -&gt;  
+*gapminder_2007_oceania
 ```
 ]]
 .column[.content[
@@ -2664,9 +2688,8 @@ gapminder %&gt;%
 
 
 
-
 ---
-
+name: 02plot
 # Caution: Construction Zone
 
 This flipbook is not complete.  The guidance that follows isn't as carefully edited as what precedes. But feel free to have a look around. This "construction zone" slide should move later and later on as time goes by.  Also I hope to add new work as time goes on.  
@@ -2728,7 +2751,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * mutate(gdp_billions =
 *          gdpPercap *
 *          pop/1000000000)
@@ -2759,10 +2782,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -2775,11 +2798,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
 * aes(x = year)
 ```
 ]]
@@ -2792,12 +2815,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
 * aes(y = gdp_billions)
 ```
 ]]
@@ -2810,13 +2833,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
 * geom_line()
 ```
 ]]
@@ -2829,14 +2852,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
 * aes(group = country)
 ```
 ]]
@@ -2849,15 +2872,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
-  aes(group = country) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
+  aes(group = country) +  
 * scale_y_log10()
 ```
 ]]
@@ -2870,16 +2893,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
-  aes(group = country) +
-  scale_y_log10() +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
+  aes(group = country) +  
+  scale_y_log10() +  
 * aes(col = continent)
 ```
 ]]
@@ -2892,17 +2915,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
-  aes(group = country) +
-  scale_y_log10() +
-  aes(col = continent) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
+  aes(group = country) +  
+  scale_y_log10() +  
+  aes(col = continent) +  
 * facet_wrap( ~ continent)
 ```
 ]]
@@ -2915,18 +2938,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
-  aes(group = country) +
-  scale_y_log10() +
-  aes(col = continent) +
-  facet_wrap( ~ continent) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
+  aes(group = country) +  
+  scale_y_log10() +  
+  aes(col = continent) +  
+  facet_wrap( ~ continent) +  
 * scale_color_discrete(guide = F)
 ```
 ]]
@@ -2939,19 +2962,19 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(gdp_billions =
-           gdpPercap *
-           pop/1000000000) %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = gdp_billions) +
-  geom_line() +
-  aes(group = country) +
-  scale_y_log10() +
-  aes(col = continent) +
-  facet_wrap( ~ continent) +
-  scale_color_discrete(guide = F) +
+gapminder %&gt;%  
+  mutate(gdp_billions =  
+           gdpPercap *  
+           pop/1000000000) %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = gdp_billions) +  
+  geom_line() +  
+  aes(group = country) +  
+  scale_y_log10() +  
+  aes(col = continent) +  
+  facet_wrap( ~ continent) +  
+  scale_color_discrete(guide = F) +  
 * theme_minimal()
 ```
 ]]
@@ -3002,7 +3025,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 1997)
 ```
 ]]
@@ -3031,8 +3054,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3045,9 +3068,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
 * aes(x = gdpPercap)
 ```
 ]]
@@ -3060,10 +3083,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
 * aes(y = lifeExp)
 ```
 ]]
@@ -3076,11 +3099,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
 * geom_point()
 ```
 ]]
@@ -3093,12 +3116,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
 * scale_x_log10()
 ```
 ]]
@@ -3111,13 +3134,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
-  scale_x_log10() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
+  scale_x_log10() +  
 * geom_smooth()
 ```
 ]]
@@ -3167,7 +3190,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 1997)
 ```
 ]]
@@ -3196,8 +3219,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3210,9 +3233,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
 * aes(x = gdpPercap)
 ```
 ]]
@@ -3225,10 +3248,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
 * aes(y = lifeExp)
 ```
 ]]
@@ -3241,11 +3264,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
 * geom_point()
 ```
 ]]
@@ -3258,12 +3281,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
 * scale_x_log10()
 ```
 ]]
@@ -3276,13 +3299,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
-  scale_x_log10() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
+  scale_x_log10() +  
 * geom_point()
 ```
 ]]
@@ -3295,14 +3318,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
-  scale_x_log10() +
-  geom_point() +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
+  scale_x_log10() +  
+  geom_point() +  
 * facet_wrap(~ continent)
 ```
 ]]
@@ -3315,15 +3338,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
-  scale_x_log10() +
-  geom_point() +
-  facet_wrap(~ continent) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
+  scale_x_log10() +  
+  geom_point() +  
+  facet_wrap(~ continent) +  
 * aes(size = pop)
 ```
 ]]
@@ -3336,16 +3359,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point() +
-  scale_x_log10() +
-  geom_point() +
-  facet_wrap(~ continent) +
-  aes(size = pop) +
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point() +  
+  scale_x_log10() +  
+  geom_point() +  
+  facet_wrap(~ continent) +  
+  aes(size = pop) +  
 * labs(size = "population")
 ```
 ]]
@@ -3398,7 +3421,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -3427,8 +3450,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3441,9 +3464,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = continent)
 ```
 ]]
@@ -3456,10 +3479,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
 * geom_bar()
 ```
 ]]
@@ -3510,7 +3533,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -3539,8 +3562,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * group_by(continent)
 ```
 ]]
@@ -3570,9 +3593,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
 * tally()
 ```
 ]]
@@ -3595,10 +3618,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  tally() %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  tally() %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3611,11 +3634,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  tally() %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  tally() %&gt;%  
+  ggplot() +  
 * aes(x = continent, y = n)
 ```
 ]]
@@ -3628,12 +3651,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;%
-  tally() %&gt;%
-  ggplot() +
-  aes(x = continent, y = n) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  group_by(continent) %&gt;%  
+  tally() %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = n) +  
 * geom_col()
 ```
 ]]
@@ -3684,7 +3707,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -3713,8 +3736,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3727,9 +3750,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = continent, y = lifeExp)
 ```
 ]]
@@ -3742,10 +3765,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent, y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = lifeExp) +  
 * geom_boxplot()
 ```
 ]]
@@ -3758,11 +3781,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent, y = lifeExp) +
-  geom_boxplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = lifeExp) +  
+  geom_boxplot() +  
 * geom_jitter(height = 0, width = .2)
 ```
 ]]
@@ -3775,12 +3798,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent, y = lifeExp) +
-  geom_boxplot() +
-  geom_jitter(height = 0, width = .2) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = lifeExp) +  
+  geom_boxplot() +  
+  geom_jitter(height = 0, width = .2) +  
 * stat_summary(fun.y = mean,
 *              geom = "point",
 *              col = "goldenrod3",
@@ -3834,7 +3857,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -3863,8 +3886,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -3877,9 +3900,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = continent, y = lifeExp)
 ```
 ]]
@@ -3892,10 +3915,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent, y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = lifeExp) +  
 * geom_violin()
 ```
 ]]
@@ -3908,11 +3931,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent, y = lifeExp) +
-  geom_violin() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = lifeExp) +  
+  geom_violin() +  
 * geom_jitter(height = 0, width = .2)
 ```
 ]]
@@ -3962,7 +3985,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -3991,8 +4014,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -4005,9 +4028,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = lifeExp)
 ```
 ]]
@@ -4020,10 +4043,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
 * geom_histogram()
 ```
 ]]
@@ -4036,11 +4059,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  geom_histogram() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  geom_histogram() +  
 * aes(fill = continent)
 ```
 ]]
@@ -4053,12 +4076,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  geom_histogram() +
-  aes(fill = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  geom_histogram() +  
+  aes(fill = continent) +  
 * scale_fill_viridis_d()
 ```
 ]]
@@ -4071,13 +4094,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  geom_histogram() +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  geom_histogram() +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
 * facet_wrap(~continent)
 ```
 ]]
@@ -4090,14 +4113,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  geom_histogram() +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
-  facet_wrap(~continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  geom_histogram() +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
+  facet_wrap(~continent) +  
 * geom_rug()
 ```
 ]]
@@ -4148,7 +4171,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007,
 *        continent == "Africa" |
 *          continent == "Americas")
@@ -4179,10 +4202,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
 * ggplot()
 ```
 ]]
@@ -4195,11 +4218,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
 * aes(x = lifeExp)
 ```
 ]]
@@ -4212,12 +4235,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
 * aes(fill = continent)
 ```
 ]]
@@ -4230,13 +4253,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  aes(fill = continent) +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  aes(fill = continent) +  
 * geom_histogram(alpha = .2,
 *                position = "identity")
 ```
@@ -4250,15 +4273,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  aes(fill = continent) +
-  geom_histogram(alpha = .2,
-                 position = "identity") +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  aes(fill = continent) +  
+  geom_histogram(alpha = .2,  
+                 position = "identity") +  
 * theme_light()
 ```
 ]]
@@ -4271,16 +4294,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  aes(fill = continent) +
-  geom_histogram(alpha = .2,
-                 position = "identity") +
-  theme_light() +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  aes(fill = continent) +  
+  geom_histogram(alpha = .2,  
+                 position = "identity") +  
+  theme_light() +  
 * geom_rug()
 ```
 ]]
@@ -4293,17 +4316,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007,
-         continent == "Africa" |
-           continent == "Americas") %&gt;%
-  ggplot() +
-  aes(x = lifeExp) +
-  aes(fill = continent) +
-  geom_histogram(alpha = .2,
-                 position = "identity") +
-  theme_light() +
-  geom_rug() +
+gapminder %&gt;%  
+  filter(year == 2007,  
+         continent == "Africa" |  
+           continent == "Americas") %&gt;%  
+  ggplot() +  
+  aes(x = lifeExp) +  
+  aes(fill = continent) +  
+  geom_histogram(alpha = .2,  
+                 position = "identity") +  
+  theme_light() +  
+  geom_rug() +  
 * aes(col = continent)
 ```
 ]]
@@ -4354,7 +4377,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(country == "Argentina")
 ```
 ]]
@@ -4384,8 +4407,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
 * ggplot()
 ```
 ]]
@@ -4398,9 +4421,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
 * aes(x = year, y = lifeExp)
 ```
 ]]
@@ -4413,10 +4436,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
 * geom_point()
 ```
 ]]
@@ -4429,11 +4452,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
 * geom_line()
 ```
 ]]
@@ -4446,12 +4469,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
 * aes(alpha = year)
 ```
 ]]
@@ -4464,13 +4487,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
-  aes(alpha = year) +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
+  aes(alpha = year) +  
 * aes(col = year)
 ```
 ]]
@@ -4483,14 +4506,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
-  aes(alpha = year) +
-  aes(col = year) +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
+  aes(alpha = year) +  
+  aes(col = year) +  
 * scale_color_viridis_c()
 ```
 ]]
@@ -4503,15 +4526,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
-  aes(alpha = year) +
-  aes(col = year) +
-  scale_color_viridis_c() +
+gapminder %&gt;%  
+  filter(country == "Argentina") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
+  aes(alpha = year) +  
+  aes(col = year) +  
+  scale_color_viridis_c() +  
 * theme_classic()
 ```
 ]]
@@ -4561,7 +4584,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(country == "Argentina" |
 *          country == "Chile")
 ```
@@ -4591,9 +4614,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
 * ggplot()
 ```
 ]]
@@ -4606,10 +4629,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
 * aes(x = year, y = lifeExp)
 ```
 ]]
@@ -4622,11 +4645,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
 * geom_point()
 ```
 ]]
@@ -4639,12 +4662,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
 * geom_line()
 ```
 ]]
@@ -4657,13 +4680,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
 * aes(group = country)
 ```
 ]]
@@ -4676,14 +4699,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
-  aes(group = country) +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
+  aes(group = country) +  
 * aes(col = country)
 ```
 ]]
@@ -4696,15 +4719,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(country == "Argentina" |
-           country == "Chile") %&gt;%
-  ggplot() +
-  aes(x = year, y = lifeExp) +
-  geom_point() +
-  geom_line() +
-  aes(group = country) +
-  aes(col = country) +
+gapminder %&gt;%  
+  filter(country == "Argentina" |  
+           country == "Chile") %&gt;%  
+  ggplot() +  
+  aes(x = year, y = lifeExp) +  
+  geom_point() +  
+  geom_line() +  
+  aes(group = country) +  
+  aes(col = country) +  
 * aes(size = pop)
 ```
 ]]
@@ -4756,7 +4779,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * mutate(life_exp_70_plus =
 *          lifeExp &gt; 70)
 ```
@@ -4786,9 +4809,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
 * filter(year == 1997)
 ```
 ]]
@@ -4817,10 +4840,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -4833,11 +4856,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
 * aes(x = continent,
 *     y = life_exp_70_plus)
 ```
@@ -4851,13 +4874,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = continent,
-      y = life_exp_70_plus) +
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = continent,  
+      y = life_exp_70_plus) +  
 * geom_jitter(width = .25,
 *             height = .25)
 ```
@@ -4871,15 +4894,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = continent,
-      y = life_exp_70_plus) +
-  geom_jitter(width = .25,
-              height = .25) +
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = continent,  
+      y = life_exp_70_plus) +  
+  geom_jitter(width = .25,  
+              height = .25) +  
 * aes(col = continent)
 ```
 ]]
@@ -4892,16 +4915,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = continent,
-      y = life_exp_70_plus) +
-  geom_jitter(width = .25,
-              height = .25) +
-  aes(col = continent) +
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = continent,  
+      y = life_exp_70_plus) +  
+  geom_jitter(width = .25,  
+              height = .25) +  
+  aes(col = continent) +  
 * scale_color_discrete(guide = F)
 ```
 ]]
@@ -4914,17 +4937,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  mutate(life_exp_70_plus =
-           lifeExp &gt; 70) %&gt;%
-  filter(year == 1997) %&gt;%
-  ggplot() +
-  aes(x = continent,
-      y = life_exp_70_plus) +
-  geom_jitter(width = .25,
-              height = .25) +
-  aes(col = continent) +
-  scale_color_discrete(guide = F) +
+gapminder %&gt;%  
+  mutate(life_exp_70_plus =  
+           lifeExp &gt; 70) %&gt;%  
+  filter(year == 1997) %&gt;%  
+  ggplot() +  
+  aes(x = continent,  
+      y = life_exp_70_plus) +  
+  geom_jitter(width = .25,  
+              height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = F) +  
 * theme_dark()
 ```
 ]]
@@ -4984,7 +5007,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -5013,8 +5036,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -5027,9 +5050,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = continent)
 ```
 ]]
@@ -5042,10 +5065,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
 * geom_bar()
 ```
 ]]
@@ -5058,11 +5081,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
 * aes(col = continent)
 ```
 ]]
@@ -5075,12 +5098,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
 * aes(fill = continent)
 ```
 ]]
@@ -5093,13 +5116,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
 * scale_fill_viridis_d()
 ```
 ]]
@@ -5112,14 +5135,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
 * coord_flip()
 ```
 ]]
@@ -5132,15 +5155,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
-  coord_flip() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
+  coord_flip() +  
 * geom_bar(width = .5, fill = "magenta")
 ```
 ]]
@@ -5153,16 +5176,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
-  coord_flip() +
-  geom_bar(width = .5, fill = "magenta") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
+  coord_flip() +  
+  geom_bar(width = .5, fill = "magenta") +  
 * aes(fill = NULL)
 ```
 ]]
@@ -5175,17 +5198,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
-  coord_flip() +
-  geom_bar(width = .5, fill = "magenta") +
-  aes(fill = NULL) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
+  coord_flip() +  
+  geom_bar(width = .5, fill = "magenta") +  
+  aes(fill = NULL) +  
 * labs(x = "")
 ```
 ]]
@@ -5198,18 +5221,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = continent) +
-  geom_bar() +
-  aes(col = continent) +
-  aes(fill = continent) +
-  scale_fill_viridis_d() +
-  coord_flip() +
-  geom_bar(width = .5, fill = "magenta") +
-  aes(fill = NULL) +
-  labs(x = "") +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = continent) +  
+  geom_bar() +  
+  aes(col = continent) +  
+  aes(fill = continent) +  
+  scale_fill_viridis_d() +  
+  coord_flip() +  
+  geom_bar(width = .5, fill = "magenta") +  
+  aes(fill = NULL) +  
+  labs(x = "") +  
 * labs(title = "My plot title!")
 ```
 ]]
@@ -5274,7 +5297,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(year == 2007)
 ```
 ]]
@@ -5303,8 +5326,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
 * ggplot()
 ```
 ]]
@@ -5317,9 +5340,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
 * aes(x = gdpPercap)
 ```
 ]]
@@ -5332,10 +5355,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
 * aes(y = lifeExp)
 ```
 ]]
@@ -5348,11 +5371,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
 * geom_point(alpha = .5)
 ```
 ]]
@@ -5365,12 +5388,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
 * geom_rug(size = 1)
 ```
 ]]
@@ -5383,13 +5406,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
 * aes(col = continent)
 ```
 ]]
@@ -5402,14 +5425,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
 * aes(col = lifeExp)
 ```
 ]]
@@ -5422,15 +5445,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
-  aes(col = lifeExp) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
+  aes(col = lifeExp) +  
 * scale_x_log10()
 ```
 ]]
@@ -5443,16 +5466,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
-  aes(col = lifeExp) +
-  scale_x_log10() +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
+  aes(col = lifeExp) +  
+  scale_x_log10() +  
 * aes(size = gdpPercap)
 ```
 ]]
@@ -5465,17 +5488,17 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
-  aes(col = lifeExp) +
-  scale_x_log10() +
-  aes(size = gdpPercap) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
+  aes(col = lifeExp) +  
+  scale_x_log10() +  
+  aes(size = gdpPercap) +  
 * aes(size = pop)
 ```
 ]]
@@ -5488,18 +5511,18 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
-  aes(col = lifeExp) +
-  scale_x_log10() +
-  aes(size = gdpPercap) +
-  aes(size = pop) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
+  aes(col = lifeExp) +  
+  scale_x_log10() +  
+  aes(size = gdpPercap) +  
+  aes(size = pop) +  
 * geom_point(col = "darkgreen", size = 1)
 ```
 ]]
@@ -5512,19 +5535,19 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(year == 2007) %&gt;%
-  ggplot() +
-  aes(x = gdpPercap) +
-  aes(y = lifeExp) +
-  geom_point(alpha = .5) +
-  geom_rug(size = 1) +
-  aes(col = continent) +
-  aes(col = lifeExp) +
-  scale_x_log10() +
-  aes(size = gdpPercap) +
-  aes(size = pop) +
-  geom_point(col = "darkgreen", size = 1) +
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  
+  ggplot() +  
+  aes(x = gdpPercap) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5) +  
+  geom_rug(size = 1) +  
+  aes(col = continent) +  
+  aes(col = lifeExp) +  
+  scale_x_log10() +  
+  aes(size = gdpPercap) +  
+  aes(size = pop) +  
+  geom_point(col = "darkgreen", size = 1) +  
 * facet_wrap(~ continent)
 ```
 ]]
@@ -5585,7 +5608,7 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
+gapminder %&gt;%  
 * filter(continent == "Europe")
 ```
 ]]
@@ -5614,8 +5637,8 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
 * ggplot()
 ```
 ]]
@@ -5628,9 +5651,9 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
 * aes(x = year)
 ```
 ]]
@@ -5643,10 +5666,10 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
 * aes(y = lifeExp)
 ```
 ]]
@@ -5659,11 +5682,11 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
 * aes(alpha = year)
 ```
 ]]
@@ -5676,12 +5699,12 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
-  aes(alpha = year) +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
+  aes(alpha = year) +  
 * geom_point()
 ```
 ]]
@@ -5694,13 +5717,13 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
-  aes(alpha = year) +
-  geom_point() +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
+  aes(alpha = year) +  
+  geom_point() +  
 * geom_line()
 ```
 ]]
@@ -5713,14 +5736,14 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
-  aes(alpha = year) +
-  geom_point() +
-  geom_line() +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
+  aes(alpha = year) +  
+  geom_point() +  
+  geom_line() +  
 * aes(col = country)
 ```
 ]]
@@ -5733,15 +5756,15 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
-  aes(alpha = year) +
-  geom_point() +
-  geom_line() +
-  aes(col = country) +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
+  aes(alpha = year) +  
+  geom_point() +  
+  geom_line() +  
+  aes(col = country) +  
 * aes(col = NULL)
 ```
 ]]
@@ -5754,16 +5777,16 @@ count: false
 .column[.content[
 
 ```r
-gapminder %&gt;%
-  filter(continent == "Europe") %&gt;%
-  ggplot() +
-  aes(x = year) +
-  aes(y = lifeExp) +
-  aes(alpha = year) +
-  geom_point() +
-  geom_line() +
-  aes(col = country) +
-  aes(col = NULL) +
+gapminder %&gt;%  
+  filter(continent == "Europe") %&gt;%  
+  ggplot() +  
+  aes(x = year) +  
+  aes(y = lifeExp) +  
+  aes(alpha = year) +  
+  geom_point() +  
+  geom_line() +  
+  aes(col = country) +  
+  aes(col = NULL) +  
 * aes(group = country)
 ```
 ]]
@@ -5784,6 +5807,9 @@ What does the alpha setting do?
 
 
 
+```
+  NULL
+```
 
 
 
@@ -5792,6 +5818,7 @@ What does the alpha setting do?
 .remark-code{line-height: 1.5; font-size: 90%}
 &lt;/style&gt;
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "ratio": "16:9",
@@ -5800,16 +5827,57 @@ What does the alpha setting do?
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
 })();</script>
 
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -5823,7 +5891,8 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

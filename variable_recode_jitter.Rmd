@@ -7,6 +7,7 @@ output: html_document
 
 
 ---
+name: variablerecodejitter
 ## Target output: *Over or under 70 life expectency by continent*
 
 
@@ -41,6 +42,6 @@ Let's see this in action.
 ---
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("life_expectancy_70")), collapse = "\n")`
+`r apply_reveal("life_expectancy_70")`
 
 ---

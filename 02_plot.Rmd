@@ -38,7 +38,7 @@ gapminder %>%
   theme_minimal()
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_01")), collapse = "\n")`
+`r apply_reveal("complete_01")`
 
 
 
@@ -59,7 +59,7 @@ gapminder %>%
   geom_smooth()
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_02")), collapse = "\n")`
+`r apply_reveal("complete_02")`
 
 
 ---
@@ -82,7 +82,7 @@ gapminder %>%
   labs(size = "population")
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_02_1")), collapse = "\n")`
+`r apply_reveal("complete_02_1")`
 
 
 
@@ -102,7 +102,7 @@ gapminder %>%
   geom_bar()
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_04")), collapse = "\n")`
+`r apply_reveal("complete_04")`
 
 
 
@@ -122,7 +122,7 @@ gapminder %>%
   geom_col()
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_05")), collapse = "\n")`
+`r apply_reveal("complete_05")`
 
 
 
@@ -145,7 +145,7 @@ gapminder %>%
                size = 5)
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_06")), collapse = "\n")`
+`r apply_reveal("complete_06")`
 
 
 
@@ -164,7 +164,7 @@ gapminder %>%
   geom_jitter(height = 0, width = .2)
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_06_1")), collapse = "\n")`
+`r apply_reveal("complete_06_1")`
 
 
 ---
@@ -186,7 +186,7 @@ gapminder %>%
 
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_07")), collapse = "\n")`
+`r apply_reveal("complete_07")`
 
 
 
@@ -212,7 +212,7 @@ gapminder %>%
 
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_08")), collapse = "\n")`
+`r apply_reveal("complete_08")`
 
 
 
@@ -236,7 +236,7 @@ gapminder %>%
 
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_08_1")), collapse = "\n")`
+`r apply_reveal("complete_08_1")`
 
 
 ---
@@ -259,7 +259,7 @@ gapminder %>%
 
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_09")), collapse = "\n")`
+`r apply_reveal("complete_09")`
 
 
 
@@ -285,7 +285,7 @@ gapminder %>%
   theme_dark()
 ```
 
-`r paste(knitr::knit(text = partial_knit_chunks("complete_10")), collapse = "\n")`
+`r apply_reveal("complete_10")`
 
 
 
@@ -320,7 +320,7 @@ gapminder %>%
 ```
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("plot1")), collapse = "\n")`
+`r apply_reveal("plot1")`
 
 ---
 
@@ -361,7 +361,7 @@ gapminder %>%
 ```
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("plot2")), collapse = "\n")`
+`r apply_reveal("plot2")`
 
 
 ---
@@ -395,7 +395,7 @@ gapminder %>%
 ```
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("plot3")), collapse = "\n")`
+`r apply_reveal("plot3")`
 
 
 ---

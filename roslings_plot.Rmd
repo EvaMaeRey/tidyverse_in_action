@@ -51,6 +51,6 @@ Let's see this in action.
 ---
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("roslings_plot")), collapse = "\n")`
+`r apply_reveal("roslings_plot")`
 
 ---

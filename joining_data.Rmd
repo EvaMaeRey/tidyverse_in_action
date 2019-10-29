@@ -7,6 +7,7 @@ output: html_document
 
 
 ---
+name: joiningdata
 ## Exercise: *spread data, gather data*
 
 Sometimes we'll need to join diverse data together from different sources.  Here let's create a contrived example.  We'll pretend that the data comes from various sources

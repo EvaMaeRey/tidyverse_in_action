@@ -44,6 +44,6 @@ Let's see this in action.
 ---
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("wrangle_01")), collapse = "\n")`
+`r apply_reveal("wrangle_01")`
 
 ---

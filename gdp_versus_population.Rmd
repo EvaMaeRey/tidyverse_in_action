@@ -7,6 +7,8 @@ output: html_document
 
 
 ---
+name: gdpversuspopulation
+
 ## Target output: *GDP versus Population in 2007*
 
 
@@ -45,6 +47,6 @@ Let's see this in action.
 ---
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("gdp_versus_population")), collapse = "\n")`
+`r apply_reveal("gdp_versus_population")`
 
 ---

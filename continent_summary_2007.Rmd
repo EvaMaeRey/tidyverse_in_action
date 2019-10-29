@@ -7,6 +7,7 @@ output: html_document
 
 
 ---
+name: continentsummary2007
 ## Target output: Median life expectency by continent in 2007
 
 ```{r continent_summary_2007, eval=T, echo=F, comment = " ", fig.height = preview_height}
@@ -46,6 +47,6 @@ Let's see this in action.
 ---
 
 
-`r paste(knitr::knit(text = partial_knit_chunks("continent_summary_2007")), collapse = "\n")`
+`r apply_reveal("continent_summary_2007")`
 
 ---

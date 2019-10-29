@@ -7,6 +7,7 @@ output: html_document
 
 
 ---
+name: objectsandassigment
 ## Notes on "Assignment"
 
 R is an "object-oriented" programming language, which means that you can save (come back to language here).  In this tutorial, you've seen a lot of pipelines where no "object" is saved to memory.  This is not very typical of R programming, but does lend itself to demonstrating the logic with this flipbook.  Sometimes you might find it useful to save your transformed data as an object and use that object later on. Here is an example where instead of piping the manipulated data into the plot, I create a new object.  I then declare the "global" data for the ggplot to be gapminder_2007_oceania.  The assignment operator is `<-`.
@@ -29,7 +30,7 @@ The "reverse assignment operator," `->`, is also possible to use.  Beginners mig
 gapminder %>%
   filter(continent == "Oceania") %>%
   filter(year == 2007) -> 
-  gapminder_2007_oceania
+gapminder_2007_oceania
 ```
 
 The reverse assignment operator also happens to be more ameanable to the flipbook style, though some programmers question its use's appropriateness.  Still, let's see this in action. 
