@@ -1752,6 +1752,7 @@ name: variablerecodejitter
 &lt;img src="tidyverse_in_action_files/figure-html/life_expectancy_70-1.png" width="100%" /&gt;
 
 ---
+
 ## How do we get there?
 
 We are going to 
@@ -1860,8 +1861,10 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-* mutate(life_cats =
-*          case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70"))
+* mutate(
+*   life_cats =
+*     case_when(lifeExp &gt;= 70 ~ "70+",
+*               lifeExp &lt; 70 ~ "&lt;70"))
 ```
 ]]
 .column[.content[
@@ -1892,46 +1895,11 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
 * ggplot()
-```
-]]
-.column[.content[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_6-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-.column[.content[
-
-```r
-gapminder %&gt;%  
-  filter(year == 1997) %&gt;%  
-  select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
-  ggplot() +  
-* aes(x = continent, y = life_cats)
-```
-]]
-.column[.content[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_7-1.png" width="100%" /&gt;
-]]
----
-class: split-40
-count: false
-.column[.content[
-
-```r
-gapminder %&gt;%  
-  filter(year == 1997) %&gt;%  
-  select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
-  ggplot() +  
-  aes(x = continent, y = life_cats) +  
-* geom_jitter(width = .25, height = .25)
 ```
 ]]
 .column[.content[
@@ -1946,12 +1914,12 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
   ggplot() +  
-  aes(x = continent, y = life_cats) +  
-  geom_jitter(width = .25, height = .25) +  
-* aes(col = continent)
+* aes(x = continent, y = life_cats)
 ```
 ]]
 .column[.content[
@@ -1966,13 +1934,13 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
   ggplot() +  
   aes(x = continent, y = life_cats) +  
-  geom_jitter(width = .25, height = .25) +  
-  aes(col = continent) +  
-* scale_color_discrete(guide = FALSE)
+* geom_jitter(width = .25, height = .25)
 ```
 ]]
 .column[.content[
@@ -1987,14 +1955,14 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
   ggplot() +  
   aes(x = continent, y = life_cats) +  
   geom_jitter(width = .25, height = .25) +  
-  aes(col = continent) +  
-  scale_color_discrete(guide = FALSE) +  
-* theme_dark()
+* aes(col = continent)
 ```
 ]]
 .column[.content[
@@ -2009,15 +1977,15 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
   ggplot() +  
   aes(x = continent, y = life_cats) +  
   geom_jitter(width = .25, height = .25) +  
   aes(col = continent) +  
-  scale_color_discrete(guide = FALSE) +  
-  theme_dark() +  
-* labs(x = "", y = "")
+* scale_color_discrete(guide = FALSE)
 ```
 ]]
 .column[.content[
@@ -2032,8 +2000,59 @@ count: false
 gapminder %&gt;%  
   filter(year == 1997) %&gt;%  
   select(country, continent, lifeExp) %&gt;%  
-  mutate(life_cats =  
-           case_when(lifeExp &gt;= 70 ~ "70+", lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = FALSE) +  
+* theme_dark()
+```
+]]
+.column[.content[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_13-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
+  ggplot() +  
+  aes(x = continent, y = life_cats) +  
+  geom_jitter(width = .25, height = .25) +  
+  aes(col = continent) +  
+  scale_color_discrete(guide = FALSE) +  
+  theme_dark() +  
+* labs(x = "", y = "")
+```
+]]
+.column[.content[
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_14-1.png" width="100%" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 1997) %&gt;%  
+  select(country, continent, lifeExp) %&gt;%  
+  mutate(  
+    life_cats =  
+      case_when(lifeExp &gt;= 70 ~ "70+",  
+                lifeExp &lt; 70 ~ "&lt;70")) %&gt;%  
   ggplot() +  
   aes(x = continent, y = life_cats) +  
   geom_jitter(width = .25, height = .25) +  
@@ -2041,11 +2060,11 @@ gapminder %&gt;%
   scale_color_discrete(guide = FALSE) +  
   theme_dark() +  
   labs(x = "", y = "") +  
-* labs(title = "")
+* labs(title = "Life expectency beyond 70 in 1997")
 ```
 ]]
 .column[.content[
-&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_13-1.png" width="100%" /&gt;
+&lt;img src="tidyverse_in_action_files/figure-html/output_life_expectancy_70_15-1.png" width="100%" /&gt;
 ]]
 
 ---
