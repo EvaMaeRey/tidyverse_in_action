@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Booleans</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gina Reynolds, January 2020" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Booleans
+## made with flipbookr and xaringan
+### Gina Reynolds, January 2020
+
+---
+
+
+
+```r
+library(gapminder)
+library(tidyverse)
+```
+
+```
+## ── Attaching packages ─────────────────────────────────────────── tidyverse 1.2.1 ──
+```
+
+```
+## ✓ ggplot2 3.3.0.9000     ✓ purrr   0.3.3     
+## ✓ tibble  2.1.3          ✓ dplyr   0.8.4     
+## ✓ tidyr   1.0.2          ✓ stringr 1.4.0     
+## ✓ readr   1.3.1          ✓ forcats 0.4.0
+```
+
+```
+## ── Conflicts ────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*5 == 5
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+*5 != 5
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+*5 != 9
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+*"blue" == "blue"
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+*"red" == "blue"
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+*"Blue" == "blue"
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+"Blue" == "blue"  
+*"Blue" != "blue"
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+"Blue" == "blue"  
+"Blue" != "blue"  
+*5 &gt; 3
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+"Blue" == "blue"  
+"Blue" != "blue"  
+5 &gt; 3  
+*5 &gt;= 5
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+"Blue" == "blue"  
+"Blue" != "blue"  
+5 &gt; 3  
+5 &gt;= 5  
+*5 &lt; 3
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+5 == 5  
+5 != 5  
+5 != 9  
+"blue" == "blue"  
+"red" == "blue"  
+"Blue" == "blue"  
+"Blue" != "blue"  
+5 &gt; 3  
+5 &gt;= 5  
+5 &lt; 3  
+*5 &lt;= 3
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE
+```
+]]
+
+
+
+
+---
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*TRUE &amp; TRUE
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+*FALSE &amp; TRUE
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+*TRUE | FALSE
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+TRUE | FALSE  
+*FALSE | FALSE
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+TRUE | FALSE  
+FALSE | FALSE  
+*5 %in% c(1, 5, 8, 9)
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+TRUE | FALSE  
+FALSE | FALSE  
+5 %in% c(1, 5, 8, 9)  
+*2 %in% c(1, 5, 8, 9)
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+TRUE | FALSE  
+FALSE | FALSE  
+5 %in% c(1, 5, 8, 9)  
+2 %in% c(1, 5, 8, 9)  
+*c(2, 5) %in% c(1, 5, 8, 9)
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE  TRUE
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+TRUE &amp; TRUE  
+FALSE &amp; TRUE  
+TRUE | FALSE  
+FALSE | FALSE  
+5 %in% c(1, 5, 8, 9)  
+2 %in% c(1, 5, 8, 9)  
+c(2, 5) %in% c(1, 5, 8, 9)  
+*c(1, 5, 8, 9) %in% 5
+```
+]]
+.column[.content[
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] TRUE
+```
+
+```
+[1] FALSE
+```
+
+```
+[1] FALSE  TRUE
+```
+
+```
+[1] FALSE  TRUE FALSE FALSE
+```
+]]
+
+
+
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+* filter(pop &gt; 100000000 &amp;
+*        gdpPercap &gt; 5000)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 30 x 6
+   country continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Brazil  Americas   1977    61.5 114313951     6660.
+ 2 Brazil  Americas   1982    63.3 128962939     7031.
+ 3 Brazil  Americas   1987    65.2 142938076     7807.
+ 4 Brazil  Americas   1992    67.1 155975974     6950.
+ 5 Brazil  Americas   1997    69.4 168546719     7958.
+ 6 Brazil  Americas   2002    71.0 179914212     8131.
+ 7 Brazil  Americas   2007    72.4 190010647     9066.
+ 8 Japan   Asia       1967    71.4 100825279     9848.
+ 9 Japan   Asia       1972    73.4 107188273    14779.
+10 Japan   Asia       1977    75.4 113872473    16610.
+# … with 20 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(pop &gt; 100000000 &amp;  
+         gdpPercap &gt; 5000) %&gt;%  
+* filter(year &gt; 1995)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 11 x 6
+   country       continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;         &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Brazil        Americas   1997    69.4 168546719     7958.
+ 2 Brazil        Americas   2002    71.0 179914212     8131.
+ 3 Brazil        Americas   2007    72.4 190010647     9066.
+ 4 Japan         Asia       1997    80.7 125956499    28817.
+ 5 Japan         Asia       2002    82   127065841    28605.
+ 6 Japan         Asia       2007    82.6 127467972    31656.
+ 7 Mexico        Americas   2002    74.9 102479927    10742.
+ 8 Mexico        Americas   2007    76.2 108700891    11978.
+ 9 United States Americas   1997    76.8 272911760    35767.
+10 United States Americas   2002    77.3 287675526    39097.
+11 United States Americas   2007    78.2 301139947    42952.
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(pop &gt; 100000000 &amp;  
+         gdpPercap &gt; 5000) %&gt;%  
+  filter(year &gt; 1995) %&gt;%  
+* filter(country == "Brazil" |
+*        country == "Mexico" |
+*        country == "United States")
+```
+]]
+.column[.content[
+
+```
+# A tibble: 8 x 6
+  country       continent  year lifeExp       pop gdpPercap
+  &lt;fct&gt;         &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+1 Brazil        Americas   1997    69.4 168546719     7958.
+2 Brazil        Americas   2002    71.0 179914212     8131.
+3 Brazil        Americas   2007    72.4 190010647     9066.
+4 Mexico        Americas   2002    74.9 102479927    10742.
+5 Mexico        Americas   2007    76.2 108700891    11978.
+6 United States Americas   1997    76.8 272911760    35767.
+7 United States Americas   2002    77.3 287675526    39097.
+8 United States Americas   2007    78.2 301139947    42952.
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(pop &gt; 100000000 &amp;  
+         gdpPercap &gt; 5000) %&gt;%  
+  filter(year &gt; 1995) %&gt;%  
+  filter(country == "Brazil" |  
+         country == "Mexico" |  
+         country == "United States") %&gt;%  
+* filter(country %in% c("United States", "Mexico"))
+```
+]]
+.column[.content[
+
+```
+# A tibble: 5 x 6
+  country       continent  year lifeExp       pop gdpPercap
+  &lt;fct&gt;         &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+1 Mexico        Americas   2002    74.9 102479927    10742.
+2 Mexico        Americas   2007    76.2 108700891    11978.
+3 United States Americas   1997    76.8 272911760    35767.
+4 United States Americas   2002    77.3 287675526    39097.
+5 United States Americas   2007    78.2 301139947    42952.
+```
+]]
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 70%}
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

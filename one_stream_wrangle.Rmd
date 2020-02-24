@@ -37,15 +37,18 @@ gapminder %>%
            case_when(europe == T ~ "Europe",
                      europe == F ~ "Not Europe")) %>% 
   arrange(-gdp) %>% 
-  mutate(gdp_billions = gdp/1000000000) ->
+  mutate(gdp_billions = gdp/1000000000) %>% 
+  slice(1:8) ->
 europe_or_not_2002
 # plot
 ggplot(data = europe_or_not_2002) +
-  aes(x = europe_category) +
+  aes(x = reorder(country, gdp_billions)) +
   aes(y = gdp_billions) +
-  geom_point() + 
-  aes(color = europe_category) +
-  scale_y_log10()
+  geom_col() + 
+  aes(fill = europe_category) +
+  scale_y_log10() +
+  coord_flip() +
+  labs(title = "Eight largest economies, 2002")
 ```
 
 

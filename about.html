@@ -407,9 +407,16 @@ summary {
 <td align="left">arrange()</td>
 <td align="right"><em>order rows based on a variable</em></td>
 </tr>
+<tr class="odd">
+<td align="left">slice()</td>
+<td align="right">*keep or drop rows based on row number</td>
+</tr>
 </tbody>
 </table>
-<p>In filtering, you are likely to use Boolean operatores <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, which make a comparison and return <code>TRUE</code> or <code>FALSE</code>. These can also be combine with <code>&amp;</code> (both conditions must be met), <code>|</code> (either condition may be met), or <code>%in%</code> (if the left hand side element is found among the right hand side elements, <code>TRUE</code> is returned).</p>
+<div id="logical-operators" class="section level3">
+<h3><a href="booleans.html#3">Logical operators</a></h3>
+<p>Especially in filtering, you are likely to use Boolean operatores <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, which make a comparison and return <code>TRUE</code> or <code>FALSE</code>. These can also be combine with <code>&amp;</code> (both conditions must be met), <code>|</code> (either condition may be met), or <code>%in%</code> (if the left hand side element is found <em>among</em> the right hand side elements, <code>TRUE</code> is returned).</p>
+</div>
 </div>
 <div id="summarizing" class="section level1">
 <h1><a href="summarize.html#3">Summarizing</a></h1>
@@ -466,6 +473,10 @@ summary {
 <div id="bringing-streams-together" class="section level1">
 <h1><a href="joining_data.html">Bringing streams together</a></h1>
 <table>
+<colgroup>
+<col width="50%"></col>
+<col width="50%"></col>
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">function</th>
@@ -475,35 +486,35 @@ summary {
 <tbody>
 <tr class="odd">
 <td align="left">full_join()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>keeps all rows</em></td>
 </tr>
 <tr class="even">
 <td align="left">inner_join()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>keeps overlapping rows</em></td>
 </tr>
 <tr class="odd">
 <td align="left">left_join()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>keeps all left-hand side rows</em></td>
 </tr>
 <tr class="even">
 <td align="left">right_join()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>keeps all right-hand side rows</em></td>
 </tr>
 <tr class="odd">
 <td align="left">anti_join()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>removes rows if there is a match on right-hand side</em></td>
 </tr>
 <tr class="even">
 <td align="left">crossing()</td>
-<td align="right"><em>—</em></td>
+<td align="right"><em>for each left-hand side row, include the entire data set of the right-hand side</em></td>
 </tr>
 <tr class="odd">
 <td align="left">bind_rows()</td>
-<td align="right"></td>
+<td align="right"><em>stack datasets, finding consistent column names</em></td>
 </tr>
 <tr class="even">
 <td align="left">bind_cols()</td>
-<td align="right"></td>
+<td align="right"><em>glue datasets together side-by-side</em></td>
 </tr>
 </tbody>
 </table>

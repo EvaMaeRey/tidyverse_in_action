@@ -26,7 +26,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────── tidyverse 1.2.1 ──
+## ── Attaching packages ──────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -37,7 +37,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ────────── tidyverse_conflicts() ──
+## ── Conflicts ─────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -395,7 +395,45 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+* slice(1:8)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 8 x 7
+  country         year     gdp europe        pop europe_category gdp_billions
+  &lt;fct&gt;          &lt;int&gt;   &lt;dbl&gt; &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;                  &lt;dbl&gt;
+1 United States   2002 1.12e13 FALSE   287675526 Not Europe            11247.
+2 China           2002 3.99e12 FALSE  1280400000 Not Europe             3994.
+3 Japan           2002 3.63e12 FALSE   127065841 Not Europe             3635.
+4 Germany         2002 2.47e12 TRUE     82350671 Europe                 2473.
+5 India           2002 1.81e12 FALSE  1034172547 Not Europe             1806.
+6 United Kingdom  2002 1.77e12 TRUE     59912431 Europe                 1766.
+7 France          2002 1.73e12 TRUE     59925035 Europe                 1733.
+8 Italy           2002 1.62e12 TRUE     57926999 Europe                 1620.
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 *europe_or_not_2002
 ```
 ]]
@@ -419,37 +457,11 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 europe_or_not_2002  
 * # plot
 *ggplot(data = europe_or_not_2002)
-```
-]]
-.column[.content[
-![](one_stream_wrangle_files/figure-html/mini_auto_12_output-1.png)&lt;!-- --&gt;
-]]
----
-class: split-40
-count: false
-.column[.content[
-
-```r
-gapminder %&gt;%  
-  filter(year == 2002) %&gt;%  
-  select(-lifeExp) %&gt;%  
-  rename(gdp_per_cap = gdpPercap) %&gt;%  
-  mutate(gdp = gdp_per_cap * pop) %&gt;%  
-  mutate(europe = continent == "Europe") %&gt;%  
-  select(country, year, gdp, europe, pop) %&gt;%  
-  mutate(europe_category =  
-           case_when(europe == T ~ "Europe",  
-                     europe == F ~ "Not Europe")) %&gt;%  
-  arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
-europe_or_not_2002  
-  # plot
-ggplot(data = europe_or_not_2002) +  
-* aes(x = europe_category)
 ```
 ]]
 .column[.content[
@@ -472,12 +484,12 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 europe_or_not_2002  
   # plot
 ggplot(data = europe_or_not_2002) +  
-  aes(x = europe_category) +  
-* aes(y = gdp_billions)
+* aes(x = reorder(country, gdp_billions))
 ```
 ]]
 .column[.content[
@@ -500,13 +512,13 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 europe_or_not_2002  
   # plot
 ggplot(data = europe_or_not_2002) +  
-  aes(x = europe_category) +  
-  aes(y = gdp_billions) +  
-* geom_point()
+  aes(x = reorder(country, gdp_billions)) +  
+* aes(y = gdp_billions)
 ```
 ]]
 .column[.content[
@@ -529,14 +541,14 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 europe_or_not_2002  
   # plot
 ggplot(data = europe_or_not_2002) +  
-  aes(x = europe_category) +  
+  aes(x = reorder(country, gdp_billions)) +  
   aes(y = gdp_billions) +  
-  geom_point() +  
-* aes(color = europe_category)
+* geom_col()
 ```
 ]]
 .column[.content[
@@ -559,19 +571,118 @@ gapminder %&gt;%
            case_when(europe == T ~ "Europe",  
                      europe == F ~ "Not Europe")) %&gt;%  
   arrange(-gdp) %&gt;%  
-  mutate(gdp_billions = gdp/1000000000) -&gt;  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
 europe_or_not_2002  
   # plot
 ggplot(data = europe_or_not_2002) +  
-  aes(x = europe_category) +  
+  aes(x = reorder(country, gdp_billions)) +  
   aes(y = gdp_billions) +  
-  geom_point() +  
-  aes(color = europe_category) +  
-* scale_y_log10()
+  geom_col() +  
+* aes(fill = europe_category)
 ```
 ]]
 .column[.content[
 ![](one_stream_wrangle_files/figure-html/mini_auto_17_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = reorder(country, gdp_billions)) +  
+  aes(y = gdp_billions) +  
+  geom_col() +  
+  aes(fill = europe_category) +  
+* scale_y_log10()
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_18_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = reorder(country, gdp_billions)) +  
+  aes(y = gdp_billions) +  
+  geom_col() +  
+  aes(fill = europe_category) +  
+  scale_y_log10() +  
+* coord_flip()
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_19_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) %&gt;%  
+  slice(1:8) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = reorder(country, gdp_billions)) +  
+  aes(y = gdp_billions) +  
+  geom_col() +  
+  aes(fill = europe_category) +  
+  scale_y_log10() +  
+  coord_flip() +  
+* labs(title = "Eight largest economies, 2002")
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_20_output-1.png)&lt;!-- --&gt;
 ]]
 
 

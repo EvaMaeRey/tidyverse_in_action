@@ -22,8 +22,12 @@ The `{tidyverse}`  data manipulation functions have been a boon to analysts' pro
 | case_when() | *is used for "recoding" variable, often used with mutate()*|
 | rename()    | *renaming variables*|
 | arrange()   | *order rows based on a variable*|
+| slice()     | *keep or drop rows based on row number |
 
-In filtering, you are likely to use Boolean operatores `==`, `!=`, `>`, `<`, `>=`, `<=`, which make a comparison and return `TRUE` or `FALSE`.  These can also be combine with `&` (both conditions must be met), `|` (either condition may be met), or `%in%` (if the left hand side element is found among the right hand side elements, `TRUE` is returned).
+
+### [Logical operators](booleans.html#3)
+
+Especially in filtering, you are likely to use Boolean operatores `==`, `!=`, `>`, `<`, `>=`, `<=`, which make a comparison and return `TRUE` or `FALSE`.  These can also be combine with `&` (both conditions must be met), `|` (either condition may be met), or `%in%` (if the left hand side element is found *among* the right hand side elements, `TRUE` is returned).
 
 
 # [Summarizing](summarize.html#3)
@@ -52,14 +56,14 @@ The function `summary()` can also be used to request summary statistcs for an en
 
 |function |action |
 | :--- | ---: |
-| full_join() | *---*|
-| inner_join()  | *---*|
-| left_join()  | *---*| 
-| right_join()     | *---*|
-| anti_join()     | *---*|
-| crossing()    | *---*|
-| bind_rows()   |  |
-| bind_cols()   |  |
+| full_join() | *keeps all rows*|
+| inner_join()  | *keeps overlapping rows*|
+| left_join()  | *keeps all left-hand side rows*| 
+| right_join()     | *keeps all right-hand side rows*|
+| anti_join()     | *removes rows if there is a match on right-hand side*|
+| crossing()    | *for each left-hand side row, include the entire data set of the right-hand side*|
+| bind_rows()   |  *stack datasets, finding consistent column names* |
+| bind_cols()   |  *glue datasets together side-by-side* |
 
 # External Resources
 

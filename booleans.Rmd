@@ -1,0 +1,82 @@
+---
+title: "Booleans"
+subtitle: "made with flipbookr and xaringan"
+author: "Gina Reynolds, January 2020"
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r}
+library(gapminder)
+library(tidyverse)
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+
+---
+
+`r flipbookr::chunk_reveal("simple_comparisons")`
+
+```{r simple_comparisons, include = F}
+5 == 5
+5 != 5
+5 != 9
+"blue" == "blue"
+"red" == "blue"
+"Blue" == "blue"
+"Blue" != "blue"
+5 > 3
+5 >= 5
+5 < 3
+5 <= 3
+```
+
+
+---
+
+
+`r flipbookr::chunk_reveal("combining_logicals")`
+
+```{r combining_logicals, include = F}
+TRUE & TRUE
+FALSE & TRUE
+TRUE | FALSE
+FALSE | FALSE
+5 %in% c(1, 5, 8, 9)
+2 %in% c(1, 5, 8, 9)
+c(2, 5) %in% c(1, 5, 8, 9)
+c(1, 5, 8, 9) %in% 5
+```
+
+
+---
+
+`r flipbookr::chunk_reveal("in_a_pipeline")`
+
+
+```{r in_a_pipeline, include = F}
+gapminder %>% 
+  filter(pop > 100000000 &
+         gdpPercap > 5000) %>% 
+  filter(year > 1995) %>% 
+  filter(country == "Brazil" |
+         country == "Mexico" |
+         country == "United States") %>% 
+  filter(country %in% c("United States", "Mexico"))
+```
+
+
+
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 70%}
+```
