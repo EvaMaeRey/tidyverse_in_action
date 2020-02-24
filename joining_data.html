@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>joining data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Evangeline Reynolds" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# joining data
+### Evangeline Reynolds
+### 2/16/2019
+
+---
+
+
+
+```r
+library(gapminder)
+library(tidyverse)
+```
+
+```
+## ── Attaching packages ─────── tidyverse 1.2.1 ──
+```
+
+```
+## ✓ ggplot2 3.3.0.9000     ✓ purrr   0.3.3     
+## ✓ tibble  2.1.3          ✓ dplyr   0.8.4     
+## ✓ tidyr   1.0.2          ✓ stringr 1.4.0     
+## ✓ readr   1.3.1          ✓ forcats 0.4.0
+```
+
+```
+## ── Conflicts ────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
+library(flipbookr)
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+---
+name: joiningdata
+## Exercise: *spread data, gather data*
+
+Sometimes we'll need to join diverse data together from different sources.  Here let's create a contrived example.  We'll pretend that the data comes from various sources
+
+
+---
+## Exercise: *Create dataset 1 for contrived example*
+
+---
+
+
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+* select(country, lifeExp, year)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 3
+   country     lifeExp  year
+   &lt;fct&gt;         &lt;dbl&gt; &lt;int&gt;
+ 1 Afghanistan    28.8  1952
+ 2 Afghanistan    30.3  1957
+ 3 Afghanistan    32.0  1962
+ 4 Afghanistan    34.0  1967
+ 5 Afghanistan    36.1  1972
+ 6 Afghanistan    38.4  1977
+ 7 Afghanistan    39.9  1982
+ 8 Afghanistan    40.8  1987
+ 9 Afghanistan    41.7  1992
+10 Afghanistan    41.8  1997
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  select(country, lifeExp, year) -&gt;  
+* country_life_exp
+```
+]]
+.column[.content[
+
+]]
+
+---
+## Exercise: *Create dataset 2 for contrived example*
+
+---
+
+
+
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+* select(country, pop, year)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 3
+   country          pop  year
+   &lt;fct&gt;          &lt;int&gt; &lt;int&gt;
+ 1 Afghanistan  8425333  1952
+ 2 Afghanistan  9240934  1957
+ 3 Afghanistan 10267083  1962
+ 4 Afghanistan 11537966  1967
+ 5 Afghanistan 13079460  1972
+ 6 Afghanistan 14880372  1977
+ 7 Afghanistan 12881816  1982
+ 8 Afghanistan 13867957  1987
+ 9 Afghanistan 16317921  1992
+10 Afghanistan 22227415  1997
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  select(country, pop, year) -&gt;  
+* country_pop
+```
+]]
+.column[.content[
+
+]]
+
+---
+
+
+## Exercise: *Join contrived datasets 1 and 2*
+
+A natural join merges on any variable names found in common between the data sets and occurs when the by argument is not specified. Here we'll just be explicit about how to join the two dataframes. 
+
+---
+
+
+
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*country_pop
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 3
+   country          pop  year
+   &lt;fct&gt;          &lt;int&gt; &lt;int&gt;
+ 1 Afghanistan  8425333  1952
+ 2 Afghanistan  9240934  1957
+ 3 Afghanistan 10267083  1962
+ 4 Afghanistan 11537966  1967
+ 5 Afghanistan 13079460  1972
+ 6 Afghanistan 14880372  1977
+ 7 Afghanistan 12881816  1982
+ 8 Afghanistan 13867957  1987
+ 9 Afghanistan 16317921  1992
+10 Afghanistan 22227415  1997
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+country_pop %&gt;%  
+* full_join(country_life_exp,
+*           by = c("country", "year"))
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 4
+   country          pop  year lifeExp
+   &lt;fct&gt;          &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
+ 1 Afghanistan  8425333  1952    28.8
+ 2 Afghanistan  9240934  1957    30.3
+ 3 Afghanistan 10267083  1962    32.0
+ 4 Afghanistan 11537966  1967    34.0
+ 5 Afghanistan 13079460  1972    36.1
+ 6 Afghanistan 14880372  1977    38.4
+ 7 Afghanistan 12881816  1982    39.9
+ 8 Afghanistan 13867957  1987    40.8
+ 9 Afghanistan 16317921  1992    41.7
+10 Afghanistan 22227415  1997    41.8
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+country_pop %&gt;%  
+  full_join(country_life_exp,  
+            by = c("country", "year")) -&gt;  
+* merged_data
+```
+]]
+.column[.content[
+
+]]
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

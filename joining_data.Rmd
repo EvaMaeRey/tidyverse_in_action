@@ -1,10 +1,25 @@
 ---
-title: "distinct plot"
+title: "joining data"
 author: "Evangeline Reynolds"
 date: "2/16/2019"
-output: html_document
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
 
+```{r}
+library(gapminder)
+library(tidyverse)
+library(flipbookr)
+knitr::opts_chunk$set(cache = F, comment = "")
+```
 
 ---
 name: joiningdata
@@ -18,14 +33,14 @@ Sometimes we'll need to join diverse data together from different sources.  Here
 
 ---
 
-```{r dataset_1, fig.height=3 , comment = " ", eval=T, echo=F}
+```{r dataset_1, include = F}
 gapminder %>% 
   select(country, lifeExp, year) ->
   country_life_exp
 ```
 
 
-`r apply_reveal("dataset_1")`
+`r chunk_reveal("dataset_1")`
 
 ---
 ## Exercise: *Create dataset 2 for contrived example*
@@ -33,14 +48,14 @@ gapminder %>%
 ---
 
 
-```{r dataset_2, eval = T, echo=F, comment = " ", fig.height = preview_height}
+```{r dataset_2, include = F}
 gapminder %>% 
   select(country, pop, year) ->
   country_pop
 ```
 
 
-`r apply_reveal("dataset_2")`
+`r chunk_reveal("dataset_2")`
 
 ---
 
@@ -52,7 +67,7 @@ A natural join merges on any variable names found in common between the data set
 ---
 
 
-```{r merging_data, eval = T, echo=F, comment = " ", fig.height = preview_height}
+```{r merging_data, include = F}
 country_pop %>% 
   full_join(country_life_exp, 
             by = c("country", "year")) ->
@@ -60,6 +75,6 @@ country_pop %>%
 ```
 
 
-`r apply_reveal("merging_data")`
+`r chunk_reveal("merging_data")`
 
 ---

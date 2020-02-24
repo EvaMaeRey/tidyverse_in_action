@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>one-stream wrangle</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gina Reynolds, January 2020" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# one-stream wrangle
+## made with flipbookr and xaringan
+### Gina Reynolds, January 2020
+
+---
+
+
+
+```r
+library(gapminder)
+library(tidyverse)
+```
+
+```
+## ── Attaching packages ─────── tidyverse 1.2.1 ──
+```
+
+```
+## ✓ ggplot2 3.3.0.9000     ✓ purrr   0.3.3     
+## ✓ tibble  2.1.3          ✓ dplyr   0.8.4     
+## ✓ tidyr   1.0.2          ✓ stringr 1.4.0     
+## ✓ readr   1.3.1          ✓ forcats 0.4.0
+```
+
+```
+## ── Conflicts ────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*gapminder
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+* filter(year == 2002)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2002    42.1  25268405      727.
+ 2 Albania     Europe     2002    75.7   3508512     4604.
+ 3 Algeria     Africa     2002    71.0  31287142     5288.
+ 4 Angola      Africa     2002    41.0  10866106     2773.
+ 5 Argentina   Americas   2002    74.3  38331121     8798.
+ 6 Australia   Oceania    2002    80.4  19546792    30688.
+ 7 Austria     Europe     2002    79.0   8148312    32418.
+ 8 Bahrain     Asia       2002    74.8    656397    23404.
+ 9 Bangladesh  Asia       2002    62.0 135656790     1136.
+10 Belgium     Europe     2002    78.3  10311970    30486.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+* select(-lifeExp)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 5
+   country     continent  year       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2002  25268405      727.
+ 2 Albania     Europe     2002   3508512     4604.
+ 3 Algeria     Africa     2002  31287142     5288.
+ 4 Angola      Africa     2002  10866106     2773.
+ 5 Argentina   Americas   2002  38331121     8798.
+ 6 Australia   Oceania    2002  19546792    30688.
+ 7 Austria     Europe     2002   8148312    32418.
+ 8 Bahrain     Asia       2002    656397    23404.
+ 9 Bangladesh  Asia       2002 135656790     1136.
+10 Belgium     Europe     2002  10311970    30486.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+* rename(gdp_per_cap = gdpPercap)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 5
+   country     continent  year       pop gdp_per_cap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
+ 1 Afghanistan Asia       2002  25268405        727.
+ 2 Albania     Europe     2002   3508512       4604.
+ 3 Algeria     Africa     2002  31287142       5288.
+ 4 Angola      Africa     2002  10866106       2773.
+ 5 Argentina   Americas   2002  38331121       8798.
+ 6 Australia   Oceania    2002  19546792      30688.
+ 7 Austria     Europe     2002   8148312      32418.
+ 8 Bahrain     Asia       2002    656397      23404.
+ 9 Bangladesh  Asia       2002 135656790       1136.
+10 Belgium     Europe     2002  10311970      30486.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+* mutate(gdp = gdp_per_cap * pop)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 6
+   country     continent  year       pop gdp_per_cap           gdp
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt;
+ 1 Afghanistan Asia       2002  25268405        727.  18363410424.
+ 2 Albania     Europe     2002   3508512       4604.  16153932130.
+ 3 Algeria     Africa     2002  31287142       5288. 165447670333.
+ 4 Angola      Africa     2002  10866106       2773.  30134833901.
+ 5 Argentina   Americas   2002  38331121       8798. 337223430800.
+ 6 Australia   Oceania    2002  19546792      30688. 599847158654.
+ 7 Austria     Europe     2002   8148312      32418. 264148781752.
+ 8 Bahrain     Asia       2002    656397      23404.  15362026094.
+ 9 Bangladesh  Asia       2002 135656790       1136. 154159077921.
+10 Belgium     Europe     2002  10311970      30486. 314369518653.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+* mutate(europe = continent == "Europe")
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 7
+   country     continent  year       pop gdp_per_cap           gdp europe
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;lgl&gt; 
+ 1 Afghanistan Asia       2002  25268405        727.  18363410424. FALSE 
+ 2 Albania     Europe     2002   3508512       4604.  16153932130. TRUE  
+ 3 Algeria     Africa     2002  31287142       5288. 165447670333. FALSE 
+ 4 Angola      Africa     2002  10866106       2773.  30134833901. FALSE 
+ 5 Argentina   Americas   2002  38331121       8798. 337223430800. FALSE 
+ 6 Australia   Oceania    2002  19546792      30688. 599847158654. FALSE 
+ 7 Austria     Europe     2002   8148312      32418. 264148781752. TRUE  
+ 8 Bahrain     Asia       2002    656397      23404.  15362026094. FALSE 
+ 9 Bangladesh  Asia       2002 135656790       1136. 154159077921. FALSE 
+10 Belgium     Europe     2002  10311970      30486. 314369518653. TRUE  
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+* select(country, year, gdp, europe, pop)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 5
+   country      year           gdp europe       pop
+   &lt;fct&gt;       &lt;int&gt;         &lt;dbl&gt; &lt;lgl&gt;      &lt;int&gt;
+ 1 Afghanistan  2002  18363410424. FALSE   25268405
+ 2 Albania      2002  16153932130. TRUE     3508512
+ 3 Algeria      2002 165447670333. FALSE   31287142
+ 4 Angola       2002  30134833901. FALSE   10866106
+ 5 Argentina    2002 337223430800. FALSE   38331121
+ 6 Australia    2002 599847158654. FALSE   19546792
+ 7 Austria      2002 264148781752. TRUE     8148312
+ 8 Bahrain      2002  15362026094. FALSE     656397
+ 9 Bangladesh   2002 154159077921. FALSE  135656790
+10 Belgium      2002 314369518653. TRUE    10311970
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+* mutate(europe_category =
+*          case_when(europe == T ~ "Europe",
+*                    europe == F ~ "Not Europe"))
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 6
+   country      year           gdp europe       pop europe_category
+   &lt;fct&gt;       &lt;int&gt;         &lt;dbl&gt; &lt;lgl&gt;      &lt;int&gt; &lt;chr&gt;          
+ 1 Afghanistan  2002  18363410424. FALSE   25268405 Not Europe     
+ 2 Albania      2002  16153932130. TRUE     3508512 Europe         
+ 3 Algeria      2002 165447670333. FALSE   31287142 Not Europe     
+ 4 Angola       2002  30134833901. FALSE   10866106 Not Europe     
+ 5 Argentina    2002 337223430800. FALSE   38331121 Not Europe     
+ 6 Australia    2002 599847158654. FALSE   19546792 Not Europe     
+ 7 Austria      2002 264148781752. TRUE     8148312 Europe         
+ 8 Bahrain      2002  15362026094. FALSE     656397 Not Europe     
+ 9 Bangladesh   2002 154159077921. FALSE  135656790 Not Europe     
+10 Belgium      2002 314369518653. TRUE    10311970 Europe         
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+* arrange(-gdp)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 6
+   country         year     gdp europe        pop europe_category
+   &lt;fct&gt;          &lt;int&gt;   &lt;dbl&gt; &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;          
+ 1 United States   2002 1.12e13 FALSE   287675526 Not Europe     
+ 2 China           2002 3.99e12 FALSE  1280400000 Not Europe     
+ 3 Japan           2002 3.63e12 FALSE   127065841 Not Europe     
+ 4 Germany         2002 2.47e12 TRUE     82350671 Europe         
+ 5 India           2002 1.81e12 FALSE  1034172547 Not Europe     
+ 6 United Kingdom  2002 1.77e12 TRUE     59912431 Europe         
+ 7 France          2002 1.73e12 TRUE     59925035 Europe         
+ 8 Italy           2002 1.62e12 TRUE     57926999 Europe         
+ 9 Brazil          2002 1.46e12 FALSE   179914212 Not Europe     
+10 Mexico          2002 1.10e12 FALSE   102479927 Not Europe     
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+* mutate(gdp_billions = gdp/1000000000)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 7
+   country         year     gdp europe        pop europe_category gdp_billions
+   &lt;fct&gt;          &lt;int&gt;   &lt;dbl&gt; &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;                  &lt;dbl&gt;
+ 1 United States   2002 1.12e13 FALSE   287675526 Not Europe            11247.
+ 2 China           2002 3.99e12 FALSE  1280400000 Not Europe             3994.
+ 3 Japan           2002 3.63e12 FALSE   127065841 Not Europe             3635.
+ 4 Germany         2002 2.47e12 TRUE     82350671 Europe                 2473.
+ 5 India           2002 1.81e12 FALSE  1034172547 Not Europe             1806.
+ 6 United Kingdom  2002 1.77e12 TRUE     59912431 Europe                 1766.
+ 7 France          2002 1.73e12 TRUE     59925035 Europe                 1733.
+ 8 Italy           2002 1.62e12 TRUE     57926999 Europe                 1620.
+ 9 Brazil          2002 1.46e12 FALSE   179914212 Not Europe             1463.
+10 Mexico          2002 1.10e12 FALSE   102479927 Not Europe             1101.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+*europe_or_not_2002
+```
+]]
+.column[.content[
+
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+* # plot
+*ggplot(data = europe_or_not_2002)
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_12_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+* aes(x = europe_category)
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_13_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = europe_category) +  
+* aes(y = gdp_billions)
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_14_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = europe_category) +  
+  aes(y = gdp_billions) +  
+* geom_point()
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_15_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = europe_category) +  
+  aes(y = gdp_billions) +  
+  geom_point() +  
+* aes(color = europe_category)
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_16_output-1.png)&lt;!-- --&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gapminder %&gt;%  
+  filter(year == 2002) %&gt;%  
+  select(-lifeExp) %&gt;%  
+  rename(gdp_per_cap = gdpPercap) %&gt;%  
+  mutate(gdp = gdp_per_cap * pop) %&gt;%  
+  mutate(europe = continent == "Europe") %&gt;%  
+  select(country, year, gdp, europe, pop) %&gt;%  
+  mutate(europe_category =  
+           case_when(europe == T ~ "Europe",  
+                     europe == F ~ "Not Europe")) %&gt;%  
+  arrange(-gdp) %&gt;%  
+  mutate(gdp_billions = gdp/1000000000) -&gt;  
+europe_or_not_2002  
+  # plot
+ggplot(data = europe_or_not_2002) +  
+  aes(x = europe_category) +  
+  aes(y = gdp_billions) +  
+  geom_point() +  
+  aes(color = europe_category) +  
+* scale_y_log10()
+```
+]]
+.column[.content[
+![](one_stream_wrangle_files/figure-html/mini_auto_17_output-1.png)&lt;!-- --&gt;
+]]
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 70%}
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

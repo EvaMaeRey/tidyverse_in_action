@@ -1,0 +1,57 @@
+---
+title: "one-stream wrangle"
+subtitle: "made with flipbookr and xaringan"
+author: "Gina Reynolds, January 2020"
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r}
+library(gapminder)
+library(tidyverse)
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+---
+
+`r flipbookr::chunk_reveal("mini")`
+
+
+```{r mini, include = F}
+gapminder %>% 
+  filter(year == 2002) %>% 
+  select(-lifeExp) %>% 
+  rename(gdp_per_cap = gdpPercap) %>% 
+  mutate(gdp = gdp_per_cap * pop) %>% 
+  mutate(europe = continent == "Europe") %>% 
+  select(country, year, gdp, europe, pop) %>% 
+  mutate(europe_category =
+           case_when(europe == T ~ "Europe",
+                     europe == F ~ "Not Europe")) %>% 
+  arrange(-gdp) %>% 
+  mutate(gdp_billions = gdp/1000000000) ->
+europe_or_not_2002
+# plot
+ggplot(data = europe_or_not_2002) +
+  aes(x = europe_category) +
+  aes(y = gdp_billions) +
+  geom_point() + 
+  aes(color = europe_category) +
+  scale_y_log10()
+```
+
+
+
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 70%}
+```

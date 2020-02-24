@@ -1,0 +1,52 @@
+---
+title: "summarize"
+subtitle: "made with flipbookr and xaringan"
+author: "Gina Reynolds, January 2020"
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r}
+library(gapminder)
+library(tidyverse)
+knitr::opts_chunk$set(cache = F, comment = "")
+```
+
+
+---
+
+`r flipbookr::chunk_reveal("a_few_more")`
+
+```{r a_few_more, include = F}
+gapminder %>%
+  distinct(country, continent) %>% 
+  # tally and count are the same
+  count(continent) %>% 
+  rename(count = n) ->
+count_in_continents
+# another pipeline
+gapminder %>%
+  summarize(mean_life_exp = mean(lifeExp),
+            median_life_exp = median(lifeExp)) ->
+overall_summaries
+# another
+gapminder %>%
+  group_by(continent) %>% 
+  summarize(mean_life_exp = mean(lifeExp),
+            median_life_exp = median(lifeExp)) ->
+summaries_by_continent
+```
+
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 70%}
+```
