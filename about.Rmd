@@ -1,18 +1,18 @@
 ---
 title: "Tidyverse in Action: Data Manipulation"
 author: "Evangeline Reynolds"
-date: "2/23/2020"
+date: "February 2020"
 output: html_document
 ---
 
 
-The `{tidyverse}`  data manipulation functions have been a boon to analysts' productivity. This resource is built with the idea that we sometimes just need to see how functions work in action to really understand them; just link the materials for each section to see the functions "in-action". The materials here can be used as an introduction or for reference. The `{tidyverse}` is an open source project in R lead by Hadley Wickham; the `{tidyverse}` itself contains several packages designed to work together in a consistent, logical, and human-friendly fashion.
+The `{tidyverse}`  data manipulation functions have been a boon to analysts' productivity. This resource is built with the idea that we sometimes just need to see how functions work in action to understand them; just link the materials for each section to see the functions "in-action". The materials here can be used as an introduction or for reference. The `{tidyverse}` is an open source project in R lead by Hadley Wickham; the `{tidyverse}` itself contains several packages designed to work together in a consistent, logical, and human-friendly fashion.
 
 # Introduction
 
 
 
-# [One-stream data manipulation](one_stream_wrangle.html#3)
+# [One-stream data manipulation](one_stream_wrangle.html#3){target="_blank"}
 
 |function |action |
 | :--- | ---: |
@@ -25,12 +25,12 @@ The `{tidyverse}`  data manipulation functions have been a boon to analysts' pro
 | slice()     | *keep or drop rows based on row number |
 
 
-### [Logical operators](booleans.html#3)
+### [Logical operators](booleans.html#3){target="_blank"}
 
 Especially in filtering, you are likely to use Boolean operatores `==`, `!=`, `>`, `<`, `>=`, `<=`, which make a comparison and return `TRUE` or `FALSE`.  These can also be combine with `&` (both conditions must be met), `|` (either condition may be met), or `%in%` (if the left hand side element is found *among* the right hand side elements, `TRUE` is returned).
 
 
-# [Summarizing](summarize.html#3)
+# [Summarizing](summarize.html#3){target="_blank"}
 
 |function |action |
 | :--- | ---: |
@@ -44,7 +44,7 @@ Base-R functions that you are might use in summarizing include `mean()`, `median
 
 The function `summary()` can also be used to request summary statistcs for an entire data set. 
 
-# [Shape transformation (wide <---> long)](long_to_wide_and_back.html#3)
+# [Shape transformation (wide <---> long)](long_to_wide_and_back.html#3){target="_blank"}
 
 |function |action |
 | :--- | ---: |
@@ -52,7 +52,7 @@ The function `summary()` can also be used to request summary statistcs for an en
 | spread() or pivot_wider() | *from long to wide*|
 
 
-# [Bringing streams together](joining_data.html)
+# [Bringing streams together](joining_data.html){target="_blank"}
 
 |function |action |
 | :--- | ---: |
@@ -67,7 +67,7 @@ The function `summary()` can also be used to request summary statistcs for an en
 
 # External Resources
 
-## [Data Cleaning]()
+## [Data Cleaning](https://evamaerey.github.io/flipbooks/data_cleaning/data_cleaning){target="_blank"}
 
 I personally think of data cleaning as a separate, but related topic to data manipulation - which is the central topic of the present resource.  A separate data cleaning resource can be found [here](https://evamaerey.github.io/flipbooks/data_cleaning/data_cleaning).
 
@@ -75,6 +75,6 @@ I personally think of data cleaning as a separate, but related topic to data man
 - Unique Identifiers for Countries with `{countrycode}`
 - Date Manipulation `{lubridate}`
 
-## [Data Visualization with {ggplot2}](https://evamaerey.github.io/ggplot2_grammar_guide/ggplot2_grammar_guide)
+## [Data Visualization with {ggplot2}](https://evamaerey.github.io/ggplot2_grammar_guide/ggplot2_grammar_guide){target="_blank"}
 
 Another part of the `{tidyverse}` not covered here is `{ggplot2}` the popular data visualization package authored by Hadley Wickham and contributors.   
