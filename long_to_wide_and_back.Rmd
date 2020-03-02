@@ -1,5 +1,5 @@
 ---
-title: "distinct plot"
+title: "long to wide or wide to long"
 author: "Evangeline Reynolds"
 date: "2/16/2019"
 output:
@@ -26,7 +26,8 @@ knitr::opts_chunk$set(cache = F, comment = "")
 name: longtowideandback
 ## Exercise: *spread data, gather data*
 
-Sometimes, we need to reshape our data.  Here long to wide is shown, and then we transform the wide form back to long. 
+Sometimes, we need to transform the shape of our data.  The wide form of data is an efficient way to store data - especially time-series data.  However, we often need data in a long for for data analysis, so shape transformations are important.  
+
 
 
 ---

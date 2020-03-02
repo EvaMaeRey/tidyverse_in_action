@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>distinct plot</title>
+    <title>long to wide or wide to long</title>
     <meta charset="utf-8" />
     <meta name="author" content="Evangeline Reynolds" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
@@ -12,7 +12,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# distinct plot
+# long to wide or wide to long
 ### Evangeline Reynolds
 ### 2/16/2019
 
@@ -27,7 +27,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
 ```
 
 ```
@@ -38,7 +38,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -52,7 +52,8 @@ knitr::opts_chunk$set(cache = F, comment = "")
 name: longtowideandback
 ## Exercise: *spread data, gather data*
 
-Sometimes, we need to reshape our data.  Here long to wide is shown, and then we transform the wide form back to long. 
+Sometimes, we need to transform the shape of our data.  The wide form of data is an efficient way to store data - especially time-series data.  However, we often need data in a long for for data analysis, so shape transformations are important.  
+
 
 
 ---

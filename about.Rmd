@@ -52,7 +52,7 @@ The function `summary()` can also be used to request summary statistcs for an en
 | spread() or pivot_wider() | *from long to wide*|
 
 
-# [Bringing streams together](joining_data.html){target="_blank"}
+# [Bringing streams together: Joins and Binds](joining_data.html){target="_blank"}
 
 |function |action |
 | :--- | ---: |
@@ -78,3 +78,9 @@ I personally think of data cleaning as a separate, but related topic to data man
 ## [Data Visualization with {ggplot2}](https://evamaerey.github.io/ggplot2_grammar_guide/ggplot2_grammar_guide){target="_blank"}
 
 Another part of the `{tidyverse}` not covered here is `{ggplot2}` the popular data visualization package authored by Hadley Wickham and contributors.   
+
+## [Cool with Statistical Independence](https://evamaerey.github.io/flipbooks/statistical_independence/statistical_independence) 
+
+This a resource we've looked at for thinking about what strength of relatshionships we might observe just by chance.  
+
+

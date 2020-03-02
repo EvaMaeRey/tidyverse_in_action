@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Basic Bivariate Statistical Tests</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gina Reynolds, January 2020" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Basic Bivariate Statistical Tests
+## made with flipbookr and xaringan
+### Gina Reynolds, January 2020
+
+---
+
+
+
+In this resouce, we will ask several questions:
+
+- How do we visualize the relationship between two variables?
+
+--
+
+- How can we quantify the strength of the relationship between two variables? 
+
+--
+
+- How likely is it that such a strong relationship resulted from chance? (i.e. what is the p-value?)
+
+--
+
+- Given this, should I consider the relationship too likely to have arisen just by chance? Is the p-value &lt; `\(\alpha\)`? Do I reject the null or not?
+
+---
+
+
+
+
+
+
+```r
+library(gapminder)
+library(tidyverse)
+```
+
+
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*set.seed(2019)
+```
+]]
+.column[.content[
+
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+*gapminder
+```
+]]
+.column[.content[
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+* filter(year == 2007)   #
+```
+]]
+.column[.content[
+
+```
+# A tibble: 142 x 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2007    43.8  31889923      975.
+ 2 Albania     Europe     2007    76.4   3600523     5937.
+ 3 Algeria     Africa     2007    72.3  33333216     6223.
+ 4 Angola      Africa     2007    42.7  12420476     4797.
+ 5 Argentina   Americas   2007    75.3  40301927    12779.
+ 6 Australia   Oceania    2007    81.2  20434176    34435.
+ 7 Austria     Europe     2007    79.8   8199783    36126.
+ 8 Bahrain     Asia       2007    75.6    708573    29796.
+ 9 Bangladesh  Asia       2007    64.1 150448339     1391.
+10 Belgium     Europe     2007    79.4  10392226    33693.
+# … with 132 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+* filter(continent != "Oceania")
+```
+]]
+.column[.content[
+
+```
+# A tibble: 140 x 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2007    43.8  31889923      975.
+ 2 Albania     Europe     2007    76.4   3600523     5937.
+ 3 Algeria     Africa     2007    72.3  33333216     6223.
+ 4 Angola      Africa     2007    42.7  12420476     4797.
+ 5 Argentina   Americas   2007    75.3  40301927    12779.
+ 6 Austria     Europe     2007    79.8   8199783    36126.
+ 7 Bahrain     Asia       2007    75.6    708573    29796.
+ 8 Bangladesh  Asia       2007    64.1 150448339     1391.
+ 9 Belgium     Europe     2007    79.4  10392226    33693.
+10 Benin       Africa     2007    56.7   8078314     1441.
+# … with 130 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+* mutate(continent = factor(continent))
+```
+]]
+.column[.content[
+
+```
+# A tibble: 140 x 6
+   country     continent  year lifeExp       pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       2007    43.8  31889923      975.
+ 2 Albania     Europe     2007    76.4   3600523     5937.
+ 3 Algeria     Africa     2007    72.3  33333216     6223.
+ 4 Angola      Africa     2007    42.7  12420476     4797.
+ 5 Argentina   Americas   2007    75.3  40301927    12779.
+ 6 Austria     Europe     2007    79.8   8199783    36126.
+ 7 Bahrain     Asia       2007    75.6    708573    29796.
+ 8 Bangladesh  Asia       2007    64.1 150448339     1391.
+ 9 Belgium     Europe     2007    79.4  10392226    33693.
+10 Benin       Africa     2007    56.7   8078314     1441.
+# … with 130 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+  mutate(continent = factor(continent)) %&gt;%  
+* mutate(high_income = case_when(
+*   gdpPercap &gt;= 15000 ~ "high income",
+*   gdpPercap &lt; 15000 ~ "not high income")
+*   )
+```
+]]
+.column[.content[
+
+```
+# A tibble: 140 x 7
+   country     continent  year lifeExp       pop gdpPercap high_income    
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;          
+ 1 Afghanistan Asia       2007    43.8  31889923      975. not high income
+ 2 Albania     Europe     2007    76.4   3600523     5937. not high income
+ 3 Algeria     Africa     2007    72.3  33333216     6223. not high income
+ 4 Angola      Africa     2007    42.7  12420476     4797. not high income
+ 5 Argentina   Americas   2007    75.3  40301927    12779. not high income
+ 6 Austria     Europe     2007    79.8   8199783    36126. high income    
+ 7 Bahrain     Asia       2007    75.6    708573    29796. high income    
+ 8 Bangladesh  Asia       2007    64.1 150448339     1391. not high income
+ 9 Belgium     Europe     2007    79.4  10392226    33693. high income    
+10 Benin       Africa     2007    56.7   8078314     1441. not high income
+# … with 130 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+  mutate(continent = factor(continent)) %&gt;%  
+  mutate(high_income = case_when(  
+    gdpPercap &gt;= 15000 ~ "high income",  
+    gdpPercap &lt; 15000 ~ "not high income")  
+    ) %&gt;%  
+* mutate(europe = case_when(
+*   continent == "Europe" ~ "Europe",
+*   continent != "Europe" ~ "not Europe")
+*        )
+```
+]]
+.column[.content[
+
+```
+# A tibble: 140 x 8
+   country    continent  year lifeExp      pop gdpPercap high_income    europe  
+   &lt;fct&gt;      &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;   
+ 1 Afghanist… Asia       2007    43.8   3.19e7      975. not high inco… not Eur…
+ 2 Albania    Europe     2007    76.4   3.60e6     5937. not high inco… Europe  
+ 3 Algeria    Africa     2007    72.3   3.33e7     6223. not high inco… not Eur…
+ 4 Angola     Africa     2007    42.7   1.24e7     4797. not high inco… not Eur…
+ 5 Argentina  Americas   2007    75.3   4.03e7    12779. not high inco… not Eur…
+ 6 Austria    Europe     2007    79.8   8.20e6    36126. high income    Europe  
+ 7 Bahrain    Asia       2007    75.6   7.09e5    29796. high income    not Eur…
+ 8 Bangladesh Asia       2007    64.1   1.50e8     1391. not high inco… not Eur…
+ 9 Belgium    Europe     2007    79.4   1.04e7    33693. high income    Europe  
+10 Benin      Africa     2007    56.7   8.08e6     1441. not high inco… not Eur…
+# … with 130 more rows
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+  mutate(continent = factor(continent)) %&gt;%  
+  mutate(high_income = case_when(  
+    gdpPercap &gt;= 15000 ~ "high income",  
+    gdpPercap &lt; 15000 ~ "not high income")  
+    ) %&gt;%  
+  mutate(europe = case_when(  
+    continent == "Europe" ~ "Europe",  
+    continent != "Europe" ~ "not Europe")  
+         ) %&gt;%  
+* mutate(gdppercap_log10 =
+*          log10(gdpPercap))
+```
+]]
+.column[.content[
+
+```
+# A tibble: 140 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Afghan… Asia       2007    43.8 3.19e7      975. not high i… not E…
+ 2 Albania Europe     2007    76.4 3.60e6     5937. not high i… Europe
+ 3 Algeria Africa     2007    72.3 3.33e7     6223. not high i… not E…
+ 4 Angola  Africa     2007    42.7 1.24e7     4797. not high i… not E…
+ 5 Argent… Americas   2007    75.3 4.03e7    12779. not high i… not E…
+ 6 Austria Europe     2007    79.8 8.20e6    36126. high income Europe
+ 7 Bahrain Asia       2007    75.6 7.09e5    29796. high income not E…
+ 8 Bangla… Asia       2007    64.1 1.50e8     1391. not high i… not E…
+ 9 Belgium Europe     2007    79.4 1.04e7    33693. high income Europe
+10 Benin   Africa     2007    56.7 8.08e6     1441. not high i… not E…
+# … with 130 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+  mutate(continent = factor(continent)) %&gt;%  
+  mutate(high_income = case_when(  
+    gdpPercap &gt;= 15000 ~ "high income",  
+    gdpPercap &lt; 15000 ~ "not high income")  
+    ) %&gt;%  
+  mutate(europe = case_when(  
+    continent == "Europe" ~ "Europe",  
+    continent != "Europe" ~ "not Europe")  
+         ) %&gt;%  
+  mutate(gdppercap_log10 =  
+           log10(gdpPercap)) %&gt;%  
+* sample_n(50, replace = F)
+```
+]]
+.column[.content[
+
+```
+# A tibble: 50 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Colomb… Americas   2007    72.9 4.42e7     7007. not high i… not E…
+ 2 Tanzan… Africa     2007    52.5 3.81e7     1107. not high i… not E…
+ 3 Korea,… Asia       2007    67.3 2.33e7     1593. not high i… not E…
+ 4 Burundi Africa     2007    49.6 8.39e6      430. not high i… not E…
+ 5 Sudan   Africa     2007    58.6 4.23e7     2602. not high i… not E…
+ 6 Iraq    Asia       2007    59.5 2.75e7     4471. not high i… not E…
+ 7 Camero… Africa     2007    50.4 1.77e7     2042. not high i… not E…
+ 8 Comoros Africa     2007    65.2 7.11e5      986. not high i… not E…
+ 9 Slovak… Europe     2007    74.7 5.45e6    18678. high income Europe
+10 Lebanon Asia       2007    72.0 3.92e6    10461. not high i… not E…
+# … with 40 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+set.seed(2019)  
+gapminder %&gt;%  
+  filter(year == 2007) %&gt;%  #
+  filter(continent != "Oceania") %&gt;%  
+  mutate(continent = factor(continent)) %&gt;%  
+  mutate(high_income = case_when(  
+    gdpPercap &gt;= 15000 ~ "high income",  
+    gdpPercap &lt; 15000 ~ "not high income")  
+    ) %&gt;%  
+  mutate(europe = case_when(  
+    continent == "Europe" ~ "Europe",  
+    continent != "Europe" ~ "not Europe")  
+         ) %&gt;%  
+  mutate(gdppercap_log10 =  
+           log10(gdpPercap)) %&gt;%  
+  sample_n(50, replace = F) -&gt;  
+*gm07_sample_50
+```
+]]
+.column[.content[
+
+]]
+
+
+
+---
+
+# The relationship between two continuous variables
+
+Does information about the value of "x" tell me information about the probable value of "y"?  Is the relationship strong enough to say that it is unlikely to have arisen from chance? 
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*gm07_sample_50
+```
+]]
+.column[.content[
+
+```
+# A tibble: 50 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Colomb… Americas   2007    72.9 4.42e7     7007. not high i… not E…
+ 2 Tanzan… Africa     2007    52.5 3.81e7     1107. not high i… not E…
+ 3 Korea,… Asia       2007    67.3 2.33e7     1593. not high i… not E…
+ 4 Burundi Africa     2007    49.6 8.39e6      430. not high i… not E…
+ 5 Sudan   Africa     2007    58.6 4.23e7     2602. not high i… not E…
+ 6 Iraq    Asia       2007    59.5 2.75e7     4471. not high i… not E…
+ 7 Camero… Africa     2007    50.4 1.77e7     2042. not high i… not E…
+ 8 Comoros Africa     2007    65.2 7.11e5      986. not high i… not E…
+ 9 Slovak… Europe     2007    74.7 5.45e6    18678. high income Europe
+10 Lebanon Asia       2007    72.0 3.92e6    10461. not high i… not E…
+# … with 40 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gm07_sample_50 %&gt;%  
+* ggplot()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/plot_1_auto_2_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gm07_sample_50 %&gt;%  
+  ggplot() +  
+* aes(x = gdppercap_log10)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/plot_1_auto_3_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gm07_sample_50 %&gt;%  
+  ggplot() +  
+  aes(x = gdppercap_log10) +  
+* aes(y = lifeExp)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/plot_1_auto_4_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gm07_sample_50 %&gt;%  
+  ggplot() +  
+  aes(x = gdppercap_log10) +  
+  aes(y = lifeExp) +  
+* geom_point(alpha = .5,
+*            color = "magenta")
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/plot_1_auto_5_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+gm07_sample_50 %&gt;%  
+  ggplot() +  
+  aes(x = gdppercap_log10) +  
+  aes(y = lifeExp) +  
+  geom_point(alpha = .5,  
+             color = "magenta") +  
+* theme_minimal()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/plot_1_auto_6_output-1.png" width="432" /&gt;
+]]
+
+
+
+
+
+---
+
+### Correlation test
+
+Eyeballing it, there certainly seems to be a relationship between x and y --- knowing the value of x would seem to inform you of the general likely value of y.  But let's do the statistical test too. 
+
+---
+
+Now, the statistical test.  
+
+Note: The normalized version of covariance is Pearson's correlation coefficient.
+
+
+```r
+cor.test(
+  x = gm07_sample_50$gdppercap_log10,
+  y = gm07_sample_50$lifeExp
+  )
+```
+
+```
+
+	Pearson's product-moment correlation
+
+data:  gm07_sample_50$gdppercap_log10 and gm07_sample_50$lifeExp
+t = 14.437, df = 48, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.8320019 0.9432120
+sample estimates:
+      cor 
+0.9015609 
+```
+
+---
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+* # using a new pipe from the magrittr package
+*library(magrittr)
+```
+]]
+.column[.content[
+
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+  # using a new pipe from the magrittr package
+library(magrittr)  
+*gm07_sample_50   # state what data vars come from
+```
+]]
+.column[.content[
+
+```
+# A tibble: 50 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Colomb… Americas   2007    72.9 4.42e7     7007. not high i… not E…
+ 2 Tanzan… Africa     2007    52.5 3.81e7     1107. not high i… not E…
+ 3 Korea,… Asia       2007    67.3 2.33e7     1593. not high i… not E…
+ 4 Burundi Africa     2007    49.6 8.39e6      430. not high i… not E…
+ 5 Sudan   Africa     2007    58.6 4.23e7     2602. not high i… not E…
+ 6 Iraq    Asia       2007    59.5 2.75e7     4471. not high i… not E…
+ 7 Camero… Africa     2007    50.4 1.77e7     2042. not high i… not E…
+ 8 Comoros Africa     2007    65.2 7.11e5      986. not high i… not E…
+ 9 Slovak… Europe     2007    74.7 5.45e6    18678. high income Europe
+10 Lebanon Asia       2007    72.0 3.92e6    10461. not high i… not E…
+# … with 40 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+  # using a new pipe from the magrittr package
+library(magrittr)  
+gm07_sample_50 %$%  # state what data vars come from
+* cor.test(x = gdppercap_log10,
+*          y = lifeExp)
+```
+]]
+.column[.content[
+
+```
+
+	Pearson's product-moment correlation
+
+data:  gdppercap_log10 and lifeExp
+t = 14.437, df = 48, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.8320019 0.9432120
+sample estimates:
+      cor 
+0.9015609 
+```
+]]
+
+
+
+
+---
+
+# The relationship between a dichotomous (two groups) and continuous variable
+
+---
+
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*ggplot(gm07_sample_50)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_1_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+* aes(y = lifeExp)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_2_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+* aes(x = europe)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_3_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = europe) +  
+* aes(fill = europe)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_4_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = europe) +  
+  aes(fill = europe) +  
+* geom_boxplot()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_5_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = europe) +  
+  aes(fill = europe) +  
+  geom_boxplot() +  
+* geom_jitter(height = 0,
+*             width = .2, alpha = .3)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/t_plot_auto_6_output-1.png" width="432" /&gt;
+]]
+
+
+
+---
+
+# An alternative
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*ggplot(gm07_sample_50)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_1_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+* aes(x = lifeExp)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_2_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(x = lifeExp) +  
+* aes(fill = europe)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_3_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(x = lifeExp) +  
+  aes(fill = europe) +  
+* aes(col = europe)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_4_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(x = lifeExp) +  
+  aes(fill = europe) +  
+  aes(col = europe) +  
+* geom_histogram(alpha = .2)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_5_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(x = lifeExp) +  
+  aes(fill = europe) +  
+  aes(col = europe) +  
+  geom_histogram(alpha = .2) +  
+* facet_wrap(~ europe)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_6_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(x = lifeExp) +  
+  aes(fill = europe) +  
+  aes(col = europe) +  
+  geom_histogram(alpha = .2) +  
+  facet_wrap(~ europe) +  
+* geom_rug()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/hist_2_auto_7_output-1.png" width="432" /&gt;
+]]
+
+
+
+
+
+---
+
+### "t-test"
+
+![](https://upload.wikimedia.org/wikipedia/commons/4/42/William_Sealy_Gosset.jpg)
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/65/William_Gosset_plaque_in_Guinness_storehouse_tour%2C_Ireland.jpg)
+
+The t-test compares group means, or a sample mean from an expected mean.  Are they different enough from each other to be considered statistically different? 
+
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*library(magrittr)
+```
+]]
+.column[.content[
+
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+library(magrittr)  
+*gm07_sample_50
+```
+]]
+.column[.content[
+
+```
+# A tibble: 50 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Colomb… Americas   2007    72.9 4.42e7     7007. not high i… not E…
+ 2 Tanzan… Africa     2007    52.5 3.81e7     1107. not high i… not E…
+ 3 Korea,… Asia       2007    67.3 2.33e7     1593. not high i… not E…
+ 4 Burundi Africa     2007    49.6 8.39e6      430. not high i… not E…
+ 5 Sudan   Africa     2007    58.6 4.23e7     2602. not high i… not E…
+ 6 Iraq    Asia       2007    59.5 2.75e7     4471. not high i… not E…
+ 7 Camero… Africa     2007    50.4 1.77e7     2042. not high i… not E…
+ 8 Comoros Africa     2007    65.2 7.11e5      986. not high i… not E…
+ 9 Slovak… Europe     2007    74.7 5.45e6    18678. high income Europe
+10 Lebanon Asia       2007    72.0 3.92e6    10461. not high i… not E…
+# … with 40 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+library(magrittr)  
+gm07_sample_50 %&gt;%  
+* t.test(formula = lifeExp ~ europe,
+*        data = .)
+```
+]]
+.column[.content[
+
+```
+
+	Welch Two Sample t-test
+
+data:  lifeExp by europe
+t = 5.7172, df = 46.16, p-value = 7.591e-07
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  7.573559 15.803256
+sample estimates:
+    mean in group Europe mean in group not Europe 
+                76.67775                 64.98934 
+```
+]]
+
+
+
+
+---
+
+# Relationship between multinomial variable (many groups) and continuous variable
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+*ggplot(gm07_sample_50)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_1_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+* aes(y = lifeExp)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_2_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+* aes(x = continent)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_3_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = continent) +  
+* aes(fill = continent)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_4_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = continent) +  
+  aes(fill = continent) +  
+* geom_boxplot()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_5_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = continent) +  
+  aes(fill = continent) +  
+  geom_boxplot() +  
+* geom_jitter(height = 0,
+*             width = .2,
+*             alpha = .3)
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_6_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = continent) +  
+  aes(fill = continent) +  
+  geom_boxplot() +  
+  geom_jitter(height = 0,  
+              width = .2,  
+              alpha = .3) +  
+* theme_minimal()
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_7_output-1.png" width="432" /&gt;
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+ggplot(gm07_sample_50) +  
+  aes(y = lifeExp) +  
+  aes(x = continent) +  
+  aes(fill = continent) +  
+  geom_boxplot() +  
+  geom_jitter(height = 0,  
+              width = .2,  
+              alpha = .3) +  
+  theme_minimal() +  
+* theme(legend.position = "none")
+```
+]]
+.column[.content[
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/multi_box_auto_8_output-1.png" width="432" /&gt;
+]]
+
+
+
+
+---
+
+## "Analysis of Variance" (Anova)
+
+test statistic = difference in means.  
+
+Are there any difference in means for the groups that are strong enough to say that they are statistically different.  
+
+---
+
+class: split-40
+count: false
+.column[.content[
+
+```r
+* # the model itself
+*gm07_sample_50
+```
+]]
+.column[.content[
+
+```
+# A tibble: 50 x 9
+   country continent  year lifeExp    pop gdpPercap high_income europe
+   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt; 
+ 1 Colomb… Americas   2007    72.9 4.42e7     7007. not high i… not E…
+ 2 Tanzan… Africa     2007    52.5 3.81e7     1107. not high i… not E…
+ 3 Korea,… Asia       2007    67.3 2.33e7     1593. not high i… not E…
+ 4 Burundi Africa     2007    49.6 8.39e6      430. not high i… not E…
+ 5 Sudan   Africa     2007    58.6 4.23e7     2602. not high i… not E…
+ 6 Iraq    Asia       2007    59.5 2.75e7     4471. not high i… not E…
+ 7 Camero… Africa     2007    50.4 1.77e7     2042. not high i… not E…
+ 8 Comoros Africa     2007    65.2 7.11e5      986. not high i… not E…
+ 9 Slovak… Europe     2007    74.7 5.45e6    18678. high income Europe
+10 Lebanon Asia       2007    72.0 3.92e6    10461. not high i… not E…
+# … with 40 more rows, and 1 more variable: gdppercap_log10 &lt;dbl&gt;
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+  # the model itself
+gm07_sample_50 %&gt;%  
+*aov(formula = lifeExp ~ continent,
+*   data = .)
+```
+]]
+.column[.content[
+
+```
+Call:
+   aov(formula = lifeExp ~ continent, data = .)
+
+Terms:
+                continent Residuals
+Sum of Squares   3115.130  3234.028
+Deg. of Freedom         3        46
+
+Residual standard error: 8.384805
+Estimated effects may be unbalanced
+```
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+  # the model itself
+gm07_sample_50 %&gt;%  
+aov(formula = lifeExp ~ continent,  
+    data = .) -&gt;  
+*a 
+```
+]]
+.column[.content[
+
+]]
+---
+class: split-40
+count: false
+.column[.content[
+
+```r
+  # the model itself
+gm07_sample_50 %&gt;%  
+aov(formula = lifeExp ~ continent,  
+    data = .) -&gt;  
+a  
+* # the summary of the analysis of variance
+*summary(a)
+```
+]]
+.column[.content[
+
+```
+            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+continent    3   3115  1038.4   14.77 7.18e-07 ***
+Residuals   46   3234    70.3                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]]
+
+
+
+
+---
+
+## Which are the statisically different groups?
+
+Post hoc testing is done to identify which groups are statistically different. 
+
+
+```r
+TukeyHSD(a)
+```
+
+```
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = lifeExp ~ continent, data = .)
+
+$continent
+                     diff        lwr       upr     p adj
+Americas-Africa 17.643000   6.344685 28.941315 0.0007645
+Asia-Africa     12.304133   4.490624 20.117642 0.0006850
+Europe-Africa   18.866750  10.537521 27.195979 0.0000015
+Asia-Americas   -5.338867 -16.880184  6.202451 0.6094127
+Europe-Americas  1.223750 -10.672768 13.120268 0.9926979
+Europe-Asia      6.562617  -2.093372 15.218605 0.1952925
+```
+
+
+
+
+
+
+
+
+
+---
+
+# Relationships between categorical variables
+
+First we consider dichotomous variables, and then more categories.
+
+
+
+---
+
+## Relationship between between dichotomous variables (two categories for each variable)
+
+- Binary (male, female; high income, low income)
+- Indicator, "Dummy variable" 
+(on drug, not on drug; recovered, not recovered; democracy, not democracy; militarized interstate dispute, no dispute)
+
+
+---
+
+### contingency table
+
+Creating a contingency table with base R is pretty straightforward. We are using the dollar sign to point to a column in the dataframe gm07_sample_50.
+
+
+
+```r
+library(magrittr)
+gm07_sample_50 %$% 
+table(x = europe, 
+      y = high_income)
+```
+
+```
+            y
+x            high income not high income
+  Europe               7               5
+  not Europe           6              32
+```
+
+---
+### Contingency table with the tidyverse
+
+You can do this in the tidyverse too.  With a few more steps. 
+
+
+```r
+gm07_sample_50 %&gt;% 
+  group_by(europe, high_income) %&gt;% 
+  count() %&gt;% 
+  spread(high_income, n)
+```
+
+```
+# A tibble: 2 x 3
+# Groups:   europe [2]
+  europe     `high income` `not high income`
+  &lt;chr&gt;              &lt;int&gt;             &lt;int&gt;
+1 Europe                 7                 5
+2 not Europe             6                32
+```
+
+
+```r
+gm07_sample_50 %&gt;% 
+ggplot() +
+  aes(x = high_income) +
+  aes(y = europe) +
+  geom_jitter(width = .3, height = .3)
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-5-1.png" width="432" /&gt;
+
+
+```r
+ggplot(gm07_sample_50) +
+  aes(x = europe) +
+  aes(fill = high_income) + 
+  geom_bar(position = "dodge")
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-6-1.png" width="432" /&gt;
+
+
+---
+
+### mosaic plot
+
+A mosaic plot represents the proportions of each cell.  Usually the major divide (the split that cuts across the whole square) is the "explanatory" variable.  
+
+
+```r
+gm07_sample_50 %&gt;% 
+vcd::mosaic(formula = high_income ~ europe, 
+            data = .) #  Vis Categorical Data
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-7-1.png" width="432" /&gt;
+
+
+
+
+---
+
+### Chi-squared test
+
+$$ \tilde{\chi}^2=\sum_{k=1}^{n} \frac{(O_k - E_k)^2}{E_k} $$
+
+test statistic: Chi-squared statistic
+
+
+```r
+library(magrittr)
+gm07_sample_50 %$%
+  chisq.test(x = high_income,
+             y = europe) -&gt;
+chi_sq_income_europe
+chi_sq_income_europe$observed %&gt;% 
+  vcd::mosaic()
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-8-1.png" width="432" /&gt;
+
+---
+
+### Independence (the null)
+
+We can pull out "expected" (under statistical independence) distribution as follows: 
+
+---
+
+
+```r
+chi_sq_income_europe$expected %&gt;% 
+  vcd::mosaic()  
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-9-1.png" width="432" /&gt;
+
+---
+
+This is what we would expect to see under independence, the null.  These values would be used in the equation for calculating the chi-squared along what is observed in reality --- the contingency table that we calculated.  We can plot the expected values under independence as a contrast with what we do observe.  
+
+
+
+---
+
+## Relationships between categorical data: more than two categories
+
+test statistic: Chi-squared statistic
+
+
+
+---
+
+
+```r
+library(magrittr)
+gm07_sample_50 %$%
+chisq.test(x = continent,
+           y = high_income) -&gt;
+my_chi_sqr
+my_chi_sqr$observed %&gt;% 
+  vcd::mosaic()
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-10-1.png" width="432" /&gt;
+
+```r
+my_chi_sqr$expected %&gt;% 
+  vcd::mosaic()  
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-10-2.png" width="432" /&gt;
+
+
+
+---
+
+# Warnings
+
+---
+
+## Statistics don't always perform well
+
+![Anscombe's quartet](https://upload.wikimedia.org/wikipedia/commons/e/ec/Anscombe%27s_quartet_3.svg)
+
+---
+
+![correlation coefficients](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient#/media/File:Correlation_examples2.svg)
+
+---
+
+There are many more statistics not covered here, that address different situations, where assumptions for the t.test, correlation test, and chi-squared test might not be met. But these are a starting point. 
+
+---
+
+
+
+# Linear Modeling: Ordinary least squares
+
+
+```r
+ggplot(data = gm07_sample_50) + 
+  aes(x = gdppercap_log10) +
+  aes(y = lifeExp) +
+  geom_point() + 
+  geom_smooth(method = lm)
+```
+
+&lt;img src="basic_bivariate_statistical_tests_files/figure-html/unnamed-chunk-11-1.png" width="432" /&gt;
+
+---
+
+# Modeling logic
+
+- x
+    
+    - explanatory variable
+    - right-hand variable
+    - predictor
+    - independent variable
+
+
+- y
+
+    - outcome
+    - left-hand variable
+    - dependent variable
+    - variable to be explained
+
+
+
+---
+
+# Ordinary least squares
+
+- minimizes the sum of the squared residuals
+
+- residuals = predicted value (value predicted by linear model) - observed value
+
+
+
+
+---
+
+# OLS model estimation and summary
+
+
+```r
+lm(lifeExp ~ gdppercap_log10, data = gm07_sample_50)
+```
+
+```
+
+Call:
+lm(formula = lifeExp ~ gdppercap_log10, data = gm07_sample_50)
+
+Coefficients:
+    (Intercept)  gdppercap_log10  
+          4.999           16.930  
+```
+
+```r
+my_model &lt;- lm(lifeExp ~ gdppercap_log10 + pop, data = gm07_sample_50)
+my_model
+```
+
+```
+
+Call:
+lm(formula = lifeExp ~ gdppercap_log10 + pop, data = gm07_sample_50)
+
+Coefficients:
+    (Intercept)  gdppercap_log10              pop  
+      4.809e+00        1.696e+01        1.760e-09  
+```
+
+
+# More about this model
+
+- Using summary
+
+
+```r
+summary(my_model)
+```
+
+```
+
+Call:
+lm(formula = lifeExp ~ gdppercap_log10 + pop, data = gm07_sample_50)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.2188  -2.5300   0.2088   3.5477   9.5589 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     4.809e+00  4.474e+00   1.075    0.288    
+gdppercap_log10 1.696e+01  1.186e+00  14.299   &lt;2e-16 ***
+pop             1.760e-09  4.622e-09   0.381    0.705    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.021 on 47 degrees of freedom
+Multiple R-squared:  0.8134,	Adjusted R-squared:  0.8054 
+F-statistic: 102.4 on 2 and 47 DF,  p-value: &lt; 2.2e-16
+```
+
+```r
+sqrt(.6525)
+```
+
+```
+[1] 0.8077747
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

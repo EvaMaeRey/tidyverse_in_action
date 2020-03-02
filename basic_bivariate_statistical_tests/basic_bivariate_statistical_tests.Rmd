@@ -1,0 +1,480 @@
+---
+title: "Basic Bivariate Statistical Tests"
+subtitle: "made with flipbookr and xaringan"
+author: "Gina Reynolds, January 2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+In this resouce, we will ask several questions:
+
+- How do we visualize the relationship between two variables?
+
+--
+
+- How can we quantify the strength of the relationship between two variables? 
+
+--
+
+- How likely is it that such a strong relationship resulted from chance? (i.e. what is the p-value?)
+
+--
+
+- Given this, should I consider the relationship too likely to have arisen just by chance? Is the p-value < $\alpha$? Do I reject the null or not?
+
+---
+
+
+```{r setup, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scracth can be time consuming
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = FALSE, fig.retina = 3)
+library(flipbookr)
+library(tidyverse)
+```
+
+
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+
+
+---
+
+`r chunk_reveal("sample")`
+
+```{r sample, include = F}
+set.seed(2019)
+gapminder %>% 
+  filter(year == 2007) %>%  # 
+  filter(continent != "Oceania") %>% 
+  mutate(continent = factor(continent)) %>% 
+  mutate(high_income = case_when(
+    gdpPercap >= 15000 ~ "high income",
+    gdpPercap < 15000 ~ "not high income") 
+    ) %>% 
+  mutate(europe = case_when(
+    continent == "Europe" ~ "Europe",
+    continent != "Europe" ~ "not Europe") 
+         ) %>% 
+  mutate(gdppercap_log10 = 
+           log10(gdpPercap)) %>% 
+  sample_n(50, replace = F) ->
+gm07_sample_50
+```
+
+---
+
+# The relationship between two continuous variables
+
+Does information about the value of "x" tell me information about the probable value of "y"?  Is the relationship strong enough to say that it is unlikely to have arisen from chance? 
+
+---
+
+`r chunk_reveal("plot_1")`
+
+
+```{r plot_1, include = F}
+gm07_sample_50 %>% 
+  ggplot() + 
+  aes(x = gdppercap_log10) +
+  aes(y = lifeExp) + 
+  geom_point(alpha = .5,
+             color = "magenta") +
+  theme_minimal()
+```
+
+
+---
+
+### Correlation test
+
+Eyeballing it, there certainly seems to be a relationship between x and y --- knowing the value of x would seem to inform you of the general likely value of y.  But let's do the statistical test too. 
+
+---
+
+Now, the statistical test.  
+
+Note: The normalized version of covariance is Pearson's correlation coefficient.
+
+```{r base_cor, eval = T, echo = T}
+cor.test(
+  x = gm07_sample_50$gdppercap_log10,
+  y = gm07_sample_50$lifeExp
+  )
+```
+
+---
+
+
+`r chunk_reveal("tidy_cor")`
+
+```{r tidy_cor, include = F}
+# using a new pipe from the magrittr package
+library(magrittr)
+gm07_sample_50 %$% # state what data vars come from
+  cor.test(x = gdppercap_log10,  
+           y = lifeExp)
+```
+
+
+---
+
+# The relationship between a dichotomous (two groups) and continuous variable
+
+---
+
+
+`r chunk_reveal("t_plot")`
+
+```{r t_plot, include = F}
+ggplot(gm07_sample_50) + 
+  aes(y = lifeExp) +
+  aes(x = europe) +
+  aes(fill = europe) +
+  geom_boxplot() +
+  geom_jitter(height = 0, 
+              width = .2, alpha = .3)
+```
+
+---
+
+# An alternative
+
+---
+
+`r chunk_reveal("hist_2")`
+
+
+```{r hist_2, include = F}
+ggplot(gm07_sample_50) + 
+  aes(x = lifeExp) +
+  aes(fill = europe) +
+  aes(col = europe) + 
+  geom_histogram(alpha = .2) +
+  facet_wrap(~ europe) +
+  geom_rug() 
+```
+
+
+---
+
+### "t-test"
+
+![](https://upload.wikimedia.org/wikipedia/commons/4/42/William_Sealy_Gosset.jpg)
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/65/William_Gosset_plaque_in_Guinness_storehouse_tour%2C_Ireland.jpg)
+
+The t-test compares group means, or a sample mean from an expected mean.  Are they different enough from each other to be considered statistically different? 
+
+
+---
+
+`r chunk_reveal("t_test")`
+
+
+```{r t_test, include = F}
+library(magrittr)
+gm07_sample_50 %>% 
+  t.test(formula = lifeExp ~ europe, 
+         data = .) 
+```
+
+---
+
+# Relationship between multinomial variable (many groups) and continuous variable
+
+---
+
+`r chunk_reveal("multi_box")`
+
+
+```{r multi_box, include = F}
+ggplot(gm07_sample_50) + 
+  aes(y = lifeExp) +
+  aes(x = continent) +
+  aes(fill = continent) +
+  geom_boxplot() +
+  geom_jitter(height = 0, 
+              width = .2, 
+              alpha = .3) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+---
+
+## "Analysis of Variance" (Anova)
+
+test statistic = difference in means.  
+
+Are there any difference in means for the groups that are strong enough to say that they are statistically different.  
+
+---
+
+`r chunk_reveal("aov")`
+
+
+```{r aov, include = F}
+# the model itself
+gm07_sample_50 %>% 
+aov(formula = lifeExp ~ continent, 
+    data = .) ->
+a
+# the summary of the analysis of variance
+summary(a)
+```
+
+---
+
+## Which are the statisically different groups?
+
+Post hoc testing is done to identify which groups are statistically different. 
+
+```{r, echo = T}
+TukeyHSD(a)
+```
+
+
+
+
+
+
+
+
+
+---
+
+# Relationships between categorical variables
+
+First we consider dichotomous variables, and then more categories.
+
+
+
+---
+
+## Relationship between between dichotomous variables (two categories for each variable)
+
+- Binary (male, female; high income, low income)
+- Indicator, "Dummy variable" 
+(on drug, not on drug; recovered, not recovered; democracy, not democracy; militarized interstate dispute, no dispute)
+
+
+---
+
+### contingency table
+
+Creating a contingency table with base R is pretty straightforward. We are using the dollar sign to point to a column in the dataframe gm07_sample_50.
+
+
+```{r, eval = T, echo = T}
+library(magrittr)
+gm07_sample_50 %$% 
+table(x = europe, 
+      y = high_income)
+```
+
+---
+### Contingency table with the tidyverse
+
+You can do this in the tidyverse too.  With a few more steps. 
+
+```{r, eval = T, echo = T}
+gm07_sample_50 %>% 
+  group_by(europe, high_income) %>% 
+  count() %>% 
+  spread(high_income, n)
+```
+
+```{r}
+gm07_sample_50 %>% 
+ggplot() +
+  aes(x = high_income) +
+  aes(y = europe) +
+  geom_jitter(width = .3, height = .3)
+```
+
+```{r}
+ggplot(gm07_sample_50) +
+  aes(x = europe) +
+  aes(fill = high_income) + 
+  geom_bar(position = "dodge")
+```
+
+
+---
+
+### mosaic plot
+
+A mosaic plot represents the proportions of each cell.  Usually the major divide (the split that cuts across the whole square) is the "explanatory" variable.  
+
+```{r, eval = T, echo = T}
+gm07_sample_50 %>% 
+vcd::mosaic(formula = high_income ~ europe, 
+            data = .) #  Vis Categorical Data
+```
+
+
+
+
+---
+
+### Chi-squared test
+
+$$ \tilde{\chi}^2=\sum_{k=1}^{n} \frac{(O_k - E_k)^2}{E_k} $$
+
+test statistic: Chi-squared statistic
+
+```{r, eval = T, echo = T}
+library(magrittr)
+gm07_sample_50 %$%
+  chisq.test(x = high_income,
+             y = europe) ->
+chi_sq_income_europe
+chi_sq_income_europe$observed %>% 
+  vcd::mosaic()
+```
+
+---
+
+### Independence (the null)
+
+We can pull out "expected" (under statistical independence) distribution as follows: 
+
+---
+
+```{r, eval = T, echo = T}
+chi_sq_income_europe$expected %>% 
+  vcd::mosaic()  
+```
+
+---
+
+This is what we would expect to see under independence, the null.  These values would be used in the equation for calculating the chi-squared along what is observed in reality --- the contingency table that we calculated.  We can plot the expected values under independence as a contrast with what we do observe.  
+
+
+
+---
+
+## Relationships between categorical data: more than two categories
+
+test statistic: Chi-squared statistic
+
+
+
+---
+
+```{r, eval = T, echo = T}
+library(magrittr)
+gm07_sample_50 %$%
+chisq.test(x = continent,
+           y = high_income) ->
+my_chi_sqr
+my_chi_sqr$observed %>% 
+  vcd::mosaic()
+my_chi_sqr$expected %>% 
+  vcd::mosaic()  
+```
+
+
+
+---
+
+# Warnings
+
+---
+
+## Statistics don't always perform well
+
+![Anscombe's quartet](https://upload.wikimedia.org/wikipedia/commons/e/ec/Anscombe%27s_quartet_3.svg)
+
+---
+
+![correlation coefficients](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient#/media/File:Correlation_examples2.svg)
+
+---
+
+There are many more statistics not covered here, that address different situations, where assumptions for the t.test, correlation test, and chi-squared test might not be met. But these are a starting point. 
+
+---
+
+
+
+# Linear Modeling: Ordinary least squares
+
+```{r, echo = T, fig.height= 4}
+ggplot(data = gm07_sample_50) + 
+  aes(x = gdppercap_log10) +
+  aes(y = lifeExp) +
+  geom_point() + 
+  geom_smooth(method = lm)
+```
+
+---
+
+# Modeling logic
+
+- x
+    
+    - explanatory variable
+    - right-hand variable
+    - predictor
+    - independent variable
+
+
+- y
+
+    - outcome
+    - left-hand variable
+    - dependent variable
+    - variable to be explained
+
+
+
+---
+
+# Ordinary least squares
+
+- minimizes the sum of the squared residuals
+
+- residuals = predicted value (value predicted by linear model) - observed value
+
+
+
+
+---
+
+# OLS model estimation and summary
+
+```{r, echo = T}
+lm(lifeExp ~ gdppercap_log10, data = gm07_sample_50)
+
+
+my_model <- lm(lifeExp ~ gdppercap_log10 + pop, data = gm07_sample_50)
+my_model
+
+
+```
+
+
+# More about this model
+
+- Using summary
+
+```{r, echo = T}
+summary(my_model)
+
+sqrt(.6525)
+```
+
+
